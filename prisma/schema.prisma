@@ -11,37 +11,152 @@ datasource db {
 }
 
 model User {
-  username String    @id @db.VarChar(100)
-  password String    @db.VarChar(100)
-  name     String    @db.VarChar(100)
-  token    String?   @db.VarChar(100)
-  contacts Contact[]
-
-  @@map("users")
+  id              String   @id @default(uuid())
+  name            String   @db.VarChar(100)
+  email           String   @unique @db.VarChar(100)
+  password        String   @db.VarChar(100)
+  phone           String   @db.VarChar(14)
+  gender          Gender   
+  agreement       Boolean
+  role            Role     @default(USER)
+  profile_pic_url String?
+  active          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
-model Contact {
-  id         Int       @id @default(autoincrement())
-  first_name String    @db.VarChar(100)
-  last_name  String?   @db.VarChar(100)
-  email      String?   @db.VarChar(200)
-  phone      String?   @db.VarChar(20)
-  username   String    @db.VarChar(100)
-  user       User      @relation(fields: [username], references: [username])
-  addresses  Address[]
-
-  @@map("contacts")
+model Tour_Package {
+  id                  String                @id @default(uuid())
+  title               String                @unique @db.VarChar(100)
+  description         String
+  duration            Int
+  start_datetime      DateTime
+  end_datetime        DateTime
+  price               String
+  tour_type           Tour_Type?            @relation(fields: [tour_type_id], references: [id])
+  tour_type_id        String?
+  terms_conditions    String
+  Tour_Package_On_Tag Tour_Package_On_Tag[]
+  other_details       String?
+  media               Media[]
+  visa_category       Visa_Category?        @relation(fields: [visa_Category_id], references: [id])
+  visa_Category_id    String?
+  Location            Location?             @relation(fields: [location_id], references: [id])
+  location_id         String?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
 }
 
-model Address {
-  id          Int     @id @default(autoincrement())
-  street      String? @db.VarChar(255)
-  city        String? @db.VarChar(100)
-  province    String? @db.VarChar(100)
-  country     String @db.VarChar(100)
-  postal_code String  @db.VarChar(10)
-  contact_id  Int
-  contact     Contact @relation(fields: [contact_id], references: [id])
-
-  @@map("addresses")
+model Tour_Type {
+  id           String         @id @default(uuid())
+  title        String         @unique @db.VarChar(100)
+  details      String?
+  tourPackages Tour_Package[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
 }
+
+// model Tour_Package_On_Type {
+//   tour_package    Tour_Package @relation(fields: [tour_package_id], references: [id])
+//   tour_package_id String
+//   tour_type       Tour_Type    @relation(fields: [tour_type_id], references: [id])
+//   tour_type_id    String
+//   createdAt       DateTime     @default(now())
+//   updatedAt       DateTime     @updatedAt
+
+//   @@id([tour_package_id, tour_type_id])
+// }
+
+model Tag {
+  id                  String                @id @default(uuid())
+  title               String                @unique @db.VarChar(50)
+  Tour_Package_On_Tag Tour_Package_On_Tag[]
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+}
+
+model Tour_Package_On_Tag {
+  tour_package    Tour_Package @relation(fields: [tour_package_id], references: [id])
+  tour_package_id String
+  tag             Tag          @relation(fields: [tag_id], references: [id])
+  tag_id          String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@id([tour_package_id, tag_id])
+}
+
+model Visa_Category {
+  id           String         @id @default(uuid())
+  title        String         @unique @db.VarChar(50)
+  details      String
+  Tour_Package Tour_Package[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model Media {
+  id              String       @id @default(uuid())
+  uri             String
+  type            String       @db.VarChar(10)
+  tour_package    Tour_Package @relation(fields: [tour_Package_id], references: [id])
+  tour_Package_id String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+model Location {
+  id           String         @id @default(uuid())
+  name         String         @unique @db.VarChar(100)
+  type         String         @db.VarChar(50)
+  tour_package Tour_Package[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHERS
+}
+
+// model User {
+//   username String    @id @db.VarChar(100)
+//   password String    @db.VarChar(100)
+//   name     String    @db.VarChar(100)
+//   token    String?   @db.VarChar(100)
+//   contacts Contact[]
+
+//   @@map("users")
+// }
+
+// model Contact {
+//   id         Int       @id @default(autoincrement())
+//   first_name String    @db.VarChar(100)
+//   last_name  String?   @db.VarChar(100)
+//   email      String?   @db.VarChar(200)
+//   phone      String?   @db.VarChar(20)
+//   username   String    @db.VarChar(100)
+//   user       User      @relation(fields: [username], references: [username])
+//   addresses  Address[]
+
+//   @@map("contacts")
+// }
+
+// model Address {
+//   id          Int     @id @default(autoincrement())
+//   street      String? @db.VarChar(255)
+//   city        String? @db.VarChar(100)
+//   province    String? @db.VarChar(100)
+//   country     String @db.VarChar(100)
+//   postal_code String  @db.VarChar(10)
+//   contact_id  Int
+//   contact     Contact @relation(fields: [contact_id], references: [id])
+
+//   @@map("addresses")
+// }
