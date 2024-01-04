@@ -1,5 +1,4 @@
 import bcrypt from "bcrypt";
-import asyncHandler from "express-async-handler";
 import { prismaClient } from "../application/database";
 import { ResponseError } from "../error/response-error";
 import {
@@ -9,7 +8,7 @@ import {
   updateUserValidation,
 } from "../validation/user-validation";
 import { validate } from "../validation/validation";
-// import generateToken from "../utlis/generateToken";
+
 
 interface DataRegister {
   // username: string;

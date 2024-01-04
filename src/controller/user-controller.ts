@@ -64,13 +64,13 @@ const getUserProfile = asyncHandler(
   }
 );
 
-// @desc Updet User Profile
+// @desc Update User Profile
 // route PUT /api/user/profile
 // @access Private
 const updateUserProfile = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     // @ts-ignore
-    console.dir(req.user);
+    // console.dir(req.user);
     // @ts-ignore
     // const username = req.user.userName;
     const reqData: {
@@ -89,9 +89,26 @@ const updateUserProfile = asyncHandler(
     };
     const result = await userService.update(reqData);
     generateToken(res, result);
-    res.status(200).json({ ...result });
+    res.status(200).json({ data:result });
   }
 );
+
+// @desc    get all user
+// @route   GET /api/users/
+// @access  private/Admin
+
+// @desc    get user by id
+// @route   GET /api/users/:id
+// @access  private/Admin
+
+// @desc    delete user
+// @route   DELETE /api/users/:id
+// @access  private/Admin
+
+// @desc    update user
+// @route   PUT /api/users/:id
+// @access  private/Admin
+
 
 // const register = async (req: Request, res: Response, next: NextFunction) => {
 //   try {

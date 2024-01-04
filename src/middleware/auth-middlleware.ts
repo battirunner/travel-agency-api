@@ -27,7 +27,6 @@ export const authMiddleware = asyncHandler(
         // @ts-ignore
         // console.log(req.user);
         next();
-
       } catch (error) {
         throw new ResponseError(401, "Unauthorized");
       }

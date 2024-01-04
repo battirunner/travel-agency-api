@@ -1,10 +1,10 @@
 // external import
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 // internal import
 import { logger, loggerExpress } from "./application/logging";
 import { app } from "./application/web";
 
-//For env File 
+//For env File
 dotenv.config();
 
 const PORT = process.env.PORT;

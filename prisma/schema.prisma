@@ -16,7 +16,7 @@ model User {
   email           String   @unique @db.VarChar(100)
   password        String   @db.VarChar(100)
   phone           String   @db.VarChar(14)
-  gender          Gender   
+  gender          Gender
   agreement       Boolean
   role            Role     @default(USER)
   profile_pic_url String?
@@ -96,13 +96,13 @@ model Visa_Category {
 }
 
 model Media {
-  id              String       @id @default(uuid())
-  uri             String
-  type            String       @db.VarChar(10)
-  tour_package    Tour_Package @relation(fields: [tour_Package_id], references: [id])
-  tour_Package_id String
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  id              String        @id @default(uuid())
+  uri             String        @unique
+  type            String        @db.VarChar(10)
+  tour_package    Tour_Package? @relation(fields: [tour_Package_id], references: [id])
+  tour_Package_id String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 }
 
 model Location {

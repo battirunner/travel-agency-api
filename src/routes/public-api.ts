@@ -11,4 +11,7 @@ publicRouter.post("/api/user/logout", userController.logoutUser);
 // publicRouter.post("/api/registration", userController.register);
 // publicRouter.post("/api/users/login", userController.login);
 
+// Tours API
+
+
 export { publicRouter };
