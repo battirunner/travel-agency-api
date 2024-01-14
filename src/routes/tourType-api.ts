@@ -4,7 +4,7 @@ import { authMiddleware } from "../middleware/auth-middlleware";
 import { isAdmin } from "../middleware/role-middleware";
 
 const tourTypeRouter = express.Router();
-tourTypeRouter.use(authMiddleware);
+// tourTypeRouter.use(authMiddleware);
 
 // tour type API
 //Public

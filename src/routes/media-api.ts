@@ -4,7 +4,7 @@ import { authMiddleware } from "../middleware/auth-middlleware";
 import { isAdmin } from "../middleware/role-middleware";
 
 const mediaRouter = express.Router();
-mediaRouter.use(authMiddleware);
+// mediaRouter.use(authMiddleware);
 
 // media API
 //Public

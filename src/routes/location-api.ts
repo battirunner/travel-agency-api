@@ -4,7 +4,7 @@ import { authMiddleware } from "../middleware/auth-middlleware";
 import { isAdmin } from "../middleware/role-middleware";
 
 const locationRouter = express.Router();
-locationRouter.use(authMiddleware);
+// locationRouter.use(authMiddleware);
 
 // location API
 //Public

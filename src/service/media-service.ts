@@ -8,18 +8,18 @@ import {
 import { validate } from "../validation/validation";
 
 interface DataRegister {
-  uri: string; 
-  type: string; 
-  tour_Package_id: string; 
+  uri: string;
+  type: string;
+  tour_Package_id: string;
 }
 
 // create media service
 const createMedia = async (reqData: DataRegister) => {
   const media = validate(createMediaValidation, reqData);
 
-  const countMedia= await prismaClient.media.count({
+  const countMedia = await prismaClient.media.count({
     where: {
-      uri: media.title,
+      uri: media.uri,
     },
   });
 
@@ -91,21 +91,17 @@ const updateMedia = async (id: string, reqData: DataRegister) => {
 
 //delete media
 
-const deleteMedia =async (id:string) => {
-    id = validate(getMediaValidation, id);
+const deleteMedia = async (id: string) => {
+  id = validate(getMediaValidation, id);
 
-    const deleteMedia = await prismaClient.media.delete({
-        where: {
-          id,
-        },
-      })
+  const deleteMedia = await prismaClient.media.delete({
+    where: {
+      id,
+    },
+  });
 
-      return deleteMedia;
-
-
-}
-
-
+  return deleteMedia;
+};
 
 export default {
   createMedia,

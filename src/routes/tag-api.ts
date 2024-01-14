@@ -4,7 +4,7 @@ import { authMiddleware } from "../middleware/auth-middlleware";
 import { isAdmin } from "../middleware/role-middleware";
 
 const tagRouter = express.Router();
-tagRouter.use(authMiddleware);
+// tagRouter.use(authMiddleware);
 
 // tag API
 //Public

@@ -18,7 +18,7 @@ const createLocation = async (reqData: DataRegister) => {
 
   const countLocation = await prismaClient.location.count({
     where: {
-      name: location.title,
+      name: location.name,
     },
   });
 

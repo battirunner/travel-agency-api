@@ -1,10 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import locationService from "../service/location-service";
-import generateToken from "../utlis/generateToken";
 
-// @desc Fetch all tours
-// route GET /api/tours
+// @desc Fetch all location
+// route GET /api/location
 // @access Public
 const getLocation = asyncHandler(async (req: Request, res: Response) => {
   const result = await locationService.getLocation();
@@ -41,7 +40,10 @@ const updateLocation = asyncHandler(
     // @ts-ignore
     // console.log(req.user.userId);
     // @ts-ignore
-    const result = await locationService.updateLocation(req.params.id, req.body);
+    const result = await locationService.updateLocation(
+      req.params.id,
+      req.body
+    );
     res.status(200).json({ data: result });
   }
 );
@@ -51,9 +53,8 @@ const updateLocation = asyncHandler(
 // @access  Private/Admin
 const deleteLocation = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    
     const result = await locationService.deleteLocation(req.params.id);
-    res.status(200).json({ data:result });
+    res.status(200).json({ data: result });
   }
 );
 
