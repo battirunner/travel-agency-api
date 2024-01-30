@@ -10,6 +10,16 @@ const registerUserValidation = Joi.object({
   role: Joi.string().trim().max(10).uppercase().optional(),
 });
 
+const registerUserValidationGoogle = Joi.object({
+  name: Joi.string().trim().max(100).required(),
+  email: Joi.string().trim().max(100).required(),
+  // phone: Joi.string().trim().max(14).optional(),
+  // password: Joi.string().trim().max(20).optional(),
+  // gender: Joi.string().trim().max(10).uppercase().optional(),
+  // agreement: Joi.boolean().optional(),
+  // role: Joi.string().trim().max(10).uppercase().optional(),
+});
+
 const loginUserValidation = Joi.object({
   email: Joi.string().trim().max(100).required(),
   password: Joi.string().trim().max(20).required(),
@@ -30,4 +40,5 @@ export {
   loginUserValidation,
   getUserValidation,
   updateUserValidation,
+  registerUserValidationGoogle
 };

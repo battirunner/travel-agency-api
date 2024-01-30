@@ -14,10 +14,10 @@ model User {
   id              String   @id @default(uuid())
   name            String   @db.VarChar(100)
   email           String   @unique @db.VarChar(100)
-  password        String   @db.VarChar(100)
-  phone           String   @db.VarChar(14)
-  gender          Gender
-  agreement       Boolean
+  password        String?   @db.VarChar(100)
+  phone           String?   @db.VarChar(14)
+  gender          Gender?
+  agreement       Boolean?
   role            Role     @default(USER)
   profile_pic_url String?
   active          Boolean  @default(true)

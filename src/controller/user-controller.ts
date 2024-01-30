@@ -1,19 +1,23 @@
 import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
+import { ResponseError } from "../error/response-error";
 import userService from "../service/user-service";
 import generateToken from "../utlis/generateToken";
-import { ResponseError } from "../error/response-error";
 
 // @desc Login user
 // route POST /api/user/login
 // @access Public
-const loginUser = asyncHandler(async (req: Request, res: Response) => {
-  const result = await userService.login(req.body);
-  generateToken(res, result);
-  res.status(200).json({
-    data:result,
-  });
-});
+const loginUser = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await userService.login(req.body);
+    console.log("from controller");
+    console.log(result);
+    generateToken(res, result);
+    res.status(200).json({
+      data: result,
+    });
+  }
+);
 
 // @desc Register a new user
 // route POST /api/user/registration
@@ -22,7 +26,7 @@ const registerUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await userService.register(req.body);
     generateToken(res, result);
-    res.status(201).json({ data:result, });
+    res.status(201).json({ data: result });
   }
 );
 
@@ -60,7 +64,7 @@ const getUserProfile = asyncHandler(
     // console.log(req.user.userId);
     // @ts-ignore
     const result = await userService.get(req.user.userId);
-    res.status(200).json({ data:result, });
+    res.status(200).json({ data: result });
   }
 );
 
@@ -89,7 +93,7 @@ const updateUserProfile = asyncHandler(
     };
     const result = await userService.update(reqData);
     generateToken(res, result);
-    res.status(200).json({ data:result });
+    res.status(200).json({ data: result });
   }
 );
 
@@ -108,7 +112,6 @@ const updateUserProfile = asyncHandler(
 // @desc    update user
 // @route   PUT /api/users/:id
 // @access  private/Admin
-
 
 // const register = async (req: Request, res: Response, next: NextFunction) => {
 //   try {
