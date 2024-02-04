@@ -8,7 +8,6 @@ const validate = (
   const result = schema.validate(reqData, {
     abortEarly: false,
     allowUnknown: false,
-    convert:true,
   });
   if (result.error) {
     throw new ResponseError(400, result.error.message);
