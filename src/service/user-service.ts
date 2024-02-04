@@ -2,6 +2,14 @@ import axios from "axios";
 import bcrypt from "bcrypt";
 import { prismaClient } from "../application/database";
 import { ResponseError } from "../error/response-error";
+import { createRandomBytes } from "../utlis/helper";
+import {
+  confirmationTemplate,
+  generateOtp,
+  mailTransport,
+  passwordResetTemplate,
+  verifyEmailTemplate,
+} from "../utlis/mail";
 import {
   getUserValidation,
   loginUserValidation,
@@ -10,7 +18,6 @@ import {
   updateUserValidation,
 } from "../validation/user-validation";
 import { validate } from "../validation/validation";
-import { Response, response } from "express";
 
 interface DataRegister {
   // username: string;
@@ -35,12 +42,11 @@ interface DataLogin {
 
 // register user service
 const register = async (reqData: DataRegister) => {
+  //fb user
   if (reqData.fbAccessToken && reqData.fbUserId) {
     const response = await axios.get(
       `https://graph.facebook.com/v19.0/${reqData.fbUserId}?fields=id,name,email&access_token=${reqData.fbAccessToken}`
     );
-
-    
 
     if (response) {
       const name: string = response.data.name;
@@ -57,6 +63,10 @@ const register = async (reqData: DataRegister) => {
         console.log("user exist");
         throw new ResponseError(400, "User already exists");
       }
+
+      // email verified set to true
+      user.emailVerified = true;
+
       const result = await prismaClient.user.create({
         data: user,
         select: {
@@ -66,12 +76,13 @@ const register = async (reqData: DataRegister) => {
         },
       });
 
-      console.log("from registered user");
-      console.log(result);
+      // console.log("from registered user");
+      // console.log(result);
       return result;
     } else {
       throw new ResponseError(400, "Invalid access token!");
     }
+    // google user
   } else if (reqData.googleAccessToken) {
     const response = await axios.get(
       "https://www.googleapis.com/oauth2/v3/userinfo",
@@ -97,6 +108,8 @@ const register = async (reqData: DataRegister) => {
         console.log("user exist");
         throw new ResponseError(400, "User already exists");
       }
+
+      user.emailVerified = true;
       const result = await prismaClient.user.create({
         data: user,
         select: {
@@ -106,12 +119,13 @@ const register = async (reqData: DataRegister) => {
         },
       });
 
-      console.log("from registered user");
-      console.log(result);
+      // console.log("from registered user");
+      // console.log(result);
       return result;
     } else {
       throw new ResponseError(400, "Invalid access token!");
     }
+    // normal user
   } else {
     const user = validate(registerUserValidation, reqData);
 
@@ -134,7 +148,36 @@ const register = async (reqData: DataRegister) => {
         email: true,
       },
     });
-    return result;
+
+    // generate otp
+    const otp = String(generateOtp());
+    const hashedOtp = await bcrypt.hash(otp, 10);
+
+    const verificationTokenObject = {
+      user_id: result.id,
+      token: hashedOtp,
+    };
+
+    //save otp
+    const verificationToken = await prismaClient.verificationToken.create({
+      data: verificationTokenObject,
+      select: {
+        id: true,
+        user_id: true,
+        token: true,
+        createdAt: true,
+      },
+    });
+
+    // send otp in email
+    mailTransport().sendMail({
+      from: "email@example.com",
+      to: result.email,
+      subject: "Verify your email",
+      html: verifyEmailTemplate(result.id, otp),
+    });
+
+    return "Signedup successfully! Please verify your email before logging in! Please check your email!";
   }
 };
 
@@ -144,7 +187,7 @@ const login = async (reqData: DataLogin) => {
     const response = await axios.get(
       `https://graph.facebook.com/v19.0/${reqData.fbUserId}?fields=id,name,email&access_token=${reqData.fbAccessToken}`
     );
-    console.log(response);
+    // console.log(response);
     if (response) {
       const email = response.data.email;
       const user = { email };
@@ -162,8 +205,8 @@ const login = async (reqData: DataLogin) => {
 
       if (!existUser) {
         const newUser = await register(reqData);
-        console.log("from login service");
-        console.log(newUser);
+        // console.log("from login service");
+        // console.log(newUser);
         return newUser;
         // throw new ResponseError(400, "User don't exists");
       } else {
@@ -198,8 +241,8 @@ const login = async (reqData: DataLogin) => {
 
       if (!existUser) {
         const newUser = await register(reqData);
-        console.log("from login service");
-        console.log(newUser);
+        // console.log("from login service");
+        // console.log(newUser);
         return newUser;
         // throw new ResponseError(400, "User don't exists");
       } else {
@@ -220,6 +263,7 @@ const login = async (reqData: DataLogin) => {
         name: true,
         email: true,
         password: true,
+        emailVerified: true,
       },
     });
 
@@ -227,29 +271,19 @@ const login = async (reqData: DataLogin) => {
       throw new ResponseError(401, "Invalid email or password");
     }
 
+    if (!user.emailVerified) {
+      throw new ResponseError(401, "Please verify your email first!");
+    }
+
     const passwordValid = await bcrypt.compare(
       loginRequest.password,
-      //@ts-ignore
-      user.password
+      user.password as string
     );
 
     if (!passwordValid) {
       throw new ResponseError(401, "Invalid email or password");
     }
     const result = { id: user.id, email: user.email, name: user.name };
-    // const token = uuid().toString();
-
-    // const result = await prismaClient.user.update({
-    //   data: {
-    //     token: token,
-    //   },
-    //   where: {
-    //     username: user.username,
-    //   },
-    //   select: {
-    //     token: true,
-    //   },
-    // });
 
     return result;
   }
@@ -333,38 +367,208 @@ const update = async (reqData: DataUpdate) => {
   return result;
 };
 
-// const logout = async (username: string) => {
-//   username = validate(getUserValidation, username);
+// verify user email
+const verifyEmail = async (userId: string, otp: string) => {
+  const existUser = await prismaClient.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      emailVerified: true,
+    },
+  });
 
-//   const user = await prismaClient.user.findUnique({
-//     where: {
-//       username: username,
-//     },
-//   });
+  if (!existUser) {
+    throw new ResponseError(400, "User not found");
+  }
+  if (existUser.emailVerified) {
+    throw new ResponseError(400, "Email already verified");
+  }
+  const tokenObj = await prismaClient.verificationToken.findUnique({
+    where: {
+      user_id: existUser.id,
+    },
+    select: {
+      token: true,
+    },
+  });
 
-//   if (!user) {
-//     throw new ResponseError(404, "user is not found");
-//   }
+  if (!tokenObj) throw new ResponseError(401, "Invalid User");
 
-//   const result = await prismaClient.user.update({
-//     where: {
-//       username: username,
-//     },
-//     data: {
-//       token: null,
-//     },
-//     select: {
-//       username: true,
-//     },
-//   });
+  const validToken = await bcrypt.compare(otp, tokenObj.token);
 
-//   return result;
-// };
+  if (!validToken) {
+    throw new ResponseError(401, "Invalid OTP");
+  }
+
+  existUser.emailVerified = true;
+
+  await prismaClient.verificationToken.delete({
+    where: { user_id: existUser.id },
+  });
+
+  const updateUser = await prismaClient.user.update({
+    where: { id: existUser.id },
+    data: { ...existUser },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      phone: true,
+    },
+  });
+
+  //send confirmation email notification
+  mailTransport().sendMail({
+    from: "email@example.com",
+    to: updateUser.email,
+    subject: "Congratulations!",
+    html: confirmationTemplate("Email Verified Successfully", "Thank You!"),
+  });
+  return "Email Verified Successfully!";
+};
+
+// forgot password
+const forgotPassword = async (email: string) => {
+  if (!email) throw new ResponseError(401, "Invalid Request");
+
+  const existUser = await prismaClient.user.findUnique({
+    where: {
+      email: email,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+    },
+  });
+
+  if (!existUser) {
+    throw new ResponseError(400, `Password Reset Link sent to your email`);
+  }
+
+  // const token = uuid().toString();
+
+  const tokenObj = await prismaClient.resetPasswordToken.findUnique({
+    where: {
+      user_id: existUser.id,
+      // token: token,
+    },
+    select: {
+      id: true,
+      token: true,
+    },
+  });
+
+  if (tokenObj) {
+    throw new ResponseError(
+      400,
+      "Only after one hour you can request for another token!"
+    );
+  }
+
+  const token = await createRandomBytes();
+  const tokenString = await bcrypt.hash(token as string, 10);
+  const newTokenObj = { user_id: existUser.id, token: tokenString };
+  const resetToken = await prismaClient.resetPasswordToken.create({
+    data: newTokenObj,
+  });
+
+  //send confirmation email notification
+  mailTransport().sendMail({
+    from: "email@example.com",
+    to: existUser.email,
+    subject: "Password Reset",
+    html: passwordResetTemplate(
+      `http://localhost:3000/reset-password/?token=${token}&id=${existUser.id}`
+    ),
+  });
+
+  return "Password Reset Link sent to your email";
+};
+
+const resetPassword = async (userId: string, password: string) => {
+  const existUser = await prismaClient.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      password: true,
+    },
+  });
+  if (!existUser) {
+    throw new ResponseError(404, "User not found");
+  }
+  // console.log( password);
+  const isSamePassword = await bcrypt.compare(
+    password as string,
+    existUser.password as string
+  );
+
+  if (isSamePassword) {
+    throw new ResponseError(
+      401,
+      "New Password must Be different from old password!"
+    );
+  }
+
+  if (password.trim().length < 7 || password.trim().length > 20) {
+    throw new ResponseError(
+      401,
+      "Password must be between 8 and 20 characters"
+    );
+  }
+
+  existUser.password = await bcrypt.hash(password, 10);
+
+  const updateUser = await prismaClient.user.update({
+    where: { id: existUser.id },
+    data: { ...existUser },
+    select: { id: true, name: true, email: true },
+  });
+
+  // console.log(updateUser);
+  await prismaClient.resetPasswordToken.delete({
+    where: { user_id: updateUser.id },
+  });
+
+  //send confirmation email notification
+  mailTransport().sendMail({
+    from: "email@example.com",
+    to: updateUser.email,
+    subject: "Password Reset Successfully",
+    html: confirmationTemplate(
+      "Email Verified Successfully",
+      "Now you can login with new password"
+    ),
+  });
+
+  return "Password Reset Successfully!";
+};
+
+//get all users for admin
+const getAllUsers = async () => {
+  const users = await prismaClient.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+    },
+  });
+  return users;
+};
 
 export default {
   register,
   login,
   get,
   update,
-  // logout,
+  verifyEmail,
+  forgotPassword,
+  resetPassword,
+  getAllUsers,
 };

@@ -11,19 +11,39 @@ datasource db {
 }
 
 model User {
-  id              String   @id @default(uuid())
-  name            String   @db.VarChar(100)
-  email           String   @unique @db.VarChar(100)
-  password        String?   @db.VarChar(100)
-  phone           String?   @db.VarChar(14)
-  gender          Gender?
-  agreement       Boolean?
-  role            Role     @default(USER)
-  profile_pic_url String?
-  active          Boolean  @default(true)
-  address         Address?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id                String             @id @default(uuid())
+  name              String             @db.VarChar(100)
+  email             String             @unique @db.VarChar(100)
+  password          String?            @db.VarChar(100)
+  phone             String?            @db.VarChar(14)
+  gender            Gender?
+  agreement         Boolean?
+  role              Role               @default(USER)
+  profile_pic_url   String?
+  active            Boolean            @default(true)
+  address           Address?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  VerificationToken VerificationToken?
+  emailVerified     Boolean?           @default(false)
+  ResetPasswordToken ResetPasswordToken?
+}
+
+model VerificationToken {
+  id        String   @id @default(uuid())
+  user_id   String   @unique
+  user      User     @relation(fields: [user_id], references: [id])
+  token     String   @db.VarChar(100)
+  createdAt DateTime @default(now())
+}
+
+model ResetPasswordToken {
+  id        String   @id @default(uuid())
+  user_id   String   @unique
+  user      User     @relation(fields: [user_id], references: [id])
+  token     String   @db.VarChar(100)
+  createdAt DateTime @default(now())
+
 }
 
 model Address {

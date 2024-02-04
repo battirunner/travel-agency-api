@@ -1,18 +1,18 @@
 //external import
-import express from "express";
-import cors from "cors";
 import cookieParser from "cookie-parser";
+import cors from "cors";
+import express from "express";
 
 // internal import
-import { publicRouter } from "../routes/public-api";
-import { userRouter } from "../routes/user-api";
-import { toursRouter } from "../routes/tourPackage-api";
-import { tagRouter } from "../routes/tag-api";
-import { mediaRouter } from "../routes/media-api";
-import { tourTypeRouter } from "../routes/tourType-api";
-import { locationRouter } from "../routes/location-api";
-import { visaCategoryRouter } from "../routes/visaCategory-api";
 import { errorMiddleware, notFound } from "../middleware/error-middleware";
+import { locationRouter } from "../routes/location-api";
+import { mediaRouter } from "../routes/media-api";
+import { publicRouter } from "../routes/public-api";
+import { tagRouter } from "../routes/tag-api";
+import { toursRouter } from "../routes/tourPackage-api";
+import { tourTypeRouter } from "../routes/tourType-api";
+import { userRouter } from "../routes/user-api";
+import { visaCategoryRouter } from "../routes/visaCategory-api";
 
 export const app = express();
 
@@ -36,5 +36,7 @@ app.use(tagRouter);
 app.use(mediaRouter);
 app.use(locationRouter);
 
+//not found and error middleware
 app.use(notFound);
 app.use(errorMiddleware);
+
