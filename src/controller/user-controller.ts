@@ -3,6 +3,9 @@ import asyncHandler from "express-async-handler";
 import { ResponseError } from "../error/response-error";
 import userService from "../service/user-service";
 import generateToken from "../utlis/generateToken";
+import { prismaClient } from "../application/database";
+import bcrypt from "bcrypt";
+import { confirmationTemplate, mailTransport } from "../utlis/mail";
 
 // @desc Login user
 // route POST /api/user/login
@@ -10,8 +13,8 @@ import generateToken from "../utlis/generateToken";
 const loginUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await userService.login(req.body);
-    console.log("from controller");
-    console.log(result);
+    // console.log("from controller");
+    // console.log(result);
     generateToken(res, result);
     res.status(200).json({
       data: result,
@@ -25,7 +28,7 @@ const loginUser = asyncHandler(
 const registerUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await userService.register(req.body);
-    generateToken(res, result);
+    // generateToken(res, result);
     res.status(201).json({ data: result });
   }
 );
@@ -97,9 +100,84 @@ const updateUserProfile = asyncHandler(
   }
 );
 
+// @desc    verify email
+// @route   POST /api/user/verify
+// @access  private
+const verifyUserEmail = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    //@ts-ignore
+    // const  userId  = req.user.userId;
+    console.log(req.body);
+    // const  otp  = req.body.otp.trim();
+    const id = req.body.userId as string;
+    const otp = req.body.token as string;
+
+    if (!id || !otp) {
+      throw new ResponseError(401, "Invalid request");
+    }
+
+    const result = await userService.verifyEmail(id, otp);
+
+    res.status(200).json({ data: result });
+  }
+);
+
+// @desc    forgot password
+// @route   POST /api/user/forgot-password
+// @access  private
+const forgotUserPassword = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    //@ts-ignore
+    const email = req.body.email;
+
+    // const  otp  = req.body.otp.trim();
+
+    const result = await userService.forgotPassword(email);
+
+    res.status(200).json({ data: result });
+  }
+);
+
+// @desc    reset password
+// @route   POST /api/user/reset-password
+// @access  private
+const resetUserPassword = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    //@ts-ignore
+    const userId = req.user.id;
+    // console.log(userId);
+    //@ts-ignore
+    console.log(res.body);
+    const password = req.body.password;
+    // console.log(req.body);
+
+    // const  otp  = req.body.otp.trim();
+
+    const result = await userService.resetPassword(userId, password);
+    res.status(200).json({
+      data: "Password Reset successful. Please Signin with new password!",
+    });
+  }
+);
+
 // @desc    get all user
 // @route   GET /api/users/
 // @access  private/Admin
+const getAllUsers = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await userService.getAllUsers();
+    res.status(200).json({ data: result });
+  }
+);
+
+// @desc    get all user
+// @route   GET /api/user/
+// @access  public
+const verifyToken = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).json({ data: "Token Verified!" });
+  }
+);
 
 // @desc    get user by id
 // @route   GET /api/users/:id
@@ -113,85 +191,17 @@ const updateUserProfile = asyncHandler(
 // @route   PUT /api/users/:id
 // @access  private/Admin
 
-// const register = async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     const result = await userService.register(req.body);
-
-//     res.status(200).json({
-//       data: result,
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
-// const login = async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     const result = await userService.login(req.body);
-
-//     res.status(200).json({
-//       data: result,
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
-// const get = async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     // @ts-ignore
-//     const user = await req.user;
-//     const username = (await user.username) as string;
-
-//     const result = await userService.get(username);
-
-//     res.status(200).json({ data: result });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
-// const update = async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     // @ts-ignore
-//     console.dir(req.body);
-//     // @ts-ignore
-//     const username = req.user.username;
-//     const reqData: {
-//       name: string;
-//       password: string;
-//       username: string;
-//     } = {
-//       name: req.body.name,
-//       password: req.body.password,
-//       username: username,
-//     };
-
-//     const result = await userService.update(reqData);
-
-//     res.status(200).json({ data: result });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
-// const logout = async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     // @ts-ignore
-//     const username = req.user.username as string;
-//     await userService.logout(username);
-//     res.status(200).json({ data: "OK" });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
 export default {
   loginUser,
   registerUser,
   logoutUser,
   getUserProfile,
   updateUserProfile,
+  verifyUserEmail,
+  forgotUserPassword,
+  resetUserPassword,
+  getAllUsers,
+  verifyToken,
   // register,
   // login,
   // get,

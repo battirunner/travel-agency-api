@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "build": "npx tsc",
     "start": "NODE_ENV=production node dist/index.js",
@@ -10,10 +11,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Abdullah Al Kafi & Fahim Islam Mohip",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.8.1",
+    "@prisma/client": "^5.9.0",
     "axios": "^1.6.5",
     "bcrypt": "^5.1.1",
     "config": "^3.3.9",
@@ -25,6 +26,7 @@
     "express-winston": "^4.2.0",
     "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.8",
     "uuid": "^9.0.0",
     "winston": "^3.9.0"
   },
@@ -37,8 +39,9 @@
     "@types/express": "^4.17.17",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.11.8",
+    "@types/nodemailer": "^6.4.14",
     "@types/uuid": "^9.0.2",
-    "prisma": "^5.8.1",
+    "prisma": "^5.9.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.3.3"
