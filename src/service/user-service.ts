@@ -18,6 +18,7 @@ import {
   updateUserValidation,
 } from "../validation/user-validation";
 import { validate } from "../validation/validation";
+import addressService from "./address-service";
 
 interface DataRegister {
   // username: string;
@@ -40,6 +41,18 @@ interface DataLogin {
   fbUserId?: string;
 }
 
+type DataUpdate = {
+  id: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  gender?: string;
+  agreement?: boolean;
+  role?: string;
+  password?: string;
+  profile_pic_url?: string;
+  active?: boolean;
+};
 // register user service
 const register = async (reqData: DataRegister) => {
   //fb user
@@ -60,7 +73,7 @@ const register = async (reqData: DataRegister) => {
       });
 
       if (countUser === 1) {
-        console.log("user exist");
+        // console.log("user exist");
         throw new ResponseError(400, "User already exists");
       }
 
@@ -74,6 +87,14 @@ const register = async (reqData: DataRegister) => {
           name: true,
           email: true,
         },
+      });
+
+      // create empty address
+      // const userAddress = await prismaClient.address.create({
+      //   data: { user_id: result.id },
+      // });
+      const userAddress = await addressService.createAddress({
+        user_id: result.id,
       });
 
       // console.log("from registered user");
@@ -105,7 +126,7 @@ const register = async (reqData: DataRegister) => {
       });
 
       if (countUser === 1) {
-        console.log("user exist");
+        // console.log("user exist");
         throw new ResponseError(400, "User already exists");
       }
 
@@ -117,6 +138,14 @@ const register = async (reqData: DataRegister) => {
           name: true,
           email: true,
         },
+      });
+
+      // create empty address
+      // const userAddress = await prismaClient.address.create({
+      //   data: { user_id: result.id },
+      // });
+      const userAddress = await addressService.createAddress({
+        user_id: result.id,
       });
 
       // console.log("from registered user");
@@ -140,6 +169,8 @@ const register = async (reqData: DataRegister) => {
     }
 
     user.password = await bcrypt.hash(user.password, 10);
+
+    // create new user
     const result = await prismaClient.user.create({
       data: user,
       select: {
@@ -147,6 +178,11 @@ const register = async (reqData: DataRegister) => {
         name: true,
         email: true,
       },
+    });
+
+    // create empty address
+    const userAddress = await addressService.createAddress({
+      user_id: result.id,
     });
 
     // generate otp
@@ -302,7 +338,13 @@ const get = async (userId: string) => {
       name: true,
       email: true,
       phone: true,
+      gender: true,
+      agreement: true,
       role: true,
+      profile_pic_url: true,
+      active: true,
+      emailVerified: true,
+      address: true,
     },
   });
 
@@ -313,14 +355,7 @@ const get = async (userId: string) => {
   return user;
 };
 
-type DataUpdate = {
-  // id: string | null;
-  name: string | null;
-  password: string | null;
-  email: string | null;
-  phone: string | null;
-};
-
+// update user profile
 const update = async (reqData: DataUpdate) => {
   // console.log(reqData);
   const user = validate(updateUserValidation, reqData);
@@ -334,33 +369,62 @@ const update = async (reqData: DataUpdate) => {
     throw new ResponseError(404, "User not found!");
   }
 
-  const data = {} as {
-    name: string;
-    password: string;
-    email: string;
-    phone: string;
-  };
+  // const data = {} as {
+  //   name: string;
+  //   password: string;
+  //   email: string;
+  //   phone: string;
+  // };
 
-  if (userInDatabase) {
-    data.name = user.name || userInDatabase.name;
-    data.phone = user.phone || userInDatabase.phone;
-    data.email = user.email || userInDatabase.email;
-  }
+  // if (userInDatabase) {
+  //   data.name = user.name || userInDatabase.name;
+  //   data.phone = user.phone || userInDatabase.phone;
+  //   data.email = user.email || userInDatabase.email;
+  // }
 
   if (user.password) {
-    data.password = await bcrypt.hash(user.password, 10);
+    user.password = await bcrypt.hash(user.password, 10);
   }
 
   const result = await prismaClient.user.update({
     where: {
       id: user.id,
     },
-    data: data,
+    data: user,
     select: {
       id: true,
       name: true,
       email: true,
       phone: true,
+      gender: true,
+      agreement: true,
+      role: true,
+      profile_pic_url: true,
+      active: true,
+      emailVerified: true,
+      address: true,
+    },
+  });
+
+  return result;
+};
+
+// delete user profile
+const deleteUser = async (userId: string) => {
+  userId = validate(getUserValidation, userId);
+
+  const userInDatabase = await prismaClient.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+  if (!userInDatabase) {
+    throw new ResponseError(404, "User not found!");
+  }
+
+  const result = await prismaClient.user.delete({
+    where: {
+      id: userId,
     },
   });
 
@@ -406,7 +470,7 @@ const verifyEmail = async (userId: string, otp: string) => {
 
   existUser.emailVerified = true;
 
-  await prismaClient.verificationToken.delete({
+  const deleteToken = await prismaClient.verificationToken.delete({
     where: { user_id: existUser.id },
   });
 
@@ -417,7 +481,6 @@ const verifyEmail = async (userId: string, otp: string) => {
       id: true,
       name: true,
       email: true,
-      phone: true,
     },
   });
 
@@ -449,8 +512,6 @@ const forgotPassword = async (email: string) => {
   if (!existUser) {
     throw new ResponseError(400, `Password Reset Link sent to your email`);
   }
-
-  // const token = uuid().toString();
 
   const tokenObj = await prismaClient.resetPasswordToken.findUnique({
     where: {
@@ -490,6 +551,7 @@ const forgotPassword = async (email: string) => {
   return "Password Reset Link sent to your email";
 };
 
+// reset password
 const resetPassword = async (userId: string, password: string) => {
   const existUser = await prismaClient.user.findUnique({
     where: { id: userId },
@@ -550,16 +612,92 @@ const resetPassword = async (userId: string, password: string) => {
   return "Password Reset Successfully!";
 };
 
-//get all users for admin
+//get all users(admin only)
 const getAllUsers = async () => {
   const users = await prismaClient.user.findMany({
     select: {
       id: true,
       name: true,
       email: true,
+      phone: true,
+      gender: true,
+      agreement: true,
+      role: true,
+      profile_pic_url: true,
+      active: true,
+      emailVerified: true,
+      address: true,
     },
+    // include:{
+    //   address:true,
+    // }
   });
   return users;
+};
+
+// create user (admin only)
+const createUser = async (reqData: DataRegister) => {
+  const result = await register(reqData);
+  return result;
+  // const user = validate(registerUserValidation, reqData);
+
+  // const countUser = await prismaClient.user.count({
+  //   where: {
+  //     email: user.email,
+  //   },
+  // });
+
+  // if (countUser === 1) {
+  //   throw new ResponseError(400, "User already exists");
+  // }
+  // user.password = await bcrypt.hash(user.password, 10);
+  // user.emailVerified = true;
+
+  // const result = await prismaClient.user.create({
+  //   data: user,
+  //   select: {
+  //     id: true,
+  //     name: true,
+  //     email: true,
+  //     phone: true,
+  //     gender: true,
+  //     agreement: true,
+  //     role: true,
+  //     profile_pic_url: true,
+  //     active: true,
+  //     emailVerified: true,
+  //     address: true,
+  //   },
+  // });
+
+  // // create empty address
+  // const userAddress = await addressService.createAddress({
+  //   user_id: result.id,
+  // });
+
+  // return result;
+};
+
+// get user by id (admin only)
+const getUserById = async (userId: string) => {
+  // userId = validate(getUserValidation, userId);
+  const user = await get(userId);
+  return user;
+};
+
+// update user by id (admin only)
+const updateUserById = async (userId: string,reqData:DataUpdate) => {
+  // userId = validate(getUserValidation, userId);
+  reqData.id = userId;
+  const user = await update(reqData);
+  return user;
+};
+
+// delete user by id (admin only)
+const deleteUserById = async (userId: string) => {
+  // userId = validate(getUserValidation, userId);
+  const user = await deleteUser(userId);
+  return "Deleted!"; 
 };
 
 export default {
@@ -571,4 +709,8 @@ export default {
   forgotPassword,
   resetPassword,
   getAllUsers,
+  createUser,
+  getUserById,
+  updateUserById,
+  deleteUserById,
 };

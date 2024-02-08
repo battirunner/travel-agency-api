@@ -43,13 +43,13 @@ CREATE TABLE `ResetPasswordToken` (
 -- CreateTable
 CREATE TABLE `Address` (
     `id` VARCHAR(191) NOT NULL,
-    `house_no` VARCHAR(100) NOT NULL,
-    `street_no` VARCHAR(100) NOT NULL,
-    `area` VARCHAR(100) NOT NULL,
-    `thana` VARCHAR(100) NOT NULL,
-    `district` VARCHAR(100) NOT NULL,
-    `postal_code` VARCHAR(10) NOT NULL,
-    `country` VARCHAR(100) NOT NULL DEFAULT 'Bangladesh',
+    `house_no` VARCHAR(100) NULL,
+    `street_no` VARCHAR(100) NULL,
+    `area` VARCHAR(100) NULL,
+    `thana` VARCHAR(100) NULL,
+    `district` VARCHAR(100) NULL,
+    `postal_code` VARCHAR(10) NULL,
+    `country` VARCHAR(100) NULL DEFAULT 'Bangladesh',
     `user_id` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -167,13 +167,13 @@ CREATE TABLE `contact_form` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `VerificationToken` ADD CONSTRAINT `VerificationToken_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `VerificationToken` ADD CONSTRAINT `VerificationToken_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `ResetPasswordToken` ADD CONSTRAINT `ResetPasswordToken_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `ResetPasswordToken` ADD CONSTRAINT `ResetPasswordToken_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Address` ADD CONSTRAINT `Address_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Address` ADD CONSTRAINT `Address_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Tour_Package` ADD CONSTRAINT `Tour_Package_tour_type_id_fkey` FOREIGN KEY (`tour_type_id`) REFERENCES `Tour_Type`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
