@@ -3,9 +3,7 @@ import asyncHandler from "express-async-handler";
 import { ResponseError } from "../error/response-error";
 import userService from "../service/user-service";
 import generateToken from "../utlis/generateToken";
-import { prismaClient } from "../application/database";
-import bcrypt from "bcrypt";
-import { confirmationTemplate, mailTransport } from "../utlis/mail";
+
 
 // @desc Login user
 // route POST /api/user/login
@@ -76,25 +74,8 @@ const getUserProfile = asyncHandler(
 // @access Private
 const updateUserProfile = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    // @ts-ignore
-    // console.dir(req.user);
-    // @ts-ignore
-    // const username = req.user.userName;
-    const reqData: {
-      id: string | null;
-      name: string | null;
-      password: string | null;
-      email: string | null;
-      phone: string | null;
-    } = {
-      // @ts-ignore
-      id: req.user.userId as string | null,
-      name: req.body.name ? req.body.name : null,
-      password: req.body.password ? req.body.password : null,
-      email: req.body.email ? req.body.email : null,
-      phone: req.body.phone ? req.body.phone : null,
-    };
-    const result = await userService.update(reqData);
+  
+    const result = await userService.update(req.body);
     generateToken(res, result);
     res.status(200).json({ data: result });
   }
@@ -107,7 +88,7 @@ const verifyUserEmail = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     //@ts-ignore
     // const  userId  = req.user.userId;
-    console.log(req.body);
+    // console.log(req.body);
     // const  otp  = req.body.otp.trim();
     const id = req.body.userId as string;
     const otp = req.body.token as string;
@@ -147,7 +128,7 @@ const resetUserPassword = asyncHandler(
     const userId = req.user.id;
     // console.log(userId);
     //@ts-ignore
-    console.log(res.body);
+    // console.log(res.body);
     const password = req.body.password;
     // console.log(req.body);
 
@@ -160,8 +141,17 @@ const resetUserPassword = asyncHandler(
   }
 );
 
+// @desc    verify token
+// @route   GET /api/user/verify-token
+// @access  public
+const verifyToken = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).json({ data: "Token Verified!" });
+  }
+);
+
 // @desc    get all user
-// @route   GET /api/users/
+// @route   GET /api/admin/users/
 // @access  private/Admin
 const getAllUsers = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -170,26 +160,54 @@ const getAllUsers = asyncHandler(
   }
 );
 
-// @desc    get all user
-// @route   GET /api/user/
-// @access  public
-const verifyToken = asyncHandler(
+// @desc    create user
+// @route   POST /api/admin/users/
+// @access  private/Admin
+const createUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).json({ data: "Token Verified!" });
+    const result = await userService.createUser(req.body);
+    // console.log(result);
+    res.status(200).json({ data: result });
   }
 );
 
 // @desc    get user by id
-// @route   GET /api/users/:id
+// @route   GET /api/admin/user/:id
 // @access  private/Admin
+const getUserById = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    // console.log(req.params);
+    const result = await userService.getUserById(req.params.id);
+    // console.log(result);
+    res.status(200).json({ data: result });
+  }
+);
 
-// @desc    delete user
-// @route   DELETE /api/users/:id
+// @desc    update user by id
+// @route   PUT /api/admin/user/:id
 // @access  private/Admin
+const updateUserById = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    // console.log(req.params);
+    const result = await userService.updateUserById(req.params.id,req.body);
+    // console.log(result);
+    res.status(200).json({ data: result });
+  }
+);
 
-// @desc    update user
-// @route   PUT /api/users/:id
+// @desc    delete user by id
+// @route   DELETE /api/admin/user/:id"
 // @access  private/Admin
+const deleteUserById = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    // console.log(req.params);
+    const result = await userService.deleteUserById(req.params.id);
+    // console.log(result);
+    res.status(200).json({ data: result });
+  }
+);
+
+
 
 export default {
   loginUser,
@@ -202,6 +220,10 @@ export default {
   resetUserPassword,
   getAllUsers,
   verifyToken,
+  createUser,
+  getUserById,
+  updateUserById,
+  deleteUserById,
   // register,
   // login,
   // get,

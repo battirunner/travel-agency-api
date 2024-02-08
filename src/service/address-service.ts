@@ -8,14 +8,14 @@ import {
 import { validate } from "../validation/validation";
 
 interface DataRegister {
-  house_no: string;
-  street_no: string;
-  area: string;
-  thana: string;
-  district: string;
-  postal_code: string;
-  country: string;
-  user_id: string;
+  house_no?: string;
+  street_no?: string;
+  area?: string;
+  thana?: string;
+  district?: string;
+  postal_code?: string;
+  country?: string;
+  user_id?: string;
 }
 
 // create address service

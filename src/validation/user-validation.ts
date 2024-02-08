@@ -29,10 +29,15 @@ const getUserValidation = Joi.string().max(100).required();
 
 const updateUserValidation = Joi.object({
   id: Joi.string().trim().max(100).required(),
-  name: Joi.string().optional().trim().max(100).allow(null),
-  email: Joi.string().max(100).optional().trim().allow(null),
-  phone: Joi.string().max(14).optional().trim().allow(null),
-  password: Joi.string().max(20).optional().trim().allow(null),
+  name: Joi.string().trim().max(100).optional(),
+  email: Joi.string().max(100).trim().optional(),
+  phone: Joi.string().max(14).optional().trim().optional(),
+  password: Joi.string().trim().optional(),
+  gender: Joi.string().max(14).optional(),
+  agreement: Joi.boolean().optional(),
+  role: Joi.string().max(14).optional(),
+  profile_pic_url: Joi.string().optional(),
+  active: Joi.boolean().optional(),
 });
 
 export {

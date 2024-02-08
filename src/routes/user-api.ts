@@ -18,7 +18,7 @@ userRouter
   .post(isResetTokenValid, userController.resetUserPassword);
 
 userRouter
-  .route("/api/user/verify-token/")
+  .route("/api/user/verify-token")
   .get(isResetTokenValid, userController.verifyToken);
 
 userRouter.route("/api/user/verify-email").post(userController.verifyUserEmail);
@@ -62,12 +62,40 @@ userRouter.get(
 );
 
 // protected admin
-
+// get all user
 userRouter.get(
-  "/api/users",
+  "/api/admin/users",
   authMiddleware,
   isAdmin,
   userController.getAllUsers
+);
+// create user
+userRouter.post(
+  "/api/admin/user/create",
+  authMiddleware,
+  isAdmin,
+  userController.createUser
+);
+// get user by id
+userRouter.get(
+  "/api/admin/user/:id",
+  authMiddleware,
+  isAdmin,
+  userController.getUserById
+);
+// update user by id
+userRouter.put(
+  "/api/admin/user/:id",
+  authMiddleware,
+  isAdmin,
+  userController.updateUserById
+);
+// delete user by id
+userRouter.delete(
+  "/api/admin/user/:id",
+  authMiddleware,
+  isAdmin,
+  userController.deleteUserById
 );
 
 userRouter.post(
