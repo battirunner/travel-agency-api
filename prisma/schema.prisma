@@ -17,16 +17,27 @@ model User {
   password           String?             @db.VarChar(100)
   phone              String?             @db.VarChar(14)
   gender             Gender?
+  dob                String?             @default("") @db.VarChar(20)
   agreement          Boolean?
   role               Role                @default(USER)
-  profile_pic_url    String?
+  profile_pic_url    String?             @default("")
   active             Boolean             @default(true)
-  address            Address?
+  address            String?             @default("")
+  postal_code        String?             @default("")
+  district           String?             @default("")
+  country            String?             @default("")
+  passport_no        String?             @default("")
+  passport_exp_date  String?             @default("")
+  passport_img_url   String?             @default("")
+  visa_img_url       String?             @default("")
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
   VerificationToken  VerificationToken?
   emailVerified      Boolean?            @default(false)
   ResetPasswordToken ResetPasswordToken?
+  booking            booking[]
+  payment            payment[]
+  // Address            Address?
 }
 
 model VerificationToken {
@@ -45,38 +56,42 @@ model ResetPasswordToken {
   createdAt DateTime @default(now())
 }
 
-model Address {
-  id          String   @id @default(uuid())
-  house_no    String?  @db.VarChar(100)
-  street_no   String?  @db.VarChar(100)
-  area        String?  @db.VarChar(100)
-  thana       String?  @db.VarChar(100)
-  district    String?  @db.VarChar(100)
-  postal_code String?  @db.VarChar(10)
-  country     String?  @default("Bangladesh") @db.VarChar(100)
-  user_id     String   @unique
-  user        User     @relation(fields: [user_id], references: [id],onDelete: Cascade, onUpdate: Cascade)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
+// model Address {
+//   id          String   @id @default(uuid())
+//   house_no    String?  @db.VarChar(100)
+//   street_no   String?  @db.VarChar(100)
+//   area        String?  @db.VarChar(100)
+//   thana       String?  @db.VarChar(100)
+//   district    String?  @db.VarChar(100)
+//   postal_code String?  @db.VarChar(10)
+//   country     String?  @default("Bangladesh") @db.VarChar(100)
+//   user_id     String   @unique
+//   user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
+// }
 
 model Tour_Package {
   id                  String                @id @default(uuid())
   title               String                @unique @db.VarChar(100)
-  description         String
+  description         String 
   duration            Int
   start_datetime      DateTime
   end_datetime        DateTime
   price               String
-  tour_type           Tour_Type?            @relation(fields: [tour_type_id], references: [id])
+  included            String
+  not_included        String
+  tour_type           Tour_Type?            @relation(fields: [tour_type_id], references: [id], onUpdate: Cascade, onDelete: SetNull)
   tour_type_id        String?
+  departure_location  String
+  map_url             String?
   terms_conditions    String
   Tour_Package_On_Tag Tour_Package_On_Tag[]
   other_details       String?
   media               Media[]
-  visa_category       Visa_Category?        @relation(fields: [visa_Category_id], references: [id])
+  visa_category       Visa_Category?        @relation(fields: [visa_Category_id], references: [id], onUpdate: Cascade, onDelete: SetNull)
   visa_Category_id    String?
-  Location            Location?             @relation(fields: [location_id], references: [id])
+  Location            Location?             @relation(fields: [location_id], references: [id], onUpdate: Cascade, onDelete: SetNull)
   location_id         String?
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt
@@ -111,9 +126,9 @@ model Tag {
 }
 
 model Tour_Package_On_Tag {
-  tour_package    Tour_Package @relation(fields: [tour_package_id], references: [id])
+  tour_package    Tour_Package @relation(fields: [tour_package_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   tour_package_id String
-  tag             Tag          @relation(fields: [tag_id], references: [id])
+  tag             Tag          @relation(fields: [tag_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   tag_id          String
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
@@ -126,6 +141,7 @@ model Visa_Category {
   title        String         @unique @db.VarChar(50)
   details      String
   Tour_Package Tour_Package[]
+  visa         visa[]
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
 }
@@ -134,7 +150,7 @@ model Media {
   id              String        @id @default(uuid())
   uri             String        @unique
   type            String        @db.VarChar(10)
-  tour_package    Tour_Package? @relation(fields: [tour_Package_id], references: [id])
+  tour_package    Tour_Package? @relation(fields: [tour_Package_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   tour_Package_id String?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
@@ -149,15 +165,12 @@ model Location {
   updatedAt    DateTime       @updatedAt
 }
 
-enum Role {
-  USER
-  ADMIN
-}
-
-enum Gender {
-  MALE
-  FEMALE
-  OTHERS
+model location_relations {
+  id               String   @id @default(uuid())
+  main_location_id String
+  sub_location_id  String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 model contact_form {
@@ -171,6 +184,158 @@ model contact_form {
   receivedEmail    Boolean?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+}
+
+model visa {
+  id               String         @id @default(uuid())
+  title            String
+  details          String
+  country          String
+  validity         String
+  price            String
+  min_stay         String
+  visa_category    Visa_Category? @relation(fields: [visa_category_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  visa_category_id String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model insurance {
+  id                    String              @id @default(uuid())
+  insurance_category    insurance_category? @relation(fields: [insurance_category_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  insurance_category_id String?
+  title                 String
+  details               String
+  country               String
+  duration              String
+  price                 String
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+}
+
+model insurance_category {
+  id        String      @id @default(uuid())
+  title     String
+  details   String
+  insurance insurance[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model group_ticket {
+  id                String                 @id @default(uuid())
+  start_place       String
+  end_place         String
+  group_ticket_path group_ticket_on_path[]
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+}
+
+model ticket_path {
+  id                 String                 @id @default(uuid())
+  group_ticket_path  group_ticket_on_path[]
+  departure_place    String
+  departure_airport  String
+  departure_airlines String
+  departure_aircraft String
+  departure_datetime DateTime
+  arrival_place      String
+  arrival_airport    String
+  arrival_airlines   String
+  arrival_aircraft   String
+  arrival_datetime   DateTime
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+}
+
+model group_ticket_on_path {
+  id              String        @id @default(uuid())
+  group_ticket    group_ticket? @relation(fields: [group_ticket_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  group_ticket_id String?
+  ticket_path     ticket_path?  @relation(fields: [ticket_path_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  ticket_path_id  String?
+  path_order      Int
+  path_way        String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model booking {
+  id                   String          @id @default(uuid())
+  user                 User?           @relation(fields: [user_id], references: [id])
+  user_id              String?
+  booking_user_contact String
+  booking_user_address String
+  // booking_user_email varchar
+  booking_user_notes   String          @default("")
+  booking_item_type    String
+  booking_item_id      String
+  booking_informations String
+  payment_status       String
+  approval_status      String
+  booking_datetime     DateTime        @default(now())
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  booking_media        booking_media[]
+  payment              payment[]
+}
+
+model booking_media {
+  id         String   @id @default(uuid())
+  booking    booking  @relation(fields: [booking_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  booking_id String
+  media_id   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model payment {
+  id                        String           @id @default(uuid())
+  user                      User?            @relation(fields: [user_id], references: [id])
+  user_id                   String?
+  booking                   booking?         @relation(fields: [booking_id], references: [id])
+  booking_id                String?
+  payment_gateway           payment_gateway? @relation(fields: [payment_gateway_id], references: [id])
+  payment_gateway_id        String?
+  amount                    String
+  currency                  String
+  payment_status            String
+  payment_transaction_token String
+  payment_reference         String           @default("")
+  payment_account_info      String
+  createdAt                 DateTime         @default(now())
+  updatedAt                 DateTime         @updatedAt
+}
+
+model payment_gateway {
+  id                    String    @id @default(uuid())
+  name                  String
+  details               String    @default("")
+  related_logo_media_id String    @default("")
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  payment               payment[]
+}
+
+model notifications {
+  id             String   @id @default(uuid())
+  source_user_id String
+  action_details String
+  message        String
+  read_status    Boolean
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHERS
 }
 
 // model User {

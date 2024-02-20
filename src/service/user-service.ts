@@ -18,7 +18,7 @@ import {
   updateUserValidation,
 } from "../validation/user-validation";
 import { validate } from "../validation/validation";
-import addressService from "./address-service";
+// import addressService from "./address-service";
 
 interface DataRegister {
   // username: string;
@@ -47,6 +47,15 @@ type DataUpdate = {
   email?: string;
   phone?: string;
   gender?: string;
+  dob?: string;
+  address?: string;
+  postal_code?: string;
+  district?: string;
+  country?: string;
+  passport_no?: string;
+  passport_exp_date?: string;
+  passport_img_url?: string;
+  visa_img_url?: string;
   agreement?: boolean;
   role?: string;
   password?: string;
@@ -93,9 +102,9 @@ const register = async (reqData: DataRegister) => {
       // const userAddress = await prismaClient.address.create({
       //   data: { user_id: result.id },
       // });
-      const userAddress = await addressService.createAddress({
-        user_id: result.id,
-      });
+      // const userAddress = await addressService.createAddress({
+      //   user_id: result.id,
+      // });
 
       // console.log("from registered user");
       // console.log(result);
@@ -144,9 +153,9 @@ const register = async (reqData: DataRegister) => {
       // const userAddress = await prismaClient.address.create({
       //   data: { user_id: result.id },
       // });
-      const userAddress = await addressService.createAddress({
-        user_id: result.id,
-      });
+      // const userAddress = await addressService.createAddress({
+      //   user_id: result.id,
+      // });
 
       // console.log("from registered user");
       // console.log(result);
@@ -181,9 +190,9 @@ const register = async (reqData: DataRegister) => {
     });
 
     // create empty address
-    const userAddress = await addressService.createAddress({
-      user_id: result.id,
-    });
+    // const userAddress = await addressService.createAddress({
+    //   user_id: result.id,
+    // });
 
     // generate otp
     const otp = String(generateOtp());
@@ -219,6 +228,7 @@ const register = async (reqData: DataRegister) => {
 
 // login user service
 const login = async (reqData: DataLogin) => {
+  //fb login
   if (reqData.fbAccessToken && reqData.fbUserId) {
     const response = await axios.get(
       `https://graph.facebook.com/v19.0/${reqData.fbUserId}?fields=id,name,email&access_token=${reqData.fbAccessToken}`
@@ -251,6 +261,7 @@ const login = async (reqData: DataLogin) => {
     } else {
       throw new ResponseError(400, "Invalid access token!");
     }
+    //google login
   } else if (reqData.googleAccessToken) {
     const response = await axios.get(
       "https://www.googleapis.com/oauth2/v3/userinfo",
@@ -287,6 +298,7 @@ const login = async (reqData: DataLogin) => {
     } else {
       throw new ResponseError(400, "Invalid access token!");
     }
+    // normal login
   } else {
     const loginRequest = validate(loginUserValidation, reqData);
 
@@ -340,11 +352,19 @@ const get = async (userId: string) => {
       phone: true,
       gender: true,
       agreement: true,
+      address: true,
+      postal_code: true,
+      district: true,
+      country: true,
+      passport_no: true,
+      passport_exp_date: true,
+      passport_img_url: true,
+      visa_img_url: true,
       role: true,
       profile_pic_url: true,
       active: true,
-      emailVerified: true,
-      address: true,
+      // emailVerified: true,
+      dob: true,
     },
   });
 
@@ -369,18 +389,7 @@ const update = async (reqData: DataUpdate) => {
     throw new ResponseError(404, "User not found!");
   }
 
-  // const data = {} as {
-  //   name: string;
-  //   password: string;
-  //   email: string;
-  //   phone: string;
-  // };
 
-  // if (userInDatabase) {
-  //   data.name = user.name || userInDatabase.name;
-  //   data.phone = user.phone || userInDatabase.phone;
-  //   data.email = user.email || userInDatabase.email;
-  // }
 
   if (user.password) {
     user.password = await bcrypt.hash(user.password, 10);
@@ -398,11 +407,19 @@ const update = async (reqData: DataUpdate) => {
       phone: true,
       gender: true,
       agreement: true,
+      address: true,
+      postal_code: true,
+      district: true,
+      country: true,
+      passport_no: true,
+      passport_exp_date: true,
+      passport_img_url: true,
+      visa_img_url: true,
       role: true,
       profile_pic_url: true,
       active: true,
-      emailVerified: true,
-      address: true,
+      // emailVerified: true,
+      dob: true,
     },
   });
 
@@ -686,7 +703,7 @@ const getUserById = async (userId: string) => {
 };
 
 // update user by id (admin only)
-const updateUserById = async (userId: string,reqData:DataUpdate) => {
+const updateUserById = async (userId: string, reqData: DataUpdate) => {
   // userId = validate(getUserValidation, userId);
   reqData.id = userId;
   const user = await update(reqData);
@@ -697,7 +714,7 @@ const updateUserById = async (userId: string,reqData:DataUpdate) => {
 const deleteUserById = async (userId: string) => {
   // userId = validate(getUserValidation, userId);
   const user = await deleteUser(userId);
-  return "Deleted!"; 
+  return "Deleted!";
 };
 
 export default {

@@ -4,7 +4,7 @@ import { authMiddleware } from "../middleware/auth-middlleware";
 import { isAdmin } from "../middleware/role-middleware";
 
 const visaCategoryRouter = express.Router();
-visaCategoryRouter.use(authMiddleware);
+// visaCategoryRouter.use(authMiddleware);
 
 // visa category API
 //Public
