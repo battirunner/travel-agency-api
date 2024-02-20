@@ -1,7 +1,7 @@
 import express from "express";
 // import addressController from "../controller/address-controller";
 // import contactController from "../controller/contact-controller";
-import addressController from "../controller/address-controller";
+// import addressController from "../controller/address-controller";
 import userController from "../controller/user-controller";
 import { authMiddleware } from "../middleware/auth-middlleware";
 import { isResetTokenValid } from "../middleware/resetToken-middleware";
@@ -50,16 +50,16 @@ userRouter
 // userRouter.get("/api/contacts/:contactId/addresses", addressController.list);
 // location API
 
-userRouter.get(
-  "/api/user/address",
-  authMiddleware,
-  addressController.getAddress
-);
-userRouter.get(
-  "/api/user/address/:id",
-  authMiddleware,
-  addressController.getAddressById
-);
+// userRouter.get(
+//   "/api/user/address",
+//   authMiddleware,
+//   addressController.getAddress
+// );
+// userRouter.get(
+//   "/api/user/address/:id",
+//   authMiddleware,
+//   addressController.getAddressById
+// );
 
 // protected admin
 // get all user
@@ -98,23 +98,23 @@ userRouter.delete(
   userController.deleteUserById
 );
 
-userRouter.post(
-  "/api/user/address",
-  authMiddleware,
-  isAdmin,
-  addressController.createAddress
-);
-userRouter.put(
-  "/api/user/address/:id",
-  authMiddleware,
-  isAdmin,
-  addressController.updateAddress
-);
-userRouter.delete(
-  "/api/user/address/:id",
-  authMiddleware,
-  isAdmin,
-  addressController.deleteAddress
-);
+// userRouter.post(
+//   "/api/user/address",
+//   authMiddleware,
+//   isAdmin,
+//   addressController.createAddress
+// );
+// userRouter.put(
+//   "/api/user/address/:id",
+//   authMiddleware,
+//   isAdmin,
+//   addressController.updateAddress
+// );
+// userRouter.delete(
+//   "/api/user/address/:id",
+//   authMiddleware,
+//   isAdmin,
+//   addressController.deleteAddress
+// );
 
 export { userRouter };

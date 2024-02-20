@@ -7,8 +7,8 @@ const createLocationValidation = Joi.object({
 });
 
 const updateLocationValidation = Joi.object({
-    name: Joi.string().trim().max(100).optional(),
-    type: Joi.string().trim().max(50).optional(),
+    name: Joi.string().trim().max(100).optional().allow("",null),
+    type: Joi.string().trim().max(50).optional().allow("",null),
 });
 
 const getLocationValidation = Joi.string().max(100).required();

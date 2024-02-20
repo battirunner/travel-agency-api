@@ -1,7 +1,7 @@
 // external import
 import dotenv from "dotenv";
 // internal import
-import { logger, loggerExpress } from "./application/logging";
+import { logger } from "./application/logging";
 import { app } from "./application/web";
 
 //For env File

@@ -31,19 +31,28 @@ const updateUserValidation = Joi.object({
   id: Joi.string().trim().max(100).required(),
   name: Joi.string().trim().max(100).optional(),
   email: Joi.string().max(100).trim().optional(),
-  phone: Joi.string().max(14).optional().trim().optional(),
+  phone: Joi.string().max(14).trim().optional(),
   password: Joi.string().trim().optional(),
   gender: Joi.string().max(14).optional(),
+  dob: Joi.string().max(20).optional().allow("",null),
+  address: Joi.string().trim().optional().allow("",null),
+  postal_code: Joi.string().optional().allow("",null),
+  district: Joi.string().optional().allow("",null),
+  country: Joi.string().optional().allow("",null),
+  passport_no: Joi.string().optional().allow("",null),
+  passport_exp_date: Joi.string().optional().allow("",null),
+  passport_img_url: Joi.string().trim().optional().allow("",null).allow("",null),
+  visa_img_url: Joi.string().trim().optional().allow("",null),
   agreement: Joi.boolean().optional(),
   role: Joi.string().max(14).optional(),
-  profile_pic_url: Joi.string().optional(),
+  profile_pic_url: Joi.string().optional().allow("",null),
   active: Joi.boolean().optional(),
 });
 
 export {
-  registerUserValidation,
-  loginUserValidation,
   getUserValidation,
+  loginUserValidation,
+  registerUserValidation,
+  registerUserValidationGoogle,
   updateUserValidation,
-  registerUserValidationGoogle
 };

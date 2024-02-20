@@ -2,9 +2,13 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
+import morgan from "morgan";
 
 // internal import
 import { errorMiddleware, notFound } from "../middleware/error-middleware";
+import { bookingRouter } from "../routes/booking-api";
+import { insuranceRouter } from "../routes/insurance-api";
+import { insuranceCategoryRouter } from "../routes/insuranceCategory-api";
 import { locationRouter } from "../routes/location-api";
 import { mediaRouter } from "../routes/media-api";
 import { publicRouter } from "../routes/public-api";
@@ -14,7 +18,10 @@ import { tourTypeRouter } from "../routes/tourType-api";
 import { userRouter } from "../routes/user-api";
 import { visaCategoryRouter } from "../routes/visaCategory-api";
 
-export const app = express();
+const app = express();
+
+//morgan for dev
+app.use(morgan("dev"));
 
 // request parser
 app.use(express.json());
@@ -29,6 +36,9 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 // route
 app.use(publicRouter);
 app.use(userRouter);
+app.use(bookingRouter);
+app.use(insuranceRouter);
+app.use(insuranceCategoryRouter);
 app.use(toursRouter);
 app.use(visaCategoryRouter);
 app.use(tourTypeRouter);
@@ -40,3 +50,4 @@ app.use(locationRouter);
 app.use(notFound);
 app.use(errorMiddleware);
 
+export { app };
