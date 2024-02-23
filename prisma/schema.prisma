@@ -74,7 +74,7 @@ model ResetPasswordToken {
 model Tour_Package {
   id                  String                @id @default(uuid())
   title               String                @unique @db.VarChar(100)
-  description         String 
+  description         String
   duration            Int
   start_datetime      DateTime
   end_datetime        DateTime
@@ -226,6 +226,11 @@ model group_ticket {
   id                String                 @id @default(uuid())
   start_place       String
   end_place         String
+  price             String
+  show_price        Boolean
+  food              Boolean
+  baggage           String
+  policy            String
   group_ticket_path group_ticket_on_path[]
   createdAt         DateTime               @default(now())
   updatedAt         DateTime               @updatedAt
