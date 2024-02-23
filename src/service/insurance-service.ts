@@ -11,7 +11,7 @@ import { validate } from "../validation/validation";
 interface DataRegister {
   category_id: string;
   title: string;
-  details: number;
+  details: string;
   country: Date;
   duration: Date;
   price: string;
