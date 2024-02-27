@@ -2,12 +2,18 @@ import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import tourTypeService from "../service/tourType-service";
 
-
 // @desc Fetch all tour type
 // route GET /api/tourtype
 // @access Public
 const getTourType = asyncHandler(async (req: Request, res: Response) => {
-  const result = await tourTypeService.getTourType();
+  const tourType = req.query.tourType || "";
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 5;
+  const result = await tourTypeService.getTourType(
+    tourType as string,
+    page,
+    limit
+  );
   res.status(200).json({
     data: result,
   });
@@ -41,7 +47,10 @@ const updateTourType = asyncHandler(
     // @ts-ignore
     // console.log(req.user.userId);
     // @ts-ignore
-    const result = await tourTypeService.updateTourType(req.params.id, req.body);
+    const result = await tourTypeService.updateTourType(
+      req.params.id,
+      req.body
+    );
     res.status(200).json({ data: result });
   }
 );
@@ -51,9 +60,8 @@ const updateTourType = asyncHandler(
 // @access  Private/Admin
 const deleteTourType = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    
     const result = await tourTypeService.deleteTourType(req.params.id);
-    res.status(200).json({ data:result });
+    res.status(200).json({ data: result });
   }
 );
 

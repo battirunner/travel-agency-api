@@ -13,19 +13,19 @@ toursRouter.get("/api/tours/:id", tourPackageController.getToursById);
 
 // protected admin
 toursRouter.post(
-  "/api/tours",
+  "/api/admin/tours",
   authMiddleware,
   isAdmin,
   tourPackageController.createTour
 );
 toursRouter.put(
-  "/api/tours/:id",
+  "/api/admin/tours/:id",
   authMiddleware,
   isAdmin,
   tourPackageController.updateTour
 );
 toursRouter.delete(
-  "/api/tours/:id",
+  "/api/admin/tours/:id",
   authMiddleware,
   isAdmin,
   tourPackageController.deleteTour

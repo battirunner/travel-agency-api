@@ -10,14 +10,13 @@ import { validate } from "../validation/validation";
 interface DataRegister {
   title: string;
   details: string;
-  
 }
 
 // create tour type service
 const createTourType = async (reqData: DataRegister) => {
   const tourType = validate(createTourTypeValidation, reqData);
 
-  const countTourType= await prismaClient.tour_Type.count({
+  const countTourType = await prismaClient.tour_Type.count({
     where: {
       title: tourType.title,
     },
@@ -34,9 +33,13 @@ const createTourType = async (reqData: DataRegister) => {
 };
 
 // get tour types
-const getTourType = async () => {
-  const result = await prismaClient.tour_Type.findMany();
+const getTourType = async (tourType: string, page: number, limit: number) => {
+  const result = await prismaClient.tour_Type.findMany({
+    where: { title: { contains: tourType } },
+    include: { tourPackages: { include: { Location: true } } },
+  });
   if (result) {
+    console.log(result);
     return result;
   } else {
     throw new ResponseError(404, "No tour type found!");
@@ -85,7 +88,7 @@ const updateTourType = async (id: string, reqData: DataRegister) => {
     const data = {} as DataRegister;
 
     data.title = updateData.title || tourTypeInDb.title;
-    data.details = updateData.details
+    data.details = updateData.details;
 
     const result = await prismaClient.tour_Type.update({
       where: {
@@ -100,21 +103,17 @@ const updateTourType = async (id: string, reqData: DataRegister) => {
 
 //delete tour type
 
-const deleteTourType =async (id:string) => {
-    id = validate(getTourTypeValidation, id);
+const deleteTourType = async (id: string) => {
+  id = validate(getTourTypeValidation, id);
 
-    const deleteTourType = await prismaClient.tour_Type.delete({
-        where: {
-          id,
-        },
-      })
+  const deleteTourType = await prismaClient.tour_Type.delete({
+    where: {
+      id,
+    },
+  });
 
-      return deleteTourType;
-
-
-}
-
-
+  return deleteTourType;
+};
 
 export default {
   createTourType,
