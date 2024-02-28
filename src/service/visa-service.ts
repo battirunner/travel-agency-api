@@ -41,7 +41,7 @@ const createVisa = async (reqData: DataRegister) => {
 // get visa
 const getVisa = async (country: string, visaCategory: string) => {
   // const result = await prismaClient.visa.findMany();
-  console.log("from vis service",country,visaCategory);
+  console.log("from vis service", country, visaCategory);
   const result = await prismaClient.visa.findFirst({
     where: {
       country: {
@@ -63,7 +63,12 @@ const getVisa = async (country: string, visaCategory: string) => {
     console.log(result);
     return result;
   } else {
-    throw new ResponseError(404, "No visa found!");
+    return {
+      status: 200,
+      success: false,
+      message: "No visa found!",
+    };
+    // throw new Response(200, "No visa found!");
   }
 };
 
