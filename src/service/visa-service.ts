@@ -2,7 +2,11 @@ import { prismaClient } from "../application/database";
 import { ResponseError } from "../error/response-error";
 
 import { validate } from "../validation/validation";
-import { createVisaValidation, getVisaValidation, updateVisaValidation } from "../validation/visa-validation";
+import {
+  createVisaValidation,
+  getVisaValidation,
+  updateVisaValidation,
+} from "../validation/visa-validation";
 
 interface DataRegister {
   title: string;
@@ -35,9 +39,28 @@ const createVisa = async (reqData: DataRegister) => {
 };
 
 // get visa
-const getVisa = async () => {
-  const result = await prismaClient.visa.findMany();
+const getVisa = async (country: string, visaCategory: string) => {
+  // const result = await prismaClient.visa.findMany();
+  console.log("from vis service",country,visaCategory);
+  const result = await prismaClient.visa.findFirst({
+    where: {
+      country: {
+        contains: `${country}`,
+      },
+    },
+
+    include: {
+      visa_category: {
+        where: {
+          title: {
+            contains: `${visaCategory}`,
+          },
+        },
+      },
+    },
+  });
   if (result) {
+    console.log(result);
     return result;
   } else {
     throw new ResponseError(404, "No visa found!");

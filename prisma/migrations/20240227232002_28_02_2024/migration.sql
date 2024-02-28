@@ -187,6 +187,7 @@ CREATE TABLE `visa` (
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `visa_title_key`(`title`),
+    UNIQUE INDEX `visa_country_visa_category_id_key`(`country`, `visa_category_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

@@ -13,6 +13,7 @@ async function main() {
       role: "USER",
       password: password,
       emailVerified: true,
+      agreement: true,
     },
   });
   const bob = await prisma.user.upsert({
@@ -24,6 +25,7 @@ async function main() {
       role: "ADMIN",
       password: password,
       emailVerified: true,
+      agreement: true,
     },
   });
   //   console.log({ alice, bob });
@@ -95,74 +97,75 @@ async function main() {
         {
           category_name: "Doctor",
           category_items: [
-            `07 Months Valid Passport With Old Passport (If have)`,
-            `Recent 2 copy photograph taken in last 3 months (white background only, photo size 35 mm X 45 mm)`,
-            `Visiting card`,
-            `BMDC certificate for doctor (Scan copy)`,
-            `Marriage certificate copy (if spouse name not mentioned in the passport)`,
-            `Personal bank solvency certificate`,
-            `Personal bank statement of last 06 months and minimum balance BDT 70,000 for each applicant.`,
+            "07 Months Valid Passport With Old Passport (If have)",
+            "Recent 2 copy photograph taken in last 3 months (white background only, photo size 35 mm X 45 mm)",
+            "Visiting card",
+            "BMDC certificate for doctor (Scan copy)",
+            "Marriage certificate copy (if spouse name not mentioned in the passport)",
+            "Personal bank solvency certificate",
+            "Personal bank statement of last 06 months and minimum balance BDT 70,000 for each applicant.",
           ],
         },
         {
           category_name: "Advocate Lawyer",
           category_items: [
-            `07 Months Valid Passport With Old Passport (If have)`,
-            `Recent 2 copy photograph taken in last 3 months (white background only, photo size 35 mm X 45 mm)`,
-            `Visiting card`,
-            `BAR council certificate (One photo copy)`,
-            `Marriage certificate copy (if spouse name not mentioned in the passport)`,
-            `Personal bank solvency certificate`,
-            `Personal bank statement of last 06 months and minimum balance BDT 70,000 for each applicant.`,
+            "07 Months Valid Passport With Old Passport (If have)",
+            "Recent 2 copy photograph taken in last 3 months (white background only, photo size 35 mm X 45 mm)",
+            "Visiting card",
+            "BMDC certificate for doctor (Scan copy)",
+            "Marriage certificate copy (if spouse name not mentioned in the passport)",
+            "Personal bank solvency certificate",
+            "Personal bank statement of last 06 months and minimum balance BDT 70,000 for each applicant.",
           ],
         },
         {
           category_name: "Student",
           category_items: [
-            `07 Months Valid Passport With Old Passport (If have)`,
-            `Recent 2 copy photograph taken in last 3 months (white background only, photo size 35 mm X 45 mm)`,
-            `ID card (Student) one photocopy both sides`,
-            `Leave letter from school or collage original copy`,
-            `Parents bank statement (Last 06 months) & solvency certificate ( Minimum balance BDT 70,000 for each applicant )`,
+            "07 Months Valid Passport With Old Passport (If have)",
+            "Recent 2 copy photograph taken in last 3 months (white background only, photo size 35 mm X 45 mm)",
+            "ID card (Student) one photocopy both sides",
+            "Leave letter from school or collage original copy",
+            "Parents bank statement (Last 06 months) & solvency certificate ( Minimum balance BDT 70,000 for each applicant )",
           ],
         },
         {
           category_name: "Non Student Children",
           category_items: [
-            `07 Months Valid Passport With Old Passport (If have)`,
-            `Recent 2 copy photograph taken in last 3 months (white background only, photo size 35 mm X 45 mm)`,
-            `Birth certificate`,
-            `Parents bank statement (Last 06 months) & solvency certificate ( Minimum balance BDT 70,000 for each applicant )`,
+            "07 Months Valid Passport With Old Passport (If have)",
+            "Recent 2 copy photograph taken in last 3 months (white background only, photo size 35 mm X 45 mm)",
+            "ID card (Student) one photocopy both sides",
+            "Leave letter from school or collage original copy",
+            "Parents bank statement (Last 06 months) & solvency certificate ( Minimum balance BDT 70,000 for each applicant )",
           ],
         },
         {
           category_name: "Housewife",
           category_items: [
-            `07 Months Valid Passport With Old Passport (If have)`,
-            `Recent 2 copy photograph taken in last 3 months (white background only, photo size 35 mm X 45 mm)`,
-            `Marriage certificate copy (if spouse name not mentioned in the passport) Personal bank solvency certificate`,
-            `Personal bank statement of last 06 months and minimum balance BDT 70,000 for each applicant.`,
+            "07 Months Valid Passport With Old Passport (If have)",
+            "Recent 2 copy photograph taken in last 3 months (white background only, photo size 35 mm X 45 mm)",
+            "ID card (Student) one photocopy both sides",
+            "Leave letter from school or collage original copy",
+            "Parents bank statement (Last 06 months) & solvency certificate ( Minimum balance BDT 70,000 for each applicant )",
           ],
         },
         {
           category_name: "Retired Person",
           category_items: [
-            `07 Months Valid Passport With Old Passport (If have)`,
-            `Recent 2 copy photograph taken in last 3 months (white background only, photo size 35 mm X 45 mm)`,
-            `Retirement document (Retired Person) one photo copy`,
-            `Marriage certificate copy (if spouse name not mentioned in the passport)`,
-            `Personal bank solvency certificate`,
-            `Personal bank statement of last 06 months and minimum balance BDT 70,000 for each applicant.`,
+            "07 Months Valid Passport With Old Passport (If have)",
+            "Recent 2 copy photograph taken in last 3 months (white background only, photo size 35 mm X 45 mm)",
+            "ID card (Student) one photocopy both sides",
+            "Leave letter from school or collage original copy",
+            "Parents bank statement (Last 06 months) & solvency certificate ( Minimum balance BDT 70,000 for each applicant )",
           ],
         },
         {
           category_name: "Unemployed Person",
           category_items: [
-            `07 Months Valid Passport With Old Passport (If have)`,
-            `Recent 2 copy photograph taken in last 3 months (white background only, photo size 35 mm X 45 mm)`,
-            `Personal bank solvency certificate`,
-            `Personal bank statement of last 06 months and minimum balance BDT 70,000 for each applicant.`,
-            `NID or birth certificate (must) one photo copy`,
+            "07 Months Valid Passport With Old Passport (If have)",
+            "Recent 2 copy photograph taken in last 3 months (white background only, photo size 35 mm X 45 mm)",
+            "ID card (Student) one photocopy both sides",
+            "Leave letter from school or collage original copy",
+            "Parents bank statement (Last 06 months) & solvency certificate ( Minimum balance BDT 70,000 for each applicant )",
           ],
         },
       ],
@@ -170,7 +173,7 @@ async function main() {
     {
       name: "Important Notes",
       items: [
-        `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Porro consequuntur et quos adipisci eum, unde iste vel ut deserunt omnis ab sed tenetur doloremque laudantium cum, placeat odit nesciunt quia sit? Dignissimos aspernatur vero suscipit natus, quas a tempore possimus et sunt itaque unde explicabo reprehenderit quisquam tempora harum expedita!`,
+        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Porro consequuntur et quos adipisci eum, unde iste vel ut deserunt omnis ab sed tenetur doloremque laudantium cum, placeat odit nesciunt quia sit? Dignissimos aspernatur vero suscipit natus, quas a tempore possimus et sunt itaque unde explicabo reprehenderit quisquam tempora harum expedita!",
       ],
     },
   ]);
@@ -434,7 +437,7 @@ async function main() {
     {
       name: "Important Notes",
       items: [
-        `"Please contact the Visa department for Document processing after the payment. Visa rate may change without any prior notice"`,
+        "Please contact the Visa department for Document processing after the payment. Visa rate may change without any prior notice",
       ],
     },
   ]);
@@ -445,7 +448,7 @@ async function main() {
     create: {
       title: "Singapore Tourist Visa",
       details: visa2Details,
-      country: "Thailand",
+      country: "Singapore",
       validity: "6 months",
       price: "5000",
       min_stay: "1 day",
