@@ -21,8 +21,12 @@ import { visaRouter } from "../routes/visa-api";
 import { groupTicketRouter } from "../routes/groupTicket-api";
 import { groupTicketOnPathRouter } from "../routes/groupTicketOnPath-api";
 import { ticketPathRouter } from "../routes/ticketPath-api";
+import { countryRouter } from "../routes/country-api";
 
 const app = express();
+
+// cors
+app.use(cors());
 
 //morgan for dev
 app.use(morgan("dev"));
@@ -31,8 +35,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// cors
-app.use(cors());
+
 
 // cookie parser
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -53,6 +56,7 @@ app.use(visaRouter);
 app.use(groupTicketRouter);
 app.use(groupTicketOnPathRouter);
 app.use(ticketPathRouter);
+app.use(countryRouter);
 
 //not found and error middleware
 app.use(notFound);

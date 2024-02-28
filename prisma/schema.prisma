@@ -73,21 +73,22 @@ model ResetPasswordToken {
 
 model Tour_Package {
   id                  String                @id @default(uuid())
-  title               String                @unique @db.VarChar(100)
-  description         String
-  duration            Int
-  start_datetime      DateTime
-  end_datetime        DateTime
+  title               String                @unique @db.VarChar(255)
+  description         String                @db.LongText
+  duration            String
+  start_datetime      String
+  end_datetime        String
   price               String
-  included            String
-  not_included        String
+  guests              Int
+  included            String                @db.LongText
+  not_included        String                @db.LongText
   tour_type           Tour_Type?            @relation(fields: [tour_type_id], references: [id], onUpdate: Cascade, onDelete: SetNull)
   tour_type_id        String?
   departure_location  String
   map_url             String?
-  terms_conditions    String
+  terms_conditions    String                @db.LongText
   Tour_Package_On_Tag Tour_Package_On_Tag[]
-  other_details       String?
+  other_details       String?               @db.LongText
   media               Media[]
   visa_category       Visa_Category?        @relation(fields: [visa_Category_id], references: [id], onUpdate: Cascade, onDelete: SetNull)
   visa_Category_id    String?
@@ -99,8 +100,8 @@ model Tour_Package {
 
 model Tour_Type {
   id           String         @id @default(uuid())
-  title        String         @unique @db.VarChar(100)
-  details      String?
+  title        String         @unique @db.VarChar(255)
+  details      String?        @db.LongText
   tourPackages Tour_Package[]
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
@@ -119,7 +120,7 @@ model Tour_Type {
 
 model Tag {
   id                  String                @id @default(uuid())
-  title               String                @unique @db.VarChar(50)
+  title               String                @unique @db.VarChar(255)
   Tour_Package_On_Tag Tour_Package_On_Tag[]
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt
@@ -138,8 +139,8 @@ model Tour_Package_On_Tag {
 
 model Visa_Category {
   id           String         @id @default(uuid())
-  title        String         @unique @db.VarChar(50)
-  details      String
+  title        String         @unique @db.VarChar(255)
+  details      String         @db.LongText
   Tour_Package Tour_Package[]
   visa         visa[]
   createdAt    DateTime       @default(now())
@@ -148,7 +149,7 @@ model Visa_Category {
 
 model Media {
   id              String        @id @default(uuid())
-  uri             String        @unique
+  url             String        @unique
   type            String        @db.VarChar(10)
   tour_package    Tour_Package? @relation(fields: [tour_Package_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   tour_Package_id String?
@@ -159,7 +160,7 @@ model Media {
 model Location {
   id           String         @id @default(uuid())
   name         String         @unique @db.VarChar(100)
-  type         String         @db.VarChar(50)
+  type         String         @db.VarChar(255)
   tour_package Tour_Package[]
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
@@ -188,8 +189,8 @@ model contact_form {
 
 model visa {
   id               String         @id @default(uuid())
-  title            String
-  details          String
+  title            String         @unique @db.VarChar(255)
+  details          String         @db.LongText
   country          String
   validity         String
   price            String
@@ -198,14 +199,15 @@ model visa {
   visa_category_id String?
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
+  @@unique([country,visa_category_id])
 }
 
 model insurance {
   id                    String              @id @default(uuid())
   insurance_category    insurance_category? @relation(fields: [insurance_category_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
   insurance_category_id String?
-  title                 String
-  details               String
+  title                 String              @unique @db.VarChar(255)
+  details               String              @db.LongText
   country               String
   duration              String
   price                 String
@@ -215,8 +217,8 @@ model insurance {
 
 model insurance_category {
   id        String      @id @default(uuid())
-  title     String
-  details   String
+  title     String      @unique @db.VarChar(255)
+  details   String      @db.LongText
   insurance insurance[]
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
@@ -229,8 +231,8 @@ model group_ticket {
   price             String
   show_price        Boolean
   food              Boolean
-  baggage           String
-  policy            String
+  baggage           String                 @db.LongText
+  policy            String                 @db.LongText
   group_ticket_path group_ticket_on_path[]
   createdAt         DateTime               @default(now())
   updatedAt         DateTime               @updatedAt
@@ -241,14 +243,12 @@ model ticket_path {
   group_ticket_path  group_ticket_on_path[]
   departure_place    String
   departure_airport  String
-  departure_airlines String
-  departure_aircraft String
-  departure_datetime DateTime
+  airlines           String
+  aircraft           String
+  departure_datetime String
   arrival_place      String
   arrival_airport    String
-  arrival_airlines   String
-  arrival_aircraft   String
-  arrival_datetime   DateTime
+  arrival_datetime   String
   createdAt          DateTime               @default(now())
   updatedAt          DateTime               @updatedAt
 }
@@ -263,6 +263,39 @@ model group_ticket_on_path {
   path_way        String
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
+}
+
+model airports {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  iata_code String   @unique
+  city      String
+  country   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+  @@index([iata_code])
+}
+
+model airlines {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  iata_code String
+  logo_url  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+  @@index([iata_code])
+}
+
+model country {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  iso_code  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model booking {
@@ -325,7 +358,7 @@ model payment_gateway {
 model notifications {
   id             String   @id @default(uuid())
   source_user_id String
-  action_details String
+  action_details String   @db.VarChar(255)
   message        String
   read_status    Boolean
   createdAt      DateTime @default(now())

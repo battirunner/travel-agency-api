@@ -52,19 +52,20 @@ CREATE TABLE `ResetPasswordToken` (
 -- CreateTable
 CREATE TABLE `Tour_Package` (
     `id` VARCHAR(191) NOT NULL,
-    `title` VARCHAR(100) NOT NULL,
-    `description` VARCHAR(191) NOT NULL,
-    `duration` INTEGER NOT NULL,
-    `start_datetime` DATETIME(3) NOT NULL,
-    `end_datetime` DATETIME(3) NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `description` LONGTEXT NOT NULL,
+    `duration` VARCHAR(191) NOT NULL,
+    `start_datetime` VARCHAR(191) NOT NULL,
+    `end_datetime` VARCHAR(191) NOT NULL,
     `price` VARCHAR(191) NOT NULL,
-    `included` VARCHAR(191) NOT NULL,
-    `not_included` VARCHAR(191) NOT NULL,
+    `guests` INTEGER NOT NULL,
+    `included` LONGTEXT NOT NULL,
+    `not_included` LONGTEXT NOT NULL,
     `tour_type_id` VARCHAR(191) NULL,
     `departure_location` VARCHAR(191) NOT NULL,
     `map_url` VARCHAR(191) NULL,
-    `terms_conditions` VARCHAR(191) NOT NULL,
-    `other_details` VARCHAR(191) NULL,
+    `terms_conditions` LONGTEXT NOT NULL,
+    `other_details` LONGTEXT NULL,
     `visa_Category_id` VARCHAR(191) NULL,
     `location_id` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -77,8 +78,8 @@ CREATE TABLE `Tour_Package` (
 -- CreateTable
 CREATE TABLE `Tour_Type` (
     `id` VARCHAR(191) NOT NULL,
-    `title` VARCHAR(100) NOT NULL,
-    `details` VARCHAR(191) NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `details` LONGTEXT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -89,7 +90,7 @@ CREATE TABLE `Tour_Type` (
 -- CreateTable
 CREATE TABLE `Tag` (
     `id` VARCHAR(191) NOT NULL,
-    `title` VARCHAR(50) NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -110,8 +111,8 @@ CREATE TABLE `Tour_Package_On_Tag` (
 -- CreateTable
 CREATE TABLE `Visa_Category` (
     `id` VARCHAR(191) NOT NULL,
-    `title` VARCHAR(50) NOT NULL,
-    `details` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `details` LONGTEXT NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -122,13 +123,13 @@ CREATE TABLE `Visa_Category` (
 -- CreateTable
 CREATE TABLE `Media` (
     `id` VARCHAR(191) NOT NULL,
-    `uri` VARCHAR(191) NOT NULL,
+    `url` VARCHAR(191) NOT NULL,
     `type` VARCHAR(10) NOT NULL,
     `tour_Package_id` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `Media_uri_key`(`uri`),
+    UNIQUE INDEX `Media_url_key`(`url`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -136,7 +137,7 @@ CREATE TABLE `Media` (
 CREATE TABLE `Location` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(100) NOT NULL,
-    `type` VARCHAR(50) NOT NULL,
+    `type` VARCHAR(255) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -175,8 +176,8 @@ CREATE TABLE `contact_form` (
 -- CreateTable
 CREATE TABLE `visa` (
     `id` VARCHAR(191) NOT NULL,
-    `title` VARCHAR(191) NOT NULL,
-    `details` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `details` LONGTEXT NOT NULL,
     `country` VARCHAR(191) NOT NULL,
     `validity` VARCHAR(191) NOT NULL,
     `price` VARCHAR(191) NOT NULL,
@@ -185,6 +186,8 @@ CREATE TABLE `visa` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    UNIQUE INDEX `visa_title_key`(`title`),
+    UNIQUE INDEX `visa_country_visa_category_id_key`(`country`, `visa_category_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -192,25 +195,27 @@ CREATE TABLE `visa` (
 CREATE TABLE `insurance` (
     `id` VARCHAR(191) NOT NULL,
     `insurance_category_id` VARCHAR(191) NULL,
-    `title` VARCHAR(191) NOT NULL,
-    `details` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `details` LONGTEXT NOT NULL,
     `country` VARCHAR(191) NOT NULL,
     `duration` VARCHAR(191) NOT NULL,
     `price` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    UNIQUE INDEX `insurance_title_key`(`title`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `insurance_category` (
     `id` VARCHAR(191) NOT NULL,
-    `title` VARCHAR(191) NOT NULL,
-    `details` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `details` LONGTEXT NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    UNIQUE INDEX `insurance_category_title_key`(`title`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -219,6 +224,11 @@ CREATE TABLE `group_ticket` (
     `id` VARCHAR(191) NOT NULL,
     `start_place` VARCHAR(191) NOT NULL,
     `end_place` VARCHAR(191) NOT NULL,
+    `price` VARCHAR(191) NOT NULL,
+    `show_price` BOOLEAN NOT NULL,
+    `food` BOOLEAN NOT NULL,
+    `baggage` LONGTEXT NOT NULL,
+    `policy` LONGTEXT NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -230,14 +240,12 @@ CREATE TABLE `ticket_path` (
     `id` VARCHAR(191) NOT NULL,
     `departure_place` VARCHAR(191) NOT NULL,
     `departure_airport` VARCHAR(191) NOT NULL,
-    `departure_airlines` VARCHAR(191) NOT NULL,
-    `departure_aircraft` VARCHAR(191) NOT NULL,
-    `departure_datetime` DATETIME(3) NOT NULL,
+    `airlines` VARCHAR(191) NOT NULL,
+    `aircraft` VARCHAR(191) NOT NULL,
+    `departure_datetime` VARCHAR(191) NOT NULL,
     `arrival_place` VARCHAR(191) NOT NULL,
     `arrival_airport` VARCHAR(191) NOT NULL,
-    `arrival_airlines` VARCHAR(191) NOT NULL,
-    `arrival_aircraft` VARCHAR(191) NOT NULL,
-    `arrival_datetime` DATETIME(3) NOT NULL,
+    `arrival_datetime` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -254,6 +262,50 @@ CREATE TABLE `group_ticket_on_path` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `airports` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `iata_code` VARCHAR(191) NOT NULL,
+    `city` VARCHAR(191) NOT NULL,
+    `country` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `airports_name_key`(`name`),
+    UNIQUE INDEX `airports_iata_code_key`(`iata_code`),
+    INDEX `airports_name_idx`(`name`),
+    INDEX `airports_iata_code_idx`(`iata_code`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `airlines` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `iata_code` VARCHAR(191) NOT NULL,
+    `logo_url` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `airlines_name_key`(`name`),
+    INDEX `airlines_name_idx`(`name`),
+    INDEX `airlines_iata_code_idx`(`iata_code`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `country` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `iso_code` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `country_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -321,7 +373,7 @@ CREATE TABLE `payment_gateway` (
 CREATE TABLE `notifications` (
     `id` VARCHAR(191) NOT NULL,
     `source_user_id` VARCHAR(191) NOT NULL,
-    `action_details` VARCHAR(191) NOT NULL,
+    `action_details` VARCHAR(255) NOT NULL,
     `message` VARCHAR(191) NOT NULL,
     `read_status` BOOLEAN NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),

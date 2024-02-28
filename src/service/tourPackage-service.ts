@@ -6,6 +6,7 @@ import {
   updateTourPackageValidation,
 } from "../validation/tourPackage-validation";
 import { validate } from "../validation/validation";
+import tourTypeService from "./tourType-service";
 
 interface DataRegister {
   title: string;
@@ -46,13 +47,22 @@ const createTour = async (reqData: DataRegister) => {
 };
 
 // get tours
-const getTours = async () => {
-  const result = await prismaClient.tour_Package.findMany();
-  if (result) {
-    return result;
-  } else {
-    throw new ResponseError(404, "No tours found!");
+const getTours = async (tourType: string, page: number, limit: number) => {
+  if (tourType !== "") {
+    const result = await tourTypeService.getTourType(tourType, page, limit);
+
+    if (result) {
+      return result;
+    } else {
+      throw new ResponseError(404, "No tours found!");
+    }
   }
+  // const result = await prismaClient.tour_Package.findMany({});
+  // if (result) {
+  //   return result;
+  // } else {
+  //   throw new ResponseError(404, "No tours found!");
+  // }
 };
 
 // get tour by id
@@ -60,6 +70,12 @@ const getToursById = async (id: string) => {
   const tourPackageId = validate(getTourPackageValidation, id);
   const tourPackage = await prismaClient.tour_Package.findUnique({
     where: { id: tourPackageId },
+    include: {
+      Location: true,
+      visa_category: true,
+      media: true,
+      tour_type: true,
+    },
   });
 
   if (tourPackage) {

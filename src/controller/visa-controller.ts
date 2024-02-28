@@ -6,7 +6,10 @@ import visaService from "../service/visa-service";
 // route GET /api/visa
 // @access Public
 const getVisa = asyncHandler(async (req: Request, res: Response) => {
-  const result = await visaService.getVisa();
+  const country = req.query.country;
+  const visaCategory = req.query.visaCategory;
+  console.log("PARAm of get visa",req.params);
+  const result = await visaService.getVisa(country as string, visaCategory as string);
   res.status(200).json({
     data: result,
   });

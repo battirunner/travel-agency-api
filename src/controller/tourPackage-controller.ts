@@ -1,13 +1,21 @@
 import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import tourPackageService from "../service/tourPackage-service";
-import generateToken from "../utlis/generateToken";
 
 // @desc Fetch all tours
 // route GET /api/tours
 // @access Public
 const getTours = asyncHandler(async (req: Request, res: Response) => {
-  const result = await tourPackageService.getTours();
+  console.log(req.query);
+  // console.log(req.params);
+  const tourType = req.query.tourType || "";
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 5;
+  const result = await tourPackageService.getTours(
+    tourType as string,
+    page,
+    limit
+  );
   res.status(200).json({
     data: result,
   });
@@ -18,7 +26,9 @@ const getTours = asyncHandler(async (req: Request, res: Response) => {
 // @access Public
 const getToursById = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.params.id);
     const result = await tourPackageService.getToursById(req.params.id);
+    console.log(result);
     res.status(201).json({ data: result });
   }
 );
@@ -51,9 +61,8 @@ const updateTour = asyncHandler(
 // @access  Private/Admin
 const deleteTour = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    
     const result = await tourPackageService.deleteTour(req.params.id);
-    res.status(200).json({ data:result });
+    res.status(200).json({ data: result });
   }
 );
 

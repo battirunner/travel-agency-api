@@ -10,6 +10,7 @@ import generateToken from "../utlis/generateToken";
 // @access Public
 const loginUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
     const result = await userService.login(req.body);
     // console.log("from controller");
     // console.log(result);
@@ -74,7 +75,7 @@ const getUserProfile = asyncHandler(
 // @access Private
 const updateUserProfile = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-  
+  console.log(req.body);
     const result = await userService.update(req.body);
     generateToken(res, result);
     res.status(200).json({ data: result });

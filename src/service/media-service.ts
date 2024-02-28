@@ -8,7 +8,7 @@ import {
 import { validate } from "../validation/validation";
 
 interface DataRegister {
-  uri: string;
+  url: string;
   type: string;
   tour_Package_id: string;
 }
@@ -19,7 +19,7 @@ const createMedia = async (reqData: DataRegister) => {
 
   const countMedia = await prismaClient.media.count({
     where: {
-      uri: media.uri,
+      url: media.url,
     },
   });
 
@@ -72,17 +72,17 @@ const updateMedia = async (id: string, reqData: DataRegister) => {
   if (!mediaInDb) {
     throw new ResponseError(404, "media not found!");
   } else {
-    const data = {} as DataRegister;
+    // const data = {} as DataRegister;
 
-    data.uri = updateData.title || mediaInDb.uri;
-    data.type = updateData.title || mediaInDb.type;
-    data.tour_Package_id = updateData.title || mediaInDb.tour_Package_id;
+    // data.url = updateData.title || mediaInDb.url;
+    // data.type = updateData.title || mediaInDb.type;
+    // data.tour_Package_id = updateData.title || mediaInDb.tour_Package_id;
 
     const result = await prismaClient.media.update({
       where: {
         id,
       },
-      data: data,
+      data: updateData,
     });
 
     return result;

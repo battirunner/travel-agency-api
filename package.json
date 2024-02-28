@@ -10,6 +10,9 @@
     "dev": "NODE_ENV=development nodemon src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "keywords": [],
   "author": "Abdullah Al Kafi & Fahim Islam Mohip",
   "license": "ISC",
@@ -45,7 +48,7 @@
     "@types/node": "^20.11.20",
     "@types/nodemailer": "^6.4.14",
     "@types/uuid": "^9.0.2",
-    "prisma": "^5.9.0",
+    "prisma": "^5.10.2",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.3.3"
