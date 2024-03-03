@@ -26,12 +26,12 @@ const getTicketPathById = asyncHandler(
 // @desc Create a TicketPath
 // route POST /api/TicketPath
 // @access Private/Admin
-const createTicketPath = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const result = await ticketPathService.createTicketPath(req.body);
-    res.status(201).json({ data: result });
-  }
-);
+// const createTicketPath = asyncHandler(
+//   async (req: Request, res: Response, next: NextFunction) => {
+//     const result = await ticketPathService.createTicketPath(req.body);
+//     res.status(201).json({ data: result });
+//   }
+// );
 
 // @desc    Update a TicketPath
 // @route   PUT /api/TicketPath/:id
@@ -60,7 +60,7 @@ const deleteTicketPath = asyncHandler(
 export default {
   getTicketPath,
   getTicketPathById,
-  createTicketPath,
+  // createTicketPath,
   updateTicketPath,
   deleteTicketPath,
 };

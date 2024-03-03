@@ -1074,6 +1074,7 @@ async function main() {
       start_place: "Dhaka",
       end_place: "Tokyo",
       price: "66509",
+      country:"Japan",
       show_price: true,
       food: true,
       baggage: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus eius nostrum ea optio ipsam laudantium consequuntur incidunt rerum, accusamus dolorem delectus mollitia molestiae sed quod quisquam eligendi temporibus dolores, quibusdam deserunt necessitatibus animi doloremque modi. Velit fuga expedita incidunt eligendi eveniet non itaque repellendus saepe porro temporibus consectetur ea ipsa culpa repudiandae distinctio quae ad, nostrum omnis impedit commodi. Temporibus veritatis aut ipsum. Exercitationem, tenetur explicabo reprehenderit blanditiis neque nemo sed fugit quae modi minima ratione quasi inventore dolorum veritatis voluptas sit? Nulla, pariatur blanditiis voluptas dolorem in quam facere voluptate asperiores voluptatibus vel, quia minima cumque, ipsum quisquam beatae?`,
@@ -1083,6 +1084,8 @@ async function main() {
 
   const ticketPath1_1 = await prisma.ticket_path.create({
     data: {
+      group_ticket_id: groupTicket1.id,
+      path_order:1,
       departure_place: "Dhaka",
       departure_airport: "Hazrat Shahjalal International Airport",
       airlines: "Singapore Airlines",
@@ -1094,17 +1097,19 @@ async function main() {
     },
   });
 
-  const groupTicketOnPath1_1 = await prisma.group_ticket_on_path.create({
-    data: {
-      group_ticket_id: groupTicket1.id,
-      ticket_path_id: ticketPath1_1.id,
-      path_order: 1,
-      path_way: "",
-    },
-  });
+  // const groupTicketOnPath1_1 = await prisma.group_ticket_on_path.create({
+  //   data: {
+  //     group_ticket_id: groupTicket1.id,
+  //     ticket_path_id: ticketPath1_1.id,
+  //     path_order: 1,
+  //     path_way: "",
+  //   },
+  // });
 
   const ticketPath1_2 = await prisma.ticket_path.create({
     data: {
+      group_ticket_id:groupTicket1.id,
+      path_order:2,
       departure_place: "Singapore",
       departure_airport: "Singapore Changi Airport",
       airlines: "Singapore Airlines",
@@ -1116,19 +1121,20 @@ async function main() {
     },
   });
 
-  const groupTicketOnPath1_2 = await prisma.group_ticket_on_path.create({
-    data: {
-      group_ticket_id: groupTicket1.id,
-      ticket_path_id: ticketPath1_2.id,
-      path_order: 2,
-      path_way: "",
-    },
-  });
+  // const groupTicketOnPath1_2 = await prisma.group_ticket_on_path.create({
+  //   data: {
+  //     group_ticket_id: groupTicket1.id,
+  //     ticket_path_id: ticketPath1_2.id,
+  //     path_order: 2,
+  //     path_way: "",
+  //   },
+  // });
 
   const groupTicket2 = await prisma.group_ticket.create({
     data: {
       start_place: "Dhaka",
       end_place: "New York",
+      country:"United States of America",
       price: "66509",
       show_price: false,
       food: false,
@@ -1139,6 +1145,8 @@ async function main() {
 
   const ticketPath2_1 = await prisma.ticket_path.create({
     data: {
+      group_ticket_id:groupTicket2.id,
+      path_order:1, 
       departure_place: "Dhaka",
       departure_airport: "Hazrat Shahjalal International Airport",
       airlines: "Qatar Airways",
@@ -1150,17 +1158,19 @@ async function main() {
     },
   });
 
-  const groupTicketOnPath2_1 = await prisma.group_ticket_on_path.create({
-    data: {
-      group_ticket_id: groupTicket2.id,
-      ticket_path_id: ticketPath2_1.id,
-      path_order: 1,
-      path_way: "",
-    },
-  });
+  // const groupTicketOnPath2_1 = await prisma.group_ticket_on_path.create({
+  //   data: {
+  //     group_ticket_id: groupTicket2.id,
+  //     ticket_path_id: ticketPath2_1.id,
+  //     path_order: 1,
+  //     path_way: "",
+  //   },
+  // });
 
   const ticketPath2_2 = await prisma.ticket_path.create({
     data: {
+      group_ticket_id:groupTicket2.id,
+      path_order:2, 
       departure_place: "DOHA",
       departure_airport: "Hamad International Airport",
       airlines: "Qatar Airways",
@@ -1172,14 +1182,14 @@ async function main() {
     },
   });
 
-  const groupTicketOnPath2_2 = await prisma.group_ticket_on_path.create({
-    data: {
-      group_ticket_id: groupTicket2.id,
-      ticket_path_id: ticketPath2_2.id,
-      path_order: 2,
-      path_way: "",
-    },
-  });
+  // const groupTicketOnPath2_2 = await prisma.group_ticket_on_path.create({
+  //   data: {
+  //     group_ticket_id: groupTicket2.id,
+  //     ticket_path_id: ticketPath2_2.id,
+  //     path_order: 2,
+  //     path_way: "",
+  //   },
+  // });
 
   const countries = await prisma.country.createMany({
     data: [

@@ -6,7 +6,7 @@ import {
   updateGroupTicketValidation,
 } from "../validation/groupTicket-validation";
 import ticketPathService from "./ticketPath-service";
-import groupTicketOnPathService from "./groupTicketOnPath-service";
+// import groupTicketOnPathService from "./groupTicketOnPath-service";
 import { validate } from "../validation/validation";
 
 interface DataRegister {
@@ -43,29 +43,61 @@ const createGroupTicket = async (
   let TicketPathResult;
   let GroupTicketOnPathResult;
 
-  for (let index = 1; index <= ticketPathData.length; index++) {
+  for (let index = 0; index < ticketPathData.length; index++) {
     TicketPathResult = await ticketPathService.createTicketPath(
-      ticketPathData[index]
+      ticketPathData[index],
+      GroupTicketResult.id,
+      index + 1
     );
-    const GroupTicketOnPath = {
-      group_ticket_id: GroupTicketResult.id,
-      //@ts-ignore
-      ticket_path_id: TicketPathResult.id,
-    };
-    GroupTicketOnPathResult =
-      await groupTicketOnPathService.createGroupTicketOnPath(GroupTicketOnPath);
+    // const GroupTicketOnPath = {
+    //   group_ticket_id: GroupTicketResult.id,
+    //   //@ts-ignore
+    //   ticket_path_id: TicketPathResult.id,
+    // };
+    // GroupTicketOnPathResult =
+    //   await groupTicketOnPathService.createGroupTicketOnPath(GroupTicketOnPath);
   }
 
-  return { GroupTicketResult, GroupTicketOnPathResult, TicketPathResult };
+  return {
+    GroupTicketResult,
+    // GroupTicketOnPathResult,
+    // TicketPathResult,
+  };
 };
 
 // get GroupTicket
-const getGroupTicket = async () => {
-  const result = await prismaClient.group_ticket.findMany();
-  if (result) {
-    return result;
+const getGroupTicket = async (country: string, page: number, limit: number) => {
+  if (country !== "") {
+    const result = await prismaClient.group_ticket.findMany({
+      where: {
+        country: {
+          contains: country,
+        },
+      },
+      include: {
+        ticket_path: true,
+      },
+      skip: page <= 1 ? 0 : page * limit,
+      take: limit,
+    });
+    if (result) {
+      return result;
+    } else {
+      throw new ResponseError(404, "No GroupTicket found!");
+    }
   } else {
-    throw new ResponseError(404, "No GroupTicket found!");
+    const result = await prismaClient.group_ticket.findMany({
+      include: {
+        ticket_path: true,
+      },
+      skip: page <= 1 ? 0 : page * limit,
+      take: limit,
+    });
+    if (result) {
+      return result;
+    } else {
+      throw new ResponseError(404, "No GroupTicket found!");
+    }
   }
 };
 
@@ -74,6 +106,7 @@ const getGroupTicketById = async (id: string) => {
   const GroupTicketId = validate(getGroupTicketValidation, id);
   const GroupTicket = await prismaClient.group_ticket.findUnique({
     where: { id: GroupTicketId },
+    include: { ticket_path: true },
   });
 
   if (GroupTicket) {
@@ -85,9 +118,14 @@ const getGroupTicketById = async (id: string) => {
 
 //update GroupTicket
 
-const updateGroupTicket = async (id: string, reqData: DataRegister) => {
+const updateGroupTicket = async (
+  id: string,
+  reqData: DataRegister
+  // ticketPathData: [],
+) => {
   id = validate(getGroupTicketValidation, id);
-  const updateData = validate(updateGroupTicketValidation, reqData);
+  const updateDataGroupTicket = validate(updateGroupTicketValidation, reqData);
+  // const updateDataGroupTicket = validate(updateGroupTicketValidation, reqData);
   const GroupTicketInDb = await prismaClient.group_ticket.findUnique({
     where: {
       id,
@@ -100,7 +138,7 @@ const updateGroupTicket = async (id: string, reqData: DataRegister) => {
       where: {
         id,
       },
-      data: { ...updateData },
+      data: { ...updateDataGroupTicket },
     });
 
     return result;

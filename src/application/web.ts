@@ -19,7 +19,7 @@ import { userRouter } from "../routes/user-api";
 import { visaCategoryRouter } from "../routes/visaCategory-api";
 import { visaRouter } from "../routes/visa-api";
 import { groupTicketRouter } from "../routes/groupTicket-api";
-import { groupTicketOnPathRouter } from "../routes/groupTicketOnPath-api";
+// import { groupTicketOnPathRouter } from "../routes/groupTicketOnPath-api";
 import { ticketPathRouter } from "../routes/ticketPath-api";
 import { countryRouter } from "../routes/country-api";
 
@@ -54,7 +54,7 @@ app.use(mediaRouter);
 app.use(locationRouter);
 app.use(visaRouter);
 app.use(groupTicketRouter);
-app.use(groupTicketOnPathRouter);
+// app.use(groupTicketOnPathRouter);
 app.use(ticketPathRouter);
 app.use(countryRouter);
 

@@ -13,12 +13,12 @@ ticketPathRouter.get("/api/ticketpath", ticketPathController.getTicketPath);
 ticketPathRouter.get("/api/ticketpath/:id", ticketPathController.getTicketPath);
 
 // protected admin
-ticketPathRouter.post(
-  "/api/ticketpath",
-  authMiddleware,
-  isAdmin,
-  ticketPathController.createTicketPath
-);
+// ticketPathRouter.post(
+//   "/api/ticketpath",
+//   authMiddleware,
+//   isAdmin,
+//   ticketPathController.createTicketPath
+// );
 ticketPathRouter.put(
   "/api/ticketpath/:id",
   authMiddleware,

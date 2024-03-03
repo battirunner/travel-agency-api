@@ -26,13 +26,9 @@ const updateTicketPathValidation = Joi.object({
   arrival_datetime: Joi.date().min(Joi.ref("departure_datetime")).required(),
 });
 
-const getTicketPathValidation = Joi.object({
-  id: Joi.string().trim().max(100).required(),
-});
+const getTicketPathValidation = Joi.string().trim().max(100).required();
 
-const deleteTicketPathValidation = Joi.object({
-  id: Joi.string().trim().max(100).required(),
-});
+const deleteTicketPathValidation = Joi.string().trim().max(100).required();
 
 export {
   createTicketPathValidation,

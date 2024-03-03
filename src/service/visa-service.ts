@@ -47,16 +47,15 @@ const getVisa = async (country: string, visaCategory: string) => {
       country: {
         contains: `${country}`,
       },
-    },
+      visa_category:{
+        title:{
+          contains: `${visaCategory}`,
+        }
+      }
 
+    },
     include: {
-      visa_category: {
-        where: {
-          title: {
-            contains: `${visaCategory}`,
-          },
-        },
-      },
+      visa_category: true,
     },
   });
   if (result) {

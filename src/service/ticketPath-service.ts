@@ -1,36 +1,46 @@
 import { prismaClient } from "../application/database";
 import { ResponseError } from "../error/response-error";
-import { createTicketPathValidation, getTicketPathValidation, updateTicketPathValidation } from "../validation/ticketPath-validation";
-
+import {
+  createTicketPathValidation,
+  getTicketPathValidation,
+  updateTicketPathValidation,
+} from "../validation/ticketPath-validation";
 
 import { validate } from "../validation/validation";
 
 interface DataRegister {
-    departure_place: string;
-    departure_airport: string;
-    departure_airlines: string;
-    departure_aircraft: string;
-    departure_datetime: Date;
-    arrival_place: string;
-    arrival_airport: string;
-    arrival_airlines: string;
-    arrival_aircraft: string;
-    arrival_datetime: Date;
-  }
+  departure_place: string;
+  departure_airport: string;
+  departure_airlines: string;
+  departure_aircraft: string;
+  departure_datetime: Date;
+  arrival_place: string;
+  arrival_airport: string;
+  arrival_airlines: string;
+  arrival_aircraft: string;
+  arrival_datetime: Date;
+}
 
 // create TicketPath service
-const createTicketPath = async (reqData: DataRegister) => {
-    const TicketPath = validate(createTicketPathValidation, reqData);
+const createTicketPath = async (
+  reqData: DataRegister,
+  gorupTicketId: string,
+  pathOrder: number
+) => {
+  const TicketPath = validate(createTicketPathValidation, reqData);
+  const groupTicketId = validate(getTicketPathValidation, { gorupTicketId });
+  TicketPath.group_ticket_id = groupTicketId;
+  TicketPath.path_order = pathOrder;
 
-//   const countTicketPath = await prismaClient.ticket_path.count({
-//     where: {
-//       title: TicketPath.title,
-//     },
-//   });
+  //   const countTicketPath = await prismaClient.ticket_path.count({
+  //     where: {
+  //       title: TicketPath.title,
+  //     },
+  //   });
 
-//   if (countTicketPath === 1) {
-//     throw new ResponseError(400, "TicketPath already exists");
-//   }
+  //   if (countTicketPath === 1) {
+  //     throw new ResponseError(400, "TicketPath already exists");
+  //   }
 
   const result = await prismaClient.ticket_path.create({
     data: TicketPath,
