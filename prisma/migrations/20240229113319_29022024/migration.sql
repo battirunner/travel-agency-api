@@ -229,6 +229,7 @@ CREATE TABLE `group_ticket` (
     `food` BOOLEAN NOT NULL,
     `baggage` LONGTEXT NOT NULL,
     `policy` LONGTEXT NOT NULL,
+    `country` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -238,6 +239,9 @@ CREATE TABLE `group_ticket` (
 -- CreateTable
 CREATE TABLE `ticket_path` (
     `id` VARCHAR(191) NOT NULL,
+    `group_ticket_id` VARCHAR(191) NOT NULL,
+    `path_order` INTEGER NOT NULL,
+    `path_way` VARCHAR(191) NULL DEFAULT '',
     `departure_place` VARCHAR(191) NOT NULL,
     `departure_airport` VARCHAR(191) NOT NULL,
     `airlines` VARCHAR(191) NOT NULL,
@@ -249,19 +253,7 @@ CREATE TABLE `ticket_path` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `group_ticket_on_path` (
-    `id` VARCHAR(191) NOT NULL,
-    `group_ticket_id` VARCHAR(191) NULL,
-    `ticket_path_id` VARCHAR(191) NULL,
-    `path_order` INTEGER NOT NULL,
-    `path_way` VARCHAR(191) NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
-
+    UNIQUE INDEX `ticket_path_group_ticket_id_path_order_key`(`group_ticket_id`, `path_order`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -413,10 +405,7 @@ ALTER TABLE `visa` ADD CONSTRAINT `visa_visa_category_id_fkey` FOREIGN KEY (`vis
 ALTER TABLE `insurance` ADD CONSTRAINT `insurance_insurance_category_id_fkey` FOREIGN KEY (`insurance_category_id`) REFERENCES `insurance_category`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `group_ticket_on_path` ADD CONSTRAINT `group_ticket_on_path_group_ticket_id_fkey` FOREIGN KEY (`group_ticket_id`) REFERENCES `group_ticket`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `group_ticket_on_path` ADD CONSTRAINT `group_ticket_on_path_ticket_path_id_fkey` FOREIGN KEY (`ticket_path_id`) REFERENCES `ticket_path`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `ticket_path` ADD CONSTRAINT `ticket_path_group_ticket_id_fkey` FOREIGN KEY (`group_ticket_id`) REFERENCES `group_ticket`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `booking` ADD CONSTRAINT `booking_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

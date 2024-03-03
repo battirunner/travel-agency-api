@@ -10,25 +10,21 @@ const createInsuranceValidation = Joi.object({
 });
 
 const updateInsuranceValidation = Joi.object({
-  category_id: Joi.string().trim().max(100).optional().allow("",null),
-  title: Joi.string().trim().max(100).optional().allow("",null),
-  details: Joi.string().trim().optional().allow("",null),
-  country: Joi.string().trim().max(20).optional().allow("",null),
-  duration: Joi.string().trim().max(100).optional().allow("",null),
-  price: Joi.string().optional().allow("",null),
+  category_id: Joi.string().trim().max(100).optional().allow("", null),
+  title: Joi.string().trim().max(100).optional().allow("", null),
+  details: Joi.string().trim().optional().allow("", null),
+  country: Joi.string().trim().max(20).optional().allow("", null),
+  duration: Joi.string().trim().max(100).optional().allow("", null),
+  price: Joi.string().optional().allow("", null),
 });
 
-const getInsuranceValidation = Joi.object({
-  id: Joi.string().trim().max(100).required(),
-});
+const getInsuranceValidation = Joi.string().trim().max(100).required();
 
-const deleteInsuranceValidation = Joi.object({
-  id: Joi.string().trim().max(100).required(),
-});
+const deleteInsuranceValidation = Joi.string().trim().max(100).required();
 
 export {
   createInsuranceValidation,
-  updateInsuranceValidation,
-  getInsuranceValidation,
   deleteInsuranceValidation,
+  getInsuranceValidation,
+  updateInsuranceValidation,
 };

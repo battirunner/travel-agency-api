@@ -11,22 +11,18 @@ const createGroupTicketValidation = Joi.object({
 });
 
 const updateGroupTicketValidation = Joi.object({
-  start_place: Joi.string().trim().max(100).required().allow("",null),
-  end_place: Joi.string().trim().max(100).required().allow("",null),
-  price: Joi.string().trim().max(100).required().allow("",null),
-  show_price: Joi.boolean().required().allow("",null),
-  food: Joi.boolean().required().allow("",null),
-  baggage: Joi.string().trim().required().allow("",null),
-  policy: Joi.string().trim().required().allow("",null),
+  start_place: Joi.string().trim().max(100).required().allow("", null),
+  end_place: Joi.string().trim().max(100).required().allow("", null),
+  price: Joi.string().trim().max(100).required().allow("", null),
+  show_price: Joi.boolean().required().allow("", null),
+  food: Joi.boolean().required().allow("", null),
+  baggage: Joi.string().trim().required().allow("", null),
+  policy: Joi.string().trim().required().allow("", null),
 });
 
-const getGroupTicketValidation = Joi.object({
-  id: Joi.string().trim().max(100).required(),
-});
+const getGroupTicketValidation = Joi.string().trim().max(100).required();
 
-const deleteGroupTicketValidation = Joi.object({
-  id: Joi.string().trim().max(100).required(),
-});
+const deleteGroupTicketValidation = Joi.string().trim().max(100).required();
 
 export {
   createGroupTicketValidation,
