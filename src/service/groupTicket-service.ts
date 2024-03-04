@@ -66,39 +66,69 @@ const createGroupTicket = async (
 };
 
 // get GroupTicket
-const getGroupTicket = async (country: string, page: number, limit: number) => {
-  if (country !== "") {
-    const result = await prismaClient.group_ticket.findMany({
-      where: {
-        country: {
-          contains: country,
+const getGroupTicket = async (
+  country: string,
+  from: string,
+  to: string,
+  start_date: string,
+  page: number,
+  limit: number
+) => {
+  const result = await prismaClient.group_ticket.findMany({
+    where: {
+      OR: [
+        { country: { contains: country } },
+        { start_place: { contains: from } },
+        { end_place: { contains: to } },
+        {
+          ticket_path: {
+            some: { departure_datetime: { contains: start_date } },
+          },
         },
-      },
-      include: {
-        ticket_path: true,
-      },
-      skip: page <= 1 ? 0 : page * limit,
-      take: limit,
-    });
-    if (result) {
-      return result;
-    } else {
-      throw new ResponseError(404, "No GroupTicket found!");
-    }
-  } else {
-    const result = await prismaClient.group_ticket.findMany({
-      include: {
-        ticket_path: true,
-      },
-      skip: page <= 1 ? 0 : page * limit,
-      take: limit,
-    });
-    if (result) {
-      return result;
-    } else {
-      throw new ResponseError(404, "No GroupTicket found!");
-    }
-  }
+      ],
+    },
+    include: {
+      ticket_path: true,
+    },
+  });
+
+  if (result) {
+        return result;
+      } else {
+        throw new ResponseError(404, "No GroupTicket found!");
+      }
+  // if (country !== "") {
+  //   const result = await prismaClient.group_ticket.findMany({
+  //     where: {
+  //       country: {
+  //         contains: country,
+  //       },
+  //     },
+  //     include: {
+  //       ticket_path: true,
+  //     },
+  //     skip: page <= 1 ? 0 : page * limit,
+  //     take: limit,
+  //   });
+  //   if (result) {
+  //     return result;
+  //   } else {
+  //     throw new ResponseError(404, "No GroupTicket found!");
+  //   }
+  // } else {
+  //   const result = await prismaClient.group_ticket.findMany({
+  //     include: {
+  //       ticket_path: true,
+  //     },
+  //     skip: page <= 1 ? 0 : page * limit,
+  //     take: limit,
+  //   });
+  //   if (result) {
+  //     return result;
+  //   } else {
+  //     throw new ResponseError(404, "No GroupTicket found!");
+  //   }
+  // }
 };
 
 // get GroupTicket by id
