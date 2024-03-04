@@ -20,13 +20,9 @@ const updateVisaValidation = Joi.object({
   visa_category_id: Joi.string().trim().required().allow("", null),
 });
 
-const getVisaValidation = Joi.object({
-  id: Joi.string().trim().max(100).required(),
-});
+const getVisaValidation = Joi.string().trim().max(100).required();
 
-const deleteVisaValidation = Joi.object({
-  id: Joi.string().trim().max(100).required(),
-});
+const deleteVisaValidation = Joi.string().trim().max(100).required();
 
 export {
   createVisaValidation,

@@ -26,13 +26,9 @@ const getBookingValidation = Joi.object({
   id: Joi.string().trim().max(100).required(),
 });
 
-const getBookingByUserValidation = Joi.object({
-  user_id: Joi.string().trim().max(100).required(),
-});
+const getBookingByUserValidation = Joi.string().trim().max(100).required();
 
-const deleteBookingValidation = Joi.object({
-  id: Joi.string().trim().max(100).required(),
-});
+const deleteBookingValidation = Joi.string().trim().max(100).required();
 
 export {
   createBookingValidation,

@@ -56,6 +56,13 @@ const getTours = async (tourType: string, page: number, limit: number) => {
     } else {
       throw new ResponseError(404, "No tours found!");
     }
+  } else {
+    const result = await prismaClient.tour_Package.findMany({});
+    if (result) {
+      return result;
+    } else {
+      throw new ResponseError(404, "No tours found!");
+    }
   }
   // const result = await prismaClient.tour_Package.findMany({});
   // if (result) {

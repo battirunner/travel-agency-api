@@ -2,12 +2,18 @@ import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import groupTicketService from "../service/groupTicket-service";
 
-
 // @desc Fetch all groupTicket
 // route GET /api/groupTicket
 // @access Public
 const getGroupTicket = asyncHandler(async (req: Request, res: Response) => {
-  const result = await groupTicketService.getGroupTicket();
+  const country = req.query.country || "";
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 5;
+  const result = await groupTicketService.getGroupTicket(
+    country as string,
+    page,
+    limit
+  );
   res.status(200).json({
     data: result,
   });
@@ -30,7 +36,10 @@ const createGroupTicket = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const groupTicket = req.body.groupTicket;
     const ticketPath = req.body.ticketPath;
-    const result = await groupTicketService.createGroupTicket(groupTicket,ticketPath);
+    const result = await groupTicketService.createGroupTicket(
+      groupTicket,
+      ticketPath
+    );
     res.status(201).json({ data: result });
   }
 );
@@ -43,7 +52,10 @@ const updateGroupTicket = asyncHandler(
     // @ts-ignore
     // console.log(req.user.userId);
     // @ts-ignore
-    const result = await groupTicketService.updategroupTicket(req.params.id, req.body);
+    const result = await groupTicketService.updategroupTicket(
+      req.params.id,
+      req.body
+    );
     res.status(200).json({ data: result });
   }
 );
@@ -53,9 +65,8 @@ const updateGroupTicket = asyncHandler(
 // @access  Private/Admin
 const deleteGroupTicket = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    
     const result = await groupTicketService.deleteGroupTicket(req.params.id);
-    res.status(200).json({ data:result });
+    res.status(200).json({ data: result });
   }
 );
 
