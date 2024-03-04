@@ -7,10 +7,16 @@ import groupTicketService from "../service/groupTicket-service";
 // @access Public
 const getGroupTicket = asyncHandler(async (req: Request, res: Response) => {
   const country = req.query.country || "";
+  const from = req.query.from || "";
+  const to = req.query.to || "";
+  const start_date = req.query.start_date || "";
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 5;
   const result = await groupTicketService.getGroupTicket(
     country as string,
+    from as string,
+    to as string,
+    start_date as string,
     page,
     limit
   );
