@@ -8,7 +8,7 @@ import generateToken from "../utlis/generateToken";
 // @access Public
 const getVisaCategory = asyncHandler(async (req: Request, res: Response) => {
   const result = await visaService.getVisaCategory();
-  generateToken(res, result);
+  // generateToken(res, result);
   res.status(200).json({
     data: result,
   });
@@ -20,7 +20,7 @@ const getVisaCategory = asyncHandler(async (req: Request, res: Response) => {
 const getVisaCategoryById = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await visaService.getVisaCategoryById(req.params.id);
-    generateToken(res, result);
+    // generateToken(res, result);
     res.status(200).json({ data: result });
   }
 );
@@ -31,7 +31,7 @@ const getVisaCategoryById = asyncHandler(
 const createVisaCategory = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await visaService.createVisaCategory(req.body);
-    generateToken(res, result);
+    // generateToken(res, result);
     res.status(201).json({ data: result });
   }
 );
@@ -56,7 +56,7 @@ const deleteVisaCategory = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     
     const result = await visaService.deleteVisaCategory(req.params.id);
-    generateToken(res, result);
+    // generateToken(res, result);
     res.status(200).json({ data:result });
   }
 );

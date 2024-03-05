@@ -26,7 +26,7 @@ import { countryRouter } from "../routes/country-api";
 const app = express();
 
 // cors
-app.use(cors());
+app.use(cors({ credentials: true, origin: true }));
 
 //morgan for dev
 app.use(morgan("dev"));
@@ -34,8 +34,6 @@ app.use(morgan("dev"));
 // request parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-
 
 // cookie parser
 app.use(cookieParser(process.env.COOKIE_SECRET));
