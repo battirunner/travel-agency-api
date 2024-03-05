@@ -9,7 +9,7 @@ import insuranceCategoryService from "../service/insuranceCategory-service";
 // @access Public
 const getInsuranceCategory = asyncHandler(async (req: Request, res: Response) => {
   const result = await insuranceCategoryService.getInsuranceCategory();
-  generateToken(res, result);
+  // generateToken(res, result);
   res.status(200).json({
     data: result,
   });
@@ -21,7 +21,7 @@ const getInsuranceCategory = asyncHandler(async (req: Request, res: Response) =>
 const getInsuranceCategoryById = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await insuranceCategoryService.getInsuranceCategoryById(req.params.id);
-    generateToken(res, result);
+    // generateToken(res, result);
     res.status(200).json({ data: result });
   }
 );
@@ -32,7 +32,7 @@ const getInsuranceCategoryById = asyncHandler(
 const createInsuranceCategory = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await insuranceCategoryService.createInsuranceCategory(req.body);
-    generateToken(res, result);
+    // generateToken(res, result);
     res.status(201).json({ data: result });
   }
 );
@@ -57,7 +57,7 @@ const deleteInsuranceCategory = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     
     const result = await insuranceCategoryService.deleteInsuranceCategory(req.params.id);
-    generateToken(res, result);
+    // generateToken(res, result);
     res.status(200).json({ data:result });
   }
 );

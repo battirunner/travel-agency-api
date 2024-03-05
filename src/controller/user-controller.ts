@@ -77,7 +77,7 @@ const updateUserProfile = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
   console.log(req.body);
     const result = await userService.update(req.body);
-    generateToken(res, result);
+    // generateToken(res, result);
     res.status(200).json({ data: result });
   }
 );
