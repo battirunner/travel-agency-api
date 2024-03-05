@@ -27,7 +27,9 @@ const app = express();
 
 // cors
 app.use(
-  cors({ credentials: true, origin: `${process.env.FRONTEND_BASE_URL}` })
+  cors(
+    // { credentials: true, origin: `${process.env.FRONTEND_BASE_URL}` }
+    )
 );
 
 //morgan for dev
