@@ -561,7 +561,7 @@ const forgotPassword = async (email: string) => {
     to: existUser.email,
     subject: "Password Reset",
     html: passwordResetTemplate(
-      `http://localhost:3000/reset-password/?token=${token}&id=${existUser.id}`
+      `${process.env.FRONTEND_BASE_URL}/reset-password/?token=${token}&id=${existUser.id}`
     ),
   });
 

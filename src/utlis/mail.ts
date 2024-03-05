@@ -33,7 +33,7 @@ function verifyEmailTemplate(id:string, code: string) {
   <div style="max-width:620px;margin:0 auto; font-family:sans-serif; color:#272727;">
   <h1 style="background:#f6f6f6; padding:10px;text-align:center;color:#272727;">We are delighted to welcome you to our service!</h1>
   <p>Please Verify Your Email Tp Continue Your verification code is:</p>
-  <p>Please Visit the link: <a href="http://localhost:3000/verify-email?userId=${id}&token=${code}" target="_blank" rel="noopener noreferrer"> Verify Email</a></p>
+  <p>Please Visit the link: <a href="${process.env.FRONTEND_BASE_URL}/verify-email?userId=${id}&token=${code}" target="_blank" rel="noopener noreferrer"> Verify Email</a></p>
   </div>
   </body>`;
 }
