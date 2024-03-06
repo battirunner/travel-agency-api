@@ -1,6 +1,6 @@
 import { prismaClient } from "../application/database";
 import { ResponseError } from "../error/response-error";
-import { mailTransport } from "../utlis/mail";
+import { mailTransport } from "../utils/mail";
 import { createContactFormInfoValidation } from "../validation/contactForm-validation";
 import { validate } from "../validation/validation";
 

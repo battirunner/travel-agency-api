@@ -1,7 +1,7 @@
 //external import
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 
 // internal import
@@ -25,8 +25,15 @@ import { countryRouter } from "../routes/country-api";
 
 const app = express();
 
+// console.log(typeof(`${process.env.FRONTEND_BASE_URL}`));
+
 // cors
-app.use(cors({ credentials: true, origin: true }));
+app.use(
+  cors({
+    credentials: true,
+    origin: [`${process.env.FRONTEND_BASE_URL}`, "http://localhost:3000"],
+  })
+);
 
 //morgan for dev
 app.use(morgan("dev"));
@@ -37,6 +44,23 @@ app.use(express.urlencoded({ extended: true }));
 
 // cookie parser
 app.use(cookieParser(process.env.COOKIE_SECRET));
+
+// app.use(function (req: Request, res: Response, next: NextFunction) {
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
+//   res.setHeader("Access-Control-Allow-Origin", `${req.headers.origin}`);
+//   res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+//   );
+//   console.dir(req.headers);
+//   console.dir(res.headersSent);
+//   if ("OPTIONS" === req.method) {
+//     res.send(200);
+//   } else {
+//     next();
+//   }
+// });
 
 // route
 app.use(publicRouter);

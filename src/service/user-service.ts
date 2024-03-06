@@ -2,14 +2,14 @@ import axios from "axios";
 import bcrypt from "bcrypt";
 import { prismaClient } from "../application/database";
 import { ResponseError } from "../error/response-error";
-import { createRandomBytes } from "../utlis/helper";
+import { createRandomBytes } from "../utils/helper";
 import {
   confirmationTemplate,
   generateOtp,
   mailTransport,
   passwordResetTemplate,
   verifyEmailTemplate,
-} from "../utlis/mail";
+} from "../utils/mail";
 import {
   getUserValidation,
   loginUserValidation,
@@ -95,6 +95,7 @@ const register = async (reqData: DataRegister) => {
           id: true,
           name: true,
           email: true,
+          role: true,
         },
       });
 
@@ -146,6 +147,7 @@ const register = async (reqData: DataRegister) => {
           id: true,
           name: true,
           email: true,
+          role: true,
         },
       });
 
@@ -186,6 +188,7 @@ const register = async (reqData: DataRegister) => {
         id: true,
         name: true,
         email: true,
+        role: true,
       },
     });
 
@@ -210,7 +213,7 @@ const register = async (reqData: DataRegister) => {
         id: true,
         user_id: true,
         token: true,
-        createdAt: true,
+        // createdAt: true,
       },
     });
 
@@ -246,6 +249,7 @@ const login = async (reqData: DataLogin) => {
           id: true,
           name: true,
           email: true,
+          role: true,
         },
       });
 
@@ -283,6 +287,7 @@ const login = async (reqData: DataLogin) => {
           id: true,
           name: true,
           email: true,
+          role: true,
         },
       });
 
@@ -312,6 +317,7 @@ const login = async (reqData: DataLogin) => {
         email: true,
         password: true,
         emailVerified: true,
+        role: true,
       },
     });
 
@@ -331,7 +337,12 @@ const login = async (reqData: DataLogin) => {
     if (!passwordValid) {
       throw new ResponseError(401, "Invalid email or password");
     }
-    const result = { id: user.id, email: user.email, name: user.name };
+    const result = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+    };
 
     return result;
   }
@@ -388,8 +399,6 @@ const update = async (reqData: DataUpdate) => {
   if (!userInDatabase) {
     throw new ResponseError(404, "User not found!");
   }
-
-
 
   if (user.password) {
     user.password = await bcrypt.hash(user.password, 10);
