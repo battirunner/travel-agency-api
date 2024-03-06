@@ -58,10 +58,13 @@ const generateToken = (res: Response, user: any) => {
   const token = jwt.sign(userObject, process.env.JWT_SECRET as string, {
     expiresIn: process.env.JWT_EXPIRY,
   });
+
   res.cookie(process.env.COOKIE_NAME as string, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV !== "development",
-    sameSite: "strict",
+    // secure: process.env.NODE_ENV !== "development",
+    // sameSite: "strict",
+    sameSite: "none",
+    secure: true,
     // 30 days
     maxAge: 30 * 24 * 60 * 60 * 1000,
     signed: true,
