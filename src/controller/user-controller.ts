@@ -4,7 +4,6 @@ import { ResponseError } from "../error/response-error";
 import userService from "../service/user-service";
 import generateToken from "../utlis/generateToken";
 
-
 // @desc Login user
 // route POST /api/user/login
 // @access Public
@@ -42,18 +41,26 @@ const logoutUser = asyncHandler(
     //   expires: new Date(0),
     // })
 
-    if (
-      Object.keys(req.signedCookies).length > 0 &&
-      Object.keys(req.signedCookies).includes(`${process.env.COOKIE_NAME}`)
-    ) {
-      res.clearCookie(process.env.COOKIE_NAME as string, {
-        httpOnly: true,
-        expires: new Date(0),
-      });
-      res.status(200).json({ message: "User logged Out" });
-    } else {
-      throw new ResponseError(401, "Please login first!");
-    }
+    res.clearCookie(process.env.COOKIE_NAME as string, {
+      httpOnly: true,
+      expires: new Date(0),
+      sameSite: "none",
+      secure: true,
+    });
+    res.status(200).json({ message: "User logged Out" });
+
+    // if (
+    //   Object.keys(req.signedCookies).length > 0 &&
+    //   Object.keys(req.signedCookies).includes(`${process.env.COOKIE_NAME}`)
+    // ) {
+    //   res.clearCookie(process.env.COOKIE_NAME as string, {
+    //     httpOnly: true,
+    //     expires: new Date(0),
+    //   });
+    //   res.status(200).json({ message: "User logged Out" });
+    // } else {
+    //   throw new ResponseError(401, "Please login first!");
+    // }
   }
 );
 
@@ -75,7 +82,7 @@ const getUserProfile = asyncHandler(
 // @access Private
 const updateUserProfile = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-  console.log(req.body);
+    console.log(req.body);
     const result = await userService.update(req.body);
     // generateToken(res, result);
     res.status(200).json({ data: result });
@@ -190,7 +197,7 @@ const getUserById = asyncHandler(
 const updateUserById = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     // console.log(req.params);
-    const result = await userService.updateUserById(req.params.id,req.body);
+    const result = await userService.updateUserById(req.params.id, req.body);
     // console.log(result);
     res.status(200).json({ data: result });
   }
@@ -207,8 +214,6 @@ const deleteUserById = asyncHandler(
     res.status(200).json({ data: result });
   }
 );
-
-
 
 export default {
   loginUser,
