@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import visaService from "../service/visaCategory-service";
-import generateToken from "../utlis/generateToken";
 
 // @desc Fetch all visa category
 // route GET /api/visacategory
@@ -44,7 +43,10 @@ const updateVisaCategory = asyncHandler(
     // @ts-ignore
     // console.log(req.user.userId);
     // @ts-ignore
-    const result = await visaService.updateVisaCategory(req.params.id, req.body);
+    const result = await visaService.updateVisaCategory(
+      req.params.id,
+      req.body
+    );
     res.status(200).json({ data: result });
   }
 );
@@ -54,10 +56,9 @@ const updateVisaCategory = asyncHandler(
 // @access  Private/Admin
 const deleteVisaCategory = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    
     const result = await visaService.deleteVisaCategory(req.params.id);
     // generateToken(res, result);
-    res.status(200).json({ data:result });
+    res.status(200).json({ data: result });
   }
 );
 

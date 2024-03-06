@@ -52,24 +52,29 @@ const generateToken = (res: Response, user: any) => {
     userName: user.name,
     email: user.email,
     // phone: user.phone,
-    // role: user.role || "user",
+    role: user.role,
   };
 
   const token = jwt.sign(userObject, process.env.JWT_SECRET as string, {
     expiresIn: process.env.JWT_EXPIRY,
   });
 
-  res.cookie(process.env.COOKIE_NAME as string, token, {
-    httpOnly: true,
-    // secure: process.env.NODE_ENV !== "development",
-    // sameSite: "strict",
-    sameSite: "none",
-    secure: true,
-    // 1 days
-    maxAge: 1 * 24 * 60 * 60 * 1000,
-    signed: true,
-    domain: `${process.env.FRONTEND_COOKIE_DOMAIN}`,
-  });
+  // console.log(process.env.FRONTEND_COOKIE_DOMAIN);
+
+  // res.cookie(process.env.COOKIE_NAME as string, token, {
+  //   httpOnly: true,
+  //   // secure: process.env.NODE_ENV !== "development",
+  //   // sameSite: "strict",
+  //   path:"/",
+  //   sameSite: "none",
+  //   secure: true,
+  //   // 1 days
+  //   maxAge: 1 * 24 * 60 * 60 * 1000,
+  //   signed: true,
+  //   domain: `${process.env.FRONTEND_COOKIE_DOMAIN}`,
+  // });
+
+  return token;
 };
 
 // const toBase64 = (obj: object) => {

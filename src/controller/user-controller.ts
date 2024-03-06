@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import { ResponseError } from "../error/response-error";
 import userService from "../service/user-service";
-import generateToken from "../utlis/generateToken";
+import generateToken from "../utils/generateToken";
 
 // @desc Login user
 // route POST /api/user/login
@@ -13,9 +13,10 @@ const loginUser = asyncHandler(
     const result = await userService.login(req.body);
     // console.log("from controller");
     // console.log(result);
-    generateToken(res, result);
+    const token = generateToken(res, result);
     res.status(200).json({
       data: result,
+      token: token,
     });
   }
 );
@@ -41,12 +42,12 @@ const logoutUser = asyncHandler(
     //   expires: new Date(0),
     // })
 
-    res.clearCookie(process.env.COOKIE_NAME as string, {
-      httpOnly: true,
-      expires: new Date(0),
-      sameSite: "none",
-      secure: true,
-    });
+    // res.clearCookie(process.env.COOKIE_NAME as string, {
+    //   httpOnly: true,
+    //   expires: new Date(0),
+    //   // sameSite: "none",
+    //   // secure: true,
+    // });
     res.status(200).json({ message: "User logged Out" });
 
     // if (
@@ -70,9 +71,9 @@ const logoutUser = asyncHandler(
 const getUserProfile = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     // @ts-ignore
-    // console.log(req.user.userId);
+    console.log(req.user.id);
     // @ts-ignore
-    const result = await userService.get(req.user.userId);
+    const result = await userService.get(req.user.id);
     res.status(200).json({ data: result });
   }
 );
