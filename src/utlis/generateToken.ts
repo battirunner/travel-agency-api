@@ -65,9 +65,10 @@ const generateToken = (res: Response, user: any) => {
     // sameSite: "strict",
     sameSite: "none",
     secure: true,
-    // 30 days
-    maxAge: 30 * 24 * 60 * 60 * 1000,
+    // 1 days
+    maxAge: 1 * 24 * 60 * 60 * 1000,
     signed: true,
+    domain: `${process.env.FRONTEND_COOKIE_DOMAIN}`,
   });
 };
 
