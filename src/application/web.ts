@@ -25,11 +25,14 @@ import { countryRouter } from "../routes/country-api";
 
 const app = express();
 
+// console.log(typeof(`${process.env.FRONTEND_BASE_URL}`));
+
 // cors
 app.use(
-  cors(
-    // { credentials: true, origin: `${process.env.FRONTEND_BASE_URL}` }
-    )
+  cors({
+    credentials: true,
+    origin: [`${process.env.FRONTEND_BASE_URL}`, "http://localhost:3000"],
+  })
 );
 
 //morgan for dev
@@ -42,20 +45,20 @@ app.use(express.urlencoded({ extended: true }));
 // cookie parser
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
-app.use(function (req:Request, res:Response, next:NextFunction) {
-  res.header("Access-Control-Allow-Credentials");
-  res.header("Access-Control-Allow-Origin", req.headers.origin);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
-  );
-  if ("OPTIONS" == req.method) {
-    res.send(200);
-  } else {
-    next();
-  }
-});
+// app.use(function (req: Request, res: Response, next: NextFunction) {
+//   res.header("Access-Control-Allow-Credentials");
+//   res.header("Access-Control-Allow-Origin", req.headers.origin);
+//   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+//   );
+//   if ("OPTIONS" == req.method) {
+//     res.send(200);
+//   } else {
+//     next();
+//   }
+// });
 
 // route
 app.use(publicRouter);
