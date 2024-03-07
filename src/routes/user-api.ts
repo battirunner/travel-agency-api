@@ -62,6 +62,11 @@ userRouter
 // );
 
 // protected admin
+// admin login
+userRouter.post(
+  "/api/admin/login",
+  userController.loginAdmin
+);
 // get all user
 userRouter.get(
   "/api/admin/users",

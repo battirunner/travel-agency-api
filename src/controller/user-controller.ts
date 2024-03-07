@@ -9,7 +9,7 @@ import generateToken from "../utils/generateToken";
 // @access Public
 const loginUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.body);
+    // console.log(req.body);
     const result = await userService.login(req.body);
     // console.log("from controller");
     // console.log(result);
@@ -20,6 +20,25 @@ const loginUser = asyncHandler(
     });
   }
 );
+
+
+// @desc Login admin
+// route POST /api/admin/login
+// @access Public
+const loginAdmin = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    // console.log(req.body);
+    const result = await userService.loginAdmin(req.body);
+    // console.log("from controller");
+    // console.log(result);
+    const token = generateToken(res, result);
+    res.status(200).json({
+      data: result,
+      token: token,
+    });
+  }
+);
+
 
 // @desc Register a new user
 // route POST /api/user/registration
@@ -218,6 +237,7 @@ const deleteUserById = asyncHandler(
 
 export default {
   loginUser,
+  loginAdmin,
   registerUser,
   logoutUser,
   getUserProfile,
