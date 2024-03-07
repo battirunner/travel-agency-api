@@ -348,6 +348,55 @@ const login = async (reqData: DataLogin) => {
   }
 };
 
+//login admin
+
+const loginAdmin = async (reqData: DataLogin) => {
+  const loginRequest = validate(loginUserValidation, reqData);
+
+  const user = await prismaClient.user.findUnique({
+    where: {
+      email: loginRequest.email,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      password: true,
+      emailVerified: true,
+      role: true,
+    },
+  });
+
+  if (!user) {
+    throw new ResponseError(401, "Invalid email or password");
+  }
+
+  if (!user.emailVerified) {
+    throw new ResponseError(401, "Please verify your email first!");
+  }
+
+  if (user.role === "USER") {
+    throw new ResponseError(401, "Invalid email or password");
+  }
+
+  const passwordValid = await bcrypt.compare(
+    loginRequest.password,
+    user.password as string
+  );
+
+  if (!passwordValid) {
+    throw new ResponseError(401, "Invalid email or password");
+  }
+  const result = {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    role: user.role,
+  };
+
+  return result;
+};
+
 // get user profile
 const get = async (userId: string) => {
   userId = validate(getUserValidation, userId);
@@ -729,6 +778,7 @@ const deleteUserById = async (userId: string) => {
 export default {
   register,
   login,
+  loginAdmin,
   get,
   update,
   verifyEmail,
