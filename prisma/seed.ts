@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   const password = await bcrypt.hash("1234", 10);
+  const pass2 = await bcrypt.hash("Bangladesh2024@", 10); 
   const alice = await prisma.user.upsert({
     where: { email: "alice@prisma.io" },
     update: {},
@@ -11,6 +12,7 @@ async function main() {
       email: "alice@prisma.io",
       name: "Alice",
       role: "USER",
+      gender:"FEMALE",
       password: password,
       emailVerified: true,
       agreement: true,
@@ -23,6 +25,22 @@ async function main() {
       email: "bob@prisma.io",
       name: "Bob",
       role: "ADMIN",
+      gender:"MALE",
+      password: password,
+      emailVerified: true,
+      agreement: true,
+    },
+  });
+
+  const fbaintl = await prisma.user.upsert({
+    where: { email: "fbaintl@gmail.com" },
+    update: {},
+    create: {
+      email: "fbaintl@gmail.com",
+      name: "fbaintl",
+      role: "ADMIN",
+      gender:"MALE",
+      phone:"01700000000",
       password: password,
       emailVerified: true,
       agreement: true,
