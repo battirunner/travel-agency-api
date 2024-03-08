@@ -49,7 +49,10 @@ const createTour = async (reqData: DataRegister) => {
 // get tours
 const getTours = async (tourType: string, page: number, limit: number) => {
   if (tourType !== "") {
-    const result = await tourTypeService.getTourType(tourType, page, limit);
+    const result = await prismaClient.tour_Package.findMany({
+      where: { tour_type: { title: tourType } },
+      include: { Location: true, tour_type: true, visa_category: true },
+    });
 
     if (result) {
       return result;
@@ -57,7 +60,16 @@ const getTours = async (tourType: string, page: number, limit: number) => {
       throw new ResponseError(404, "No tours found!");
     }
   } else {
-    const result = await prismaClient.tour_Package.findMany({});
+    const result = await prismaClient.tour_Package.findMany({
+      where: {
+        // NOT: { tour_type:{title:{contains:"Hajj"}} },
+        NOT: [
+          { tour_type: { title: { contains: "Hajj" } } },
+          { tour_type: { title: { contains: "Umrah" } } },
+        ],
+      },
+      include: { Location: true, tour_type: true, visa_category: true },
+    });
     if (result) {
       return result;
     } else {
