@@ -40,19 +40,29 @@ const createVisa = async (reqData: DataRegister) => {
 
 // get visa
 const getVisa = async (country: string, visaCategory: string) => {
+  //get all visa if no params provided
+  if (country === "" && visaCategory === "") {
+    const result = await prismaClient.visa.findMany({
+      include: { visa_category: true },
+    });
+    if (result) {
+      return result;
+    } else {
+      throw new ResponseError(404, "No visas found!");
+    }
+  }
   // const result = await prismaClient.visa.findMany();
-  console.log("from vis service", country, visaCategory);
+  // console.log("from vis service", country, visaCategory);
   const result = await prismaClient.visa.findFirst({
     where: {
       country: {
         contains: `${country}`,
       },
-      visa_category:{
-        title:{
+      visa_category: {
+        title: {
           contains: `${visaCategory}`,
-        }
-      }
-
+        },
+      },
     },
     include: {
       visa_category: true,

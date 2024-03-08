@@ -14,19 +14,19 @@ visaRouter.get("/api/visa/:id", visaController.getVisaById);
 
 // protected admin
 visaRouter.post(
-  "/api/visa",
+  "/api/admin/visa",
   authMiddleware,
   isAdmin,
   visaController.createVisa
 );
 visaRouter.put(
-  "/api/visa/:id",
+  "/api/admin/visa/:id",
   authMiddleware,
   isAdmin,
   visaController.updateVisa
 );
 visaRouter.delete(
-  "/api/visa/:id",
+  "/api/admin/visa/:id",
   authMiddleware,
   isAdmin,
   visaController.deleteVisa

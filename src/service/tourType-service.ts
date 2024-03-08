@@ -35,8 +35,8 @@ const createTourType = async (reqData: DataRegister) => {
 // get tour types
 const getTourType = async (tourType: string, page: number, limit: number) => {
   const result = await prismaClient.tour_Type.findMany({
-    where: { title: { contains: tourType } },
-    include: { tourPackages: { include: { Location: true } } },
+    where: { OR: [{ title: { contains: tourType } }] },
+    // include: { tourPackages: { include: { Location: true,visa_category:true } } },
   });
   if (result) {
     console.log(result);
