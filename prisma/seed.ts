@@ -26,7 +26,7 @@ async function main() {
       name: "Bob",
       role: "ADMIN",
       gender: "MALE",
-      password: password,
+      password: pass2,
       emailVerified: true,
       agreement: true,
     },
