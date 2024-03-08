@@ -27,8 +27,9 @@ const createTicketPath = async (
   gorupTicketId: string,
   pathOrder: number
 ) => {
+  console.log(typeof gorupTicketId);
   const TicketPath = validate(createTicketPathValidation, reqData);
-  const groupTicketId = validate(getTicketPathValidation, { gorupTicketId });
+  const groupTicketId = validate(getTicketPathValidation, gorupTicketId);
   TicketPath.group_ticket_id = groupTicketId;
   TicketPath.path_order = pathOrder;
 

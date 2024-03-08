@@ -35,6 +35,7 @@ const createGroupTicket = async (
   //   if (countGroupTicket === 1) {
   //     throw new ResponseError(400, "GroupTicket already exists");
   //   }
+  console.log(ticketPathData);
 
   const GroupTicketResult = await prismaClient.group_ticket.create({
     data: GroupTicket,
