@@ -183,7 +183,9 @@ const verifyToken = asyncHandler(
 // @access  private/Admin
 const getAllUsers = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await userService.getAllUsers();
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+    const result = await userService.getAllUsers(page,limit);
     res.status(200).json({ data: result });
   }
 );
