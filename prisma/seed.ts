@@ -1295,6 +1295,186 @@ async function main() {
     },
   });
 
+  const booking1 = await prisma.booking.create({
+    data: {
+      user_id: alice.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "50446 Dicki Bypass, Moenstad, MD 86816-7057",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "VISA",
+      booking_item_id: visa1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "PENDING",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking2 = await prisma.booking.create({
+    data: {
+      user_id: bob.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "50446 Dicki Bypass, Moenstad, MD 86816-7057",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "VISA",
+      booking_item_id: visa2.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "PENDING",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking3 = await prisma.booking.create({
+    data: {
+      user_id: alice.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "HAJJ",
+      booking_item_id: HajjPackage1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "DUE",
+      approval_status: "PENDING",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking4 = await prisma.booking.create({
+    data: {
+      user_id: bob.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "HAJJ",
+      booking_item_id: HajjPackage1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "DUE",
+      approval_status: "PENDING",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking5 = await prisma.booking.create({
+    data: {
+      user_id: alice.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "UMRAH",
+      booking_item_id: umrahPackage1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "PROCESSING",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking6 = await prisma.booking.create({
+    data: {
+      user_id: bob.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "UMRAH",
+      booking_item_id: umrahPackage1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "PROCESSING",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking7 = await prisma.booking.create({
+    data: {
+      user_id: alice.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "INSURANCE",
+      booking_item_id: insurance1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "PROCESSING",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking8 = await prisma.booking.create({
+    data: {
+      user_id: bob.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "INSURANCE",
+      booking_item_id: insurance1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "PROCESSING",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking9 = await prisma.booking.create({
+    data: {
+      user_id: alice.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "TOURS",
+      booking_item_id: tourPackage1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "COMPLETED",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking10 = await prisma.booking.create({
+    data: {
+      user_id: bob.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "TOURS",
+      booking_item_id: tourPackage1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "COMPLETED",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking11 = await prisma.booking.create({
+    data: {
+      user_id: bob.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "GROUP_TICKET",
+      booking_item_id: groupTicket2.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "COMPLETED",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking12 = await prisma.booking.create({
+    data: {
+      user_id: alice.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "GROUP_TICKET",
+      booking_item_id: groupTicket3.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "COMPLETED",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
   const countries = await prisma.country.createMany({
     data: [
       { name: "Afghanistan", iso_code: "AF" },

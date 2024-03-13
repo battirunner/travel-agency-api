@@ -22,12 +22,8 @@ const updateBookingValidation = Joi.object({
   payment_status: Joi.string().trim().optional(),
   approval_status: Joi.string().trim().optional(),
 });
-const getBookingValidation = Joi.object({
-  id: Joi.string().trim().max(100).required(),
-});
-
+const getBookingValidation = Joi.string().trim().max(100).required();
 const getBookingByUserValidation = Joi.string().trim().max(100).required();
-
 const deleteBookingValidation = Joi.string().trim().max(100).required();
 
 export {

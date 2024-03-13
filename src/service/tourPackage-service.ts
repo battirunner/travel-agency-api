@@ -49,29 +49,45 @@ const createTour = async (reqData: DataRegister) => {
 // get tours
 const getTours = async (tourType: string, page: number, limit: number) => {
   if (tourType !== "") {
-    const result = await prismaClient.tour_Package.findMany({
+    const count = await prismaClient.tour_Package.count({
       where: { tour_type: { title: tourType } },
-      include: { Location: true, tour_type: true, visa_category: true },
     });
 
-    if (result) {
-      return result;
+    if (count) {
+      const result = await prismaClient.tour_Package.findMany({
+        where: { tour_type: { title: tourType } },
+        include: { Location: true, tour_type: true, visa_category: true },
+        skip: page <= 1 ? 0 : (page - 1) * limit,
+        take: limit,
+      });
+      return { result, count };
     } else {
       throw new ResponseError(404, "No tours found!");
     }
   } else {
-    const result = await prismaClient.tour_Package.findMany({
+    const count = await prismaClient.tour_Package.count({
       where: {
-        // NOT: { tour_type:{title:{contains:"Hajj"}} },
         NOT: [
           { tour_type: { title: { contains: "Hajj" } } },
           { tour_type: { title: { contains: "Umrah" } } },
         ],
       },
-      include: { Location: true, tour_type: true, visa_category: true },
     });
-    if (result) {
-      return result;
+
+    if (count) {
+      const result = await prismaClient.tour_Package.findMany({
+        where: {
+          // NOT: { tour_type:{title:{contains:"Hajj"}} },
+          NOT: [
+            { tour_type: { title: { contains: "Hajj" } } },
+            { tour_type: { title: { contains: "Umrah" } } },
+          ],
+        },
+        include: { Location: true, tour_type: true, visa_category: true },
+        skip: page <= 1 ? 0 : (page - 1) * limit,
+        take: limit,
+      });
+      return { result, count };
     } else {
       throw new ResponseError(404, "No tours found!");
     }

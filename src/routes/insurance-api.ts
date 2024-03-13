@@ -14,19 +14,19 @@ insuranceRouter.get("/api/insurance/:id", insuranceController.getInsuranceById);
 
 // protected admin
 insuranceRouter.post(
-  "/api/insurance",
+  "/api/admin/insurance",
   authMiddleware,
   isAdmin,
   insuranceController.createInsurance
 );
 insuranceRouter.put(
-  "/api/insurance/:id",
+  "/api/admin/insurance/:id",
   authMiddleware,
   isAdmin,
   insuranceController.updateInsurance
 );
 insuranceRouter.delete(
-  "/api/insurance/:id",
+  "/api/admin/insurance/:id",
   authMiddleware,
   isAdmin,
   insuranceController.deleteInsurance

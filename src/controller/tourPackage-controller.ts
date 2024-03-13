@@ -17,7 +17,7 @@ const getTours = asyncHandler(async (req: Request, res: Response) => {
     limit
   );
   res.status(200).json({
-    data: result,
+    data: {...result},
   });
 });
 
