@@ -39,20 +39,39 @@ const createVisa = async (reqData: DataRegister) => {
 };
 
 // get visa
-const getVisa = async (country: string, visaCategory: string) => {
-  // const result = await prismaClient.visa.findMany();
-  console.log("from vis service", country, visaCategory);
+const getVisa = async (
+  country: string,
+  visaCategory: string,
+  page: number,
+  limit: number
+) => {
+  //get all visa if no params provided
+  if (country === "" && visaCategory === "") {
+    const count = await prismaClient.visa.count();
+    console.log("visaCount: ", count);
+    if (count) {
+      const result = await prismaClient.visa.findMany({  
+        include: { visa_category: true },
+        skip: (page <= 1) ? 0 : (page - 1 * limit),
+        take: limit,
+      });
+      //@ts-ignore
+       
+      return {result, count};
+    } else {
+      throw new ResponseError(404, "No visas found!");
+    }
+  }
   const result = await prismaClient.visa.findFirst({
     where: {
       country: {
         contains: `${country}`,
       },
-      visa_category:{
-        title:{
+      visa_category: {
+        title: {
           contains: `${visaCategory}`,
-        }
-      }
-
+        },
+      },
     },
     include: {
       visa_category: true,

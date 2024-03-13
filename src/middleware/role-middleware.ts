@@ -8,10 +8,10 @@ const isAdmin = asyncHandler(
     //@ts-ignore
     if (req.user) {
       //@ts-ignore
-      // console.log(req.user);
+      console.log(req.user);
       const userRole = await prismaClient.user.findFirst({
         //@ts-ignore
-        where: { id: req.user.userId },
+        where: { id: req.user.id },
       });
 
     //   console.log(userRole);

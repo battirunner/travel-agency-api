@@ -38,10 +38,16 @@ const createInsurance = async (reqData: DataRegister) => {
 };
 
 // get insurance
-const getInsurance = async () => {
-  const result = await prismaClient.insurance.findMany();
-  if (result) {
-    return result;
+const getInsurance = async (page: number, limit: number) => {
+  const count = await prismaClient.insurance.count({});
+
+  if (count) {
+    const result = await prismaClient.insurance.findMany({
+      include: { insurance_category: true },
+      skip: (page <= 1) ? 0 : (page - 1 * limit),
+      take: limit,
+    });
+    return {result,count};
   } else {
     throw new ResponseError(404, "No insurance found!");
   }

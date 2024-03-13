@@ -688,26 +688,30 @@ const resetPassword = async (userId: string, password: string) => {
 };
 
 //get all users(admin only)
-const getAllUsers = async () => {
-  const users = await prismaClient.user.findMany({
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      phone: true,
-      gender: true,
-      agreement: true,
-      role: true,
-      profile_pic_url: true,
-      active: true,
-      emailVerified: true,
-      address: true,
-    },
-    // include:{
-    //   address:true,
-    // }
-  });
-  return users;
+const getAllUsers = async (page: number, limit: number) => {
+  const count = await prismaClient.user.count();
+  if (count) {
+    const result = await prismaClient.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        gender: true,
+        agreement: true,
+        role: true,
+        profile_pic_url: true,
+        active: true,
+        emailVerified: true,
+        address: true,
+      },
+      skip: page <= 1 ? 0 : (page - 1) * limit,
+      take: limit,
+    });
+    return { result, count };
+  } else {
+    throw new ResponseError(404, "No users found");
+  }
 };
 
 // create user (admin only)

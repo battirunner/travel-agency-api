@@ -8,6 +8,7 @@ const createGroupTicketValidation = Joi.object({
   food: Joi.boolean().required(),
   baggage: Joi.string().trim().required(),
   policy: Joi.string().trim().required(),
+  country: Joi.string().trim().required(),
 });
 
 const updateGroupTicketValidation = Joi.object({

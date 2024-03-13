@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   const password = await bcrypt.hash("1234", 10);
-  const pass2 = await bcrypt.hash("Bangladesh2024@", 10); 
+  const pass2 = await bcrypt.hash("Bangladesh2024@", 10);
   const alice = await prisma.user.upsert({
     where: { email: "alice@prisma.io" },
     update: {},
@@ -12,7 +12,7 @@ async function main() {
       email: "alice@prisma.io",
       name: "Alice",
       role: "USER",
-      gender:"FEMALE",
+      gender: "FEMALE",
       password: password,
       emailVerified: true,
       agreement: true,
@@ -25,7 +25,7 @@ async function main() {
       email: "bob@prisma.io",
       name: "Bob",
       role: "ADMIN",
-      gender:"MALE",
+      gender: "MALE",
       password: password,
       emailVerified: true,
       agreement: true,
@@ -39,9 +39,9 @@ async function main() {
       email: "fbaintl@gmail.com",
       name: "fbaintl",
       role: "ADMIN",
-      gender:"MALE",
-      phone:"01700000000",
-      password: password,
+      gender: "MALE",
+      phone: "01700000000",
+      password: pass2,
       emailVerified: true,
       agreement: true,
     },
@@ -1092,7 +1092,7 @@ async function main() {
       start_place: "Dhaka",
       end_place: "Tokyo",
       price: "66509",
-      country:"Japan",
+      country: "Japan",
       show_price: true,
       food: true,
       baggage: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus eius nostrum ea optio ipsam laudantium consequuntur incidunt rerum, accusamus dolorem delectus mollitia molestiae sed quod quisquam eligendi temporibus dolores, quibusdam deserunt necessitatibus animi doloremque modi. Velit fuga expedita incidunt eligendi eveniet non itaque repellendus saepe porro temporibus consectetur ea ipsa culpa repudiandae distinctio quae ad, nostrum omnis impedit commodi. Temporibus veritatis aut ipsum. Exercitationem, tenetur explicabo reprehenderit blanditiis neque nemo sed fugit quae modi minima ratione quasi inventore dolorum veritatis voluptas sit? Nulla, pariatur blanditiis voluptas dolorem in quam facere voluptate asperiores voluptatibus vel, quia minima cumque, ipsum quisquam beatae?`,
@@ -1103,7 +1103,7 @@ async function main() {
   const ticketPath1_1 = await prisma.ticket_path.create({
     data: {
       group_ticket_id: groupTicket1.id,
-      path_order:1,
+      path_order: 1,
       departure_place: "Dhaka",
       departure_airport: "Hazrat Shahjalal International Airport",
       airlines: "Singapore Airlines",
@@ -1126,8 +1126,8 @@ async function main() {
 
   const ticketPath1_2 = await prisma.ticket_path.create({
     data: {
-      group_ticket_id:groupTicket1.id,
-      path_order:2,
+      group_ticket_id: groupTicket1.id,
+      path_order: 2,
       departure_place: "Singapore",
       departure_airport: "Singapore Changi Airport",
       airlines: "Singapore Airlines",
@@ -1147,13 +1147,12 @@ async function main() {
   //     path_way: "",
   //   },
   // });
-  
 
   const groupTicket2 = await prisma.group_ticket.create({
     data: {
       start_place: "Dhaka",
       end_place: "New York",
-      country:"United States of America",
+      country: "United States of America",
       price: "66509",
       show_price: false,
       food: false,
@@ -1164,8 +1163,8 @@ async function main() {
 
   const ticketPath2_1 = await prisma.ticket_path.create({
     data: {
-      group_ticket_id:groupTicket2.id,
-      path_order:1, 
+      group_ticket_id: groupTicket2.id,
+      path_order: 1,
       departure_place: "Dhaka",
       departure_airport: "Hazrat Shahjalal International Airport",
       airlines: "Qatar Airways",
@@ -1188,8 +1187,8 @@ async function main() {
 
   const ticketPath2_2 = await prisma.ticket_path.create({
     data: {
-      group_ticket_id:groupTicket2.id,
-      path_order:2, 
+      group_ticket_id: groupTicket2.id,
+      path_order: 2,
       departure_place: "DOHA",
       departure_airport: "Hamad International Airport",
       airlines: "Qatar Airways",
@@ -1215,7 +1214,7 @@ async function main() {
       start_place: "Dhaka",
       end_place: "Tokyo",
       price: "66509",
-      country:"Japan",
+      country: "Japan",
       show_price: true,
       food: true,
       baggage: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus eius nostrum ea optio ipsam laudantium consequuntur incidunt rerum, accusamus dolorem delectus mollitia molestiae sed quod quisquam eligendi temporibus dolores, quibusdam deserunt necessitatibus animi doloremque modi. Velit fuga expedita incidunt eligendi eveniet non itaque repellendus saepe porro temporibus consectetur ea ipsa culpa repudiandae distinctio quae ad, nostrum omnis impedit commodi. Temporibus veritatis aut ipsum. Exercitationem, tenetur explicabo reprehenderit blanditiis neque nemo sed fugit quae modi minima ratione quasi inventore dolorum veritatis voluptas sit? Nulla, pariatur blanditiis voluptas dolorem in quam facere voluptate asperiores voluptatibus vel, quia minima cumque, ipsum quisquam beatae?`,
@@ -1226,7 +1225,7 @@ async function main() {
   const ticketPath3_1 = await prisma.ticket_path.create({
     data: {
       group_ticket_id: groupTicket3.id,
-      path_order:1,
+      path_order: 1,
       departure_place: "Dhaka",
       departure_airport: "Hazrat Shahjalal International Airport",
       airlines: "Singapore Airlines",
@@ -1240,8 +1239,8 @@ async function main() {
 
   const ticketPath3_2 = await prisma.ticket_path.create({
     data: {
-      group_ticket_id:groupTicket3.id,
-      path_order:2,
+      group_ticket_id: groupTicket3.id,
+      path_order: 2,
       departure_place: "Singapore",
       departure_airport: "Singapore Changi Airport",
       airlines: "Singapore Airlines",
@@ -1253,14 +1252,12 @@ async function main() {
     },
   });
 
-
-
   const groupTicket4 = await prisma.group_ticket.create({
     data: {
       start_place: "Dhaka",
       end_place: "Jeddah",
       price: "66509",
-      country:"Saudi Arabia",
+      country: "Saudi Arabia",
       show_price: true,
       food: true,
       baggage: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus eius nostrum ea optio ipsam laudantium consequuntur incidunt rerum, accusamus dolorem delectus mollitia molestiae sed quod quisquam eligendi temporibus dolores, quibusdam deserunt necessitatibus animi doloremque modi. Velit fuga expedita incidunt eligendi eveniet non itaque repellendus saepe porro temporibus consectetur ea ipsa culpa repudiandae distinctio quae ad, nostrum omnis impedit commodi. Temporibus veritatis aut ipsum. Exercitationem, tenetur explicabo reprehenderit blanditiis neque nemo sed fugit quae modi minima ratione quasi inventore dolorum veritatis voluptas sit? Nulla, pariatur blanditiis voluptas dolorem in quam facere voluptate asperiores voluptatibus vel, quia minima cumque, ipsum quisquam beatae?`,
@@ -1271,7 +1268,7 @@ async function main() {
   const ticketPath4_1 = await prisma.ticket_path.create({
     data: {
       group_ticket_id: groupTicket4.id,
-      path_order:1,
+      path_order: 1,
       departure_place: "Dhaka",
       departure_airport: "Hazrat Shahjalal International Airport",
       airlines: "Kuwait Airways",
@@ -1285,8 +1282,8 @@ async function main() {
 
   const ticketPath4_2 = await prisma.ticket_path.create({
     data: {
-      group_ticket_id:groupTicket4.id,
-      path_order:2,
+      group_ticket_id: groupTicket4.id,
+      path_order: 2,
       departure_place: "Kuwait",
       departure_airport: "Kuwait International Airport",
       airlines: "Singapore Airlines",
@@ -1295,6 +1292,186 @@ async function main() {
       arrival_place: "Jeddah",
       arrival_airport: "King Abdul Aziz International Airport",
       arrival_datetime: "2024/02/28",
+    },
+  });
+
+  const booking1 = await prisma.booking.create({
+    data: {
+      user_id: alice.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "50446 Dicki Bypass, Moenstad, MD 86816-7057",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "VISA",
+      booking_item_id: visa1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "PENDING",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking2 = await prisma.booking.create({
+    data: {
+      user_id: bob.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "50446 Dicki Bypass, Moenstad, MD 86816-7057",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "VISA",
+      booking_item_id: visa2.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "PENDING",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking3 = await prisma.booking.create({
+    data: {
+      user_id: alice.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "HAJJ",
+      booking_item_id: HajjPackage1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "DUE",
+      approval_status: "PENDING",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking4 = await prisma.booking.create({
+    data: {
+      user_id: bob.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "HAJJ",
+      booking_item_id: HajjPackage1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "DUE",
+      approval_status: "PENDING",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking5 = await prisma.booking.create({
+    data: {
+      user_id: alice.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "UMRAH",
+      booking_item_id: umrahPackage1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "PROCESSING",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking6 = await prisma.booking.create({
+    data: {
+      user_id: bob.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "UMRAH",
+      booking_item_id: umrahPackage1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "PROCESSING",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking7 = await prisma.booking.create({
+    data: {
+      user_id: alice.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "INSURANCE",
+      booking_item_id: insurance1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "PROCESSING",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking8 = await prisma.booking.create({
+    data: {
+      user_id: bob.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "INSURANCE",
+      booking_item_id: insurance1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "PROCESSING",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking9 = await prisma.booking.create({
+    data: {
+      user_id: alice.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "TOURS",
+      booking_item_id: tourPackage1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "COMPLETED",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking10 = await prisma.booking.create({
+    data: {
+      user_id: bob.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "TOURS",
+      booking_item_id: tourPackage1.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "COMPLETED",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking11 = await prisma.booking.create({
+    data: {
+      user_id: bob.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "GROUP_TICKET",
+      booking_item_id: groupTicket2.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "COMPLETED",
+      booking_datetime: "2024-03-10",
+    },
+  });
+
+  const booking12 = await prisma.booking.create({
+    data: {
+      user_id: alice.id,
+      booking_user_contact: "01700000000",
+      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
+      booking_item_type: "GROUP_TICKET",
+      booking_item_id: groupTicket3.id,
+      booking_informations: "aldksflk h fhasdkfhsdkfh s shfksh kfus",
+      payment_status: "PAID",
+      approval_status: "COMPLETED",
+      booking_datetime: "2024-03-10",
     },
   });
 

@@ -6,12 +6,14 @@ import visaService from "../service/visa-service";
 // route GET /api/visa
 // @access Public
 const getVisa = asyncHandler(async (req: Request, res: Response) => {
-  const country = req.query.country;
-  const visaCategory = req.query.visaCategory;
-  console.log("PARAm of get visa",req.params);
-  const result = await visaService.getVisa(country as string, visaCategory as string);
+  const country = req.query.country || "";
+  const visaCategory = req.query.visaCategory || "";
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 5;
+  const result = await visaService.getVisa(country as string, visaCategory as string,page,limit);
+  console.log("from visa controller", result);
   res.status(200).json({
-    data: result,
+    data: {...result},
   });
 });
 
