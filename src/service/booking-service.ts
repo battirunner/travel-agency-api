@@ -56,12 +56,12 @@ const getBooking = async (
           : booking_item_type === "HAJJ" ||
             booking_item_type === "UMRAH" ||
             booking_item_type === "TOURS"
-          ? "tour_Package"
+          ? "Tour_Package"
           : "";
       const result =
-        await prismaClient.$queryRaw`select booking.id as main_id, booking.*,user.id,user.name,user.email, payment.*, booking_media.*, ${Prisma.raw(
+        await prismaClient.$queryRaw`select booking.id as main_id, booking.*,User.id,User.name,User.email, payment.*, booking_media.*, ${Prisma.raw(
           itemTableName
-        )}.* from booking left join user on booking.user_id=user.id left join booking_media on booking.id=booking_media.booking_id left join payment on booking.id=payment.booking_id left join ${Prisma.raw(
+        )}.* from booking left join User on booking.user_id=User.id left join booking_media on booking.id=booking_media.booking_id left join payment on booking.id=payment.booking_id left join ${Prisma.raw(
           itemTableName
         )} on booking.booking_item_id = ${Prisma.raw(
           itemTableName
