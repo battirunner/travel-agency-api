@@ -7,7 +7,9 @@ import insuranceService from "../service/insurance-service";
 // route GET /api/insurance
 // @access Public
 const getInsurance = asyncHandler(async (req: Request, res: Response) => {
-  const result = await insuranceService.getInsurance();
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 5;
+  const result = await insuranceService.getInsurance(page, limit);
   res.status(200).json({
     data: result,
   });
@@ -19,7 +21,7 @@ const getInsurance = asyncHandler(async (req: Request, res: Response) => {
 const getInsuranceById = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await insuranceService.getInsuranceById(req.params.id);
-    res.status(201).json({ data: result });
+    res.status(201).json({ data: {...result} });
   }
 );
 

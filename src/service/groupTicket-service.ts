@@ -75,7 +75,7 @@ const getGroupTicket = async (
   page: number,
   limit: number
 ) => {
-  const result = await prismaClient.group_ticket.findMany({
+  const count = await prismaClient.group_ticket.count({
     where: {
       OR: [
         { country: { contains: country } },
@@ -88,16 +88,32 @@ const getGroupTicket = async (
         },
       ],
     },
-    include: {
-      ticket_path: true,
-    },
   });
 
-  if (result) {
-        return result;
-      } else {
-        throw new ResponseError(404, "No GroupTicket found!");
-      }
+  if (count) {
+    const result = await prismaClient.group_ticket.findMany({
+      where: {
+        OR: [
+          { country: { contains: country } },
+          { start_place: { contains: from } },
+          { end_place: { contains: to } },
+          {
+            ticket_path: {
+              some: { departure_datetime: { contains: start_date } },
+            },
+          },
+        ],
+      },
+      include: {
+        ticket_path: true,
+      },
+      skip: (page <= 1) ? 0 : (page - 1 * limit),
+      take: limit,
+    });
+    return { result, count };
+  } else {
+    throw new ResponseError(404, "No GroupTicket found!");
+  }
   // if (country !== "") {
   //   const result = await prismaClient.group_ticket.findMany({
   //     where: {

@@ -39,9 +39,16 @@ const getBookingByUserId = asyncHandler(
 // @access  Private/Admin
 const getBooking = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await bookingService.getBooking();
+    const booking_item_type = req.query.booking_item_type || "";
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 5;
+    const result = await bookingService.getBooking(
+      booking_item_type as string,
+      page,
+      limit
+    );
     res.status(200).json({
-      data: result,
+      data: { ...result },
     });
   }
 );
@@ -53,6 +60,7 @@ const updateBooking = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
     const data = req.body;
+    console.log("from update booking controller", id, data);
     const result = await bookingService.updateBooking(id, data);
     res.status(200).json({
       data: result,
@@ -76,8 +84,6 @@ const deleteBooking = asyncHandler(
 // @desc    get booking by id
 // @route   GET /api/booking/:id
 // @access  Private
-
-
 
 export default {
   createBooking,

@@ -308,21 +308,21 @@ model country {
 }
 
 model booking {
-  id                   String          @id @default(uuid())
-  user                 User?           @relation(fields: [user_id], references: [id])
+  id                   String            @id @default(uuid())
+  user                 User?             @relation(fields: [user_id], references: [id])
   user_id              String?
   booking_user_contact String
   booking_user_address String
   // booking_user_email varchar
-  booking_user_notes   String          @default("")
-  booking_item_type    String
+  booking_user_notes   String            @default("")
+  booking_item_type    Booking_Item_Type
   booking_item_id      String
   booking_informations String
-  payment_status       String
-  approval_status      String
-  booking_datetime     DateTime        @default(now())
-  createdAt            DateTime        @default(now())
-  updatedAt            DateTime        @updatedAt
+  payment_status       Payment_Status
+  approval_status      Approval_Status
+  booking_datetime     String
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
   booking_media        booking_media[]
   payment              payment[]
 }
@@ -346,7 +346,7 @@ model payment {
   payment_gateway_id        String?
   amount                    String
   currency                  String
-  payment_status            String
+  payment_status_type       String
   payment_transaction_token String
   payment_reference         String           @default("")
   payment_account_info      String
@@ -377,12 +377,38 @@ model notifications {
 enum Role {
   USER
   ADMIN
+  MODERATOR
 }
 
 enum Gender {
   MALE
   FEMALE
   OTHERS
+}
+
+enum Payment_Status {
+  PAID
+  UNPAID
+  DUE
+}
+
+enum Approval_Status {
+  PENDING
+  PROCESSING
+  READY_TO_RECEIVE
+  RECEIVED
+  COMPLETED
+}
+
+enum Booking_Item_Type {
+  VISA
+  HAJJ
+  GROUP_TICKET
+  UMRAH
+  INSURANCE
+  TOURS
+  FLIGHT_TICKET
+  HOTEL
 }
 
 // model User {

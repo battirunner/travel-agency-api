@@ -14,19 +14,19 @@ groupTicketRouter.get("/api/groupticket/:id", groupTicketController.getGroupTick
 
 // protected admin
 groupTicketRouter.post(
-  "/api/groupticket",
+  "/api/admin/groupticket",
   authMiddleware,
   isAdmin,
   groupTicketController.createGroupTicket
 );
 groupTicketRouter.put(
-  "/api/groupticket/:id",
+  "/api/admin/groupticket/:id",
   authMiddleware,
   isAdmin,
   groupTicketController.updateGroupTicket
 );
 groupTicketRouter.delete(
-  "/api/groupticket/:id",
+  "/api/admin/groupticket/:id",
   authMiddleware,
   isAdmin,
   groupTicketController.deleteGroupTicket
