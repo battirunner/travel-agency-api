@@ -1,6 +1,10 @@
 import { prismaClient } from "../application/database";
 import { ResponseError } from "../error/response-error";
-import { createCountryValidation, getCountryValidation, updateCountryValidation } from "../validation/country-validation";
+import {
+  createCountryValidation,
+  getCountryValidation,
+  updateCountryValidation,
+} from "../validation/country-validation";
 import { validate } from "../validation/validation";
 
 interface DataRegister {
@@ -29,10 +33,25 @@ const createCountry = async (reqData: DataRegister) => {
 };
 
 // get Country
-const getCountry = async () => {
-  const result = await prismaClient.country.findMany();
-  if (result) {
-    return result;
+const getCountry = async (search: string, page: number, limit: number) => {
+  const count = await prismaClient.country.count({
+    where: {
+      OR: [{ name: { contains: search } }, { iso_code: { contains: search } }],
+    },
+  });
+  if (count) {
+    const result = await prismaClient.country.findMany({
+      where: {
+        OR: [{ name: { contains: search } }, { iso_code: { contains: search } }],
+      },
+      orderBy:{
+        name:"asc"
+      },
+      skip: page <= 1 ? 0 : (page - 1) * limit,
+      take: limit,
+    });
+
+    return { result, count };
   } else {
     throw new ResponseError(404, "No Country  found!");
   }

@@ -1,12 +1,13 @@
 //external import
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import morgan from "morgan";
 
 // internal import
 import { errorMiddleware, notFound } from "../middleware/error-middleware";
 import { bookingRouter } from "../routes/booking-api";
+import { groupTicketRouter } from "../routes/groupTicket-api";
 import { insuranceRouter } from "../routes/insurance-api";
 import { insuranceCategoryRouter } from "../routes/insuranceCategory-api";
 import { locationRouter } from "../routes/location-api";
@@ -16,12 +17,12 @@ import { tagRouter } from "../routes/tag-api";
 import { toursRouter } from "../routes/tourPackage-api";
 import { tourTypeRouter } from "../routes/tourType-api";
 import { userRouter } from "../routes/user-api";
-import { visaCategoryRouter } from "../routes/visaCategory-api";
 import { visaRouter } from "../routes/visa-api";
-import { groupTicketRouter } from "../routes/groupTicket-api";
+import { visaCategoryRouter } from "../routes/visaCategory-api";
 // import { groupTicketOnPathRouter } from "../routes/groupTicketOnPath-api";
-import { ticketPathRouter } from "../routes/ticketPath-api";
+import { airportsRouter } from "../routes/airports-api";
 import { countryRouter } from "../routes/country-api";
+import { ticketPathRouter } from "../routes/ticketPath-api";
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use(
       `${process.env.FRONTEND_BASE_URL}`,
       `${process.env.FRONTEND_ADMIN_BASE_URL}`,
       "http://localhost:3000",
+      "http://localhost:5000",
     ],
   })
 );
@@ -83,6 +85,7 @@ app.use(groupTicketRouter);
 // app.use(groupTicketOnPathRouter);
 app.use(ticketPathRouter);
 app.use(countryRouter);
+app.use(airportsRouter);
 
 //not found and error middleware
 app.use(notFound);

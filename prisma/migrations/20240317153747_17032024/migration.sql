@@ -24,6 +24,7 @@ CREATE TABLE `User` (
     `emailVerified` BOOLEAN NULL DEFAULT false,
 
     UNIQUE INDEX `User_email_key`(`email`),
+    FULLTEXT INDEX `User_name_email_phone_idx`(`name`, `email`, `phone`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -72,6 +73,7 @@ CREATE TABLE `Tour_Package` (
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Tour_Package_title_key`(`title`),
+    FULLTEXT INDEX `Tour_Package_title_idx`(`title`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -84,6 +86,7 @@ CREATE TABLE `Tour_Type` (
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Tour_Type_title_key`(`title`),
+    FULLTEXT INDEX `Tour_Type_title_idx`(`title`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -95,6 +98,7 @@ CREATE TABLE `Tag` (
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Tag_title_key`(`title`),
+    FULLTEXT INDEX `Tag_title_idx`(`title`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -117,6 +121,7 @@ CREATE TABLE `Visa_Category` (
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Visa_Category_title_key`(`title`),
+    FULLTEXT INDEX `Visa_Category_title_idx`(`title`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -142,6 +147,7 @@ CREATE TABLE `Location` (
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Location_name_key`(`name`),
+    FULLTEXT INDEX `Location_name_idx`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -170,6 +176,7 @@ CREATE TABLE `contact_form` (
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `contact_form_email_key`(`email`),
+    FULLTEXT INDEX `contact_form_name_email_phone_idx`(`name`, `email`, `phone`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -188,6 +195,7 @@ CREATE TABLE `visa` (
 
     UNIQUE INDEX `visa_title_key`(`title`),
     UNIQUE INDEX `visa_country_visa_category_id_key`(`country`, `visa_category_id`),
+    FULLTEXT INDEX `visa_title_details_country_price_idx`(`title`, `details`, `country`, `price`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -204,6 +212,7 @@ CREATE TABLE `insurance` (
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `insurance_title_key`(`title`),
+    FULLTEXT INDEX `insurance_title_details_country_price_idx`(`title`, `details`, `country`, `price`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -216,6 +225,7 @@ CREATE TABLE `insurance_category` (
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `insurance_category_title_key`(`title`),
+    FULLTEXT INDEX `insurance_category_title_details_idx`(`title`, `details`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -233,6 +243,7 @@ CREATE TABLE `group_ticket` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    FULLTEXT INDEX `group_ticket_start_place_end_place_price_country_idx`(`start_place`, `end_place`, `price`, `country`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -269,8 +280,11 @@ CREATE TABLE `airports` (
 
     UNIQUE INDEX `airports_name_key`(`name`),
     UNIQUE INDEX `airports_iata_code_key`(`iata_code`),
-    INDEX `airports_name_idx`(`name`),
     INDEX `airports_iata_code_idx`(`iata_code`),
+    INDEX `airports_name_idx`(`name`),
+    INDEX `airports_city_idx`(`city`),
+    INDEX `airports_country_idx`(`country`),
+    FULLTEXT INDEX `airports_name_iata_code_city_country_idx`(`name`, `iata_code`, `city`, `country`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -286,6 +300,7 @@ CREATE TABLE `airlines` (
     UNIQUE INDEX `airlines_name_key`(`name`),
     INDEX `airlines_name_idx`(`name`),
     INDEX `airlines_iata_code_idx`(`iata_code`),
+    FULLTEXT INDEX `airlines_name_iata_code_idx`(`name`, `iata_code`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -298,6 +313,9 @@ CREATE TABLE `country` (
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `country_name_key`(`name`),
+    INDEX `country_name_idx`(`name`),
+    INDEX `country_iso_code_idx`(`iso_code`),
+    FULLTEXT INDEX `country_name_iso_code_idx`(`name`, `iso_code`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

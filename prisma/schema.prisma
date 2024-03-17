@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -37,7 +38,9 @@ model User {
   ResetPasswordToken ResetPasswordToken?
   booking            booking[]
   payment            payment[]
+
   // Address            Address?
+  @@fulltext([name, email, phone])
 }
 
 model VerificationToken {
@@ -89,6 +92,7 @@ model Tour_Package {
   terms_conditions    String                @db.LongText
   Tour_Package_On_Tag Tour_Package_On_Tag[]
   other_details       String?               @db.LongText
+  // faq                 String?               @db.LongText
   media               Media[]
   visa_category       Visa_Category?        @relation(fields: [visa_Category_id], references: [id], onUpdate: Cascade, onDelete: SetNull)
   visa_Category_id    String?
@@ -96,6 +100,8 @@ model Tour_Package {
   location_id         String?
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt
+
+  @@fulltext([title])
 }
 
 model Tour_Type {
@@ -105,6 +111,8 @@ model Tour_Type {
   tourPackages Tour_Package[]
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
+
+  @@fulltext([title])
 }
 
 // model Tour_Package_On_Type {
@@ -124,6 +132,8 @@ model Tag {
   Tour_Package_On_Tag Tour_Package_On_Tag[]
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt
+
+  @@fulltext([title])
 }
 
 model Tour_Package_On_Tag {
@@ -145,6 +155,8 @@ model Visa_Category {
   visa         visa[]
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
+
+  @@fulltext([title])
 }
 
 model Media {
@@ -164,6 +176,8 @@ model Location {
   tour_package Tour_Package[]
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
+
+  @@fulltext([name])
 }
 
 model location_relations {
@@ -185,6 +199,8 @@ model contact_form {
   receivedEmail    Boolean?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+
+  @@fulltext([name, email, phone])
 }
 
 model visa {
@@ -201,6 +217,7 @@ model visa {
   updatedAt        DateTime       @updatedAt
 
   @@unique([country, visa_category_id])
+  @@fulltext([title, details, country, price])
 }
 
 model insurance {
@@ -214,6 +231,8 @@ model insurance {
   price                 String
   createdAt             DateTime            @default(now())
   updatedAt             DateTime            @updatedAt
+
+  @@fulltext([title, details, country, price])
 }
 
 model insurance_category {
@@ -223,6 +242,8 @@ model insurance_category {
   insurance insurance[]
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
+
+  @@fulltext([title, details])
 }
 
 model group_ticket {
@@ -239,6 +260,8 @@ model group_ticket {
   // group_ticket_path group_ticket_on_path[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+
+  @@fulltext([start_place, end_place, price, country])
 }
 
 model ticket_path {
@@ -283,8 +306,12 @@ model airports {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([name])
+  // @@index([name, iata_code, city, country])
   @@index([iata_code])
+  @@index([name])
+  @@index([city])
+  @@index([country])
+  @@fulltext([name, iata_code, city, country])
 }
 
 model airlines {
@@ -297,6 +324,7 @@ model airlines {
 
   @@index([name])
   @@index([iata_code])
+  @@fulltext([name, iata_code])
 }
 
 model country {
@@ -305,6 +333,10 @@ model country {
   iso_code  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([name])
+  @@index([iso_code])
+  @@fulltext([name, iso_code])
 }
 
 model booking {

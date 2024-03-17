@@ -533,7 +533,7 @@ async function main() {
       ],
     },
     {
-      name: "Highlights:",
+      name: "Highlights",
       items: [
         `Explore the best beaches of Phuket, from lively Patong to serene Kata and Karon. Discover the exotic underwater world through snorkeling or scuba diving at Phi Phi Islands.`,
         `Cruise through Phang Nga Bay to see the famous James Bond Island and stunning limestone formations.`,
@@ -565,6 +565,37 @@ async function main() {
         {
           plan_day: "Day 5",
           plan_description: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cum animi, quasi veniam sequi doloribus tempora, saepe iste ad, blanditiis labore quisquam asperiores voluptas reprehenderit dolor sit? Nisi ipsa maxime, at minima expedita, doloremque soluta rem officiis accusamus nulla non sapiente neque explicabo voluptate amet labore hic error numquam ullam esse?`,
+        },
+      ],
+    },
+    {
+      name: "Faq",
+      items: [
+        {
+          question: "What is the best time to visit Phuket for this tour?",
+          answer:
+            "The best time to visit Phuket for this tour is during the dry season, which typically lasts from November to April. During these months, the weather is generally sunny with lower chances of rain, providing ideal conditions for island-hopping and outdoor activities.",
+        },
+        {
+          question:
+            "Are the snorkeling and scuba diving activities suitable for beginners?",
+          answer:
+            "Yes, both snorkeling and scuba diving activities are suitable for beginners. Our experienced guides will provide comprehensive instructions and ensure your safety throughout the excursion. Life jackets and necessary equipment will be provided, making the experience enjoyable for participants of all skill levels.",
+        },
+        {
+          question: "What should I wear when visiting temples in Phuket?",
+          answer:
+            "When visiting temples, it is essential to dress modestly and respectfully. Both men and women should cover their shoulders and knees. Loose-fitting, comfortable clothing is recommended, and it's a good idea to carry a sarong or scarf to cover up when needed. Please remove your shoes before entering temple buildings as a sign of respect.",
+        },
+        {
+          question: "Can I extend my stay in Phuket after the tour ends?",
+          answer:
+            "Absolutely! If you wish to extend your stay in Phuket after the tour concludes, we can assist you with making the necessary arrangements. Whether you want to continue relaxing on the beautiful beaches or explore more of Phuket's attractions, our team will be happy to customize your itinerary according to your preferences.",
+        },
+        {
+          question: "Are meals included in the tour package?",
+          answer:
+            "Yes, some meals are included in the tour package. Daily breakfast at the resort and a beachside lunch during the Phi Phi Islands excursion are provided. However, lunches and dinners on other days, as well as any additional snacks or beverages, are not included. This allows you to have the flexibility to explore local restaurants and taste various Thai delicacies during your free time.",
         },
       ],
     },
@@ -658,7 +689,7 @@ async function main() {
       ],
     },
     {
-      name: "Highlights:",
+      name: "Highlights",
       items: [],
     },
     {
@@ -756,6 +787,8 @@ async function main() {
     `Emergency Medical Services, Group discussions, Experienced religious guides, and service assistants in Saudi Arabia, and our team is always ready 24/7 to fulfill your needs.`,
   ]);
 
+  const HajjPackage1OFaq = JSON.stringify([]);
+
   const HajjPackage1 = await prisma.tour_Package.upsert({
     where: { title: "40 Days Shifting Hajj Package 2024" },
     update: {},
@@ -808,7 +841,7 @@ async function main() {
       ],
     },
     {
-      name: "Highlights:",
+      name: "Highlights",
       items: [],
     },
     {
@@ -1329,7 +1362,8 @@ async function main() {
     data: {
       user_id: alice.id,
       booking_user_contact: "01700000000",
-      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_address:
+        "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
       booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
       booking_item_type: "HAJJ",
       booking_item_id: HajjPackage1.id,
@@ -1344,7 +1378,8 @@ async function main() {
     data: {
       user_id: bob.id,
       booking_user_contact: "01700000000",
-      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_address:
+        "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
       booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
       booking_item_type: "HAJJ",
       booking_item_id: HajjPackage1.id,
@@ -1359,7 +1394,8 @@ async function main() {
     data: {
       user_id: alice.id,
       booking_user_contact: "01700000000",
-      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_address:
+        "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
       booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
       booking_item_type: "UMRAH",
       booking_item_id: umrahPackage1.id,
@@ -1374,7 +1410,8 @@ async function main() {
     data: {
       user_id: bob.id,
       booking_user_contact: "01700000000",
-      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_address:
+        "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
       booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
       booking_item_type: "UMRAH",
       booking_item_id: umrahPackage1.id,
@@ -1389,7 +1426,8 @@ async function main() {
     data: {
       user_id: alice.id,
       booking_user_contact: "01700000000",
-      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_address:
+        "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
       booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
       booking_item_type: "INSURANCE",
       booking_item_id: insurance1.id,
@@ -1404,7 +1442,8 @@ async function main() {
     data: {
       user_id: bob.id,
       booking_user_contact: "01700000000",
-      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_address:
+        "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
       booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
       booking_item_type: "INSURANCE",
       booking_item_id: insurance1.id,
@@ -1419,7 +1458,8 @@ async function main() {
     data: {
       user_id: alice.id,
       booking_user_contact: "01700000000",
-      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_address:
+        "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
       booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
       booking_item_type: "TOURS",
       booking_item_id: tourPackage1.id,
@@ -1434,7 +1474,8 @@ async function main() {
     data: {
       user_id: bob.id,
       booking_user_contact: "01700000000",
-      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_address:
+        "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
       booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
       booking_item_type: "TOURS",
       booking_item_id: tourPackage1.id,
@@ -1449,7 +1490,8 @@ async function main() {
     data: {
       user_id: bob.id,
       booking_user_contact: "01700000000",
-      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_address:
+        "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
       booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
       booking_item_type: "GROUP_TICKET",
       booking_item_id: groupTicket2.id,
@@ -1464,7 +1506,8 @@ async function main() {
     data: {
       user_id: alice.id,
       booking_user_contact: "01700000000",
-      booking_user_address: "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
+      booking_user_address:
+        "Casa 8 65236 Moraes Rua, Olhão da Restauração, CT 6858",
       booking_user_notes: "Lorem ipsum sdfgdfkgjdljgldlgdlkgj",
       booking_item_type: "GROUP_TICKET",
       booking_item_id: groupTicket3.id,
@@ -1721,7 +1764,7 @@ async function main() {
       { name: "Zambia", iso_code: "ZM" },
       { name: "Zimbabwe", iso_code: "ZW" },
     ],
-    skipDuplicates: true,
+    // skipDuplicates: true,
   });
 }
 main()
