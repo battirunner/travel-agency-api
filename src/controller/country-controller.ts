@@ -6,9 +6,12 @@ import countryService from "../service/country-service";
 // route GET /api/Country
 // @access Public
 const getCountry = asyncHandler(async (req: Request, res: Response) => {
-  const result = await countryService.getCountry();
+  const search = req.query.search || "";
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 5;
+  const result = await countryService.getCountry(search as string, page, limit);
   res.status(200).json({
-    data: result,
+    data: { ...result },
   });
 });
 
