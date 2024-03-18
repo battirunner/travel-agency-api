@@ -1141,10 +1141,10 @@ async function main() {
       departure_airport: "Hazrat Shahjalal International Airport",
       airlines: "Singapore Airlines",
       aircraft: "",
-      departure_datetime: "2024/02/28",
+      departure_datetime: "2024/02/28 05:06:06",
       arrival_place: "Singapore",
       arrival_airport: "Singapore Changi Airport",
-      arrival_datetime: "2024/02/28",
+      arrival_datetime: "2024/02/28 06:06:06",
     },
   });
 
@@ -1165,10 +1165,10 @@ async function main() {
       departure_airport: "Singapore Changi Airport",
       airlines: "Singapore Airlines",
       aircraft: "",
-      departure_datetime: "2024/02/28",
+      departure_datetime: "2024/02/28 07:06:06",
       arrival_place: "Tokyo",
       arrival_airport: "Narita International Airport",
-      arrival_datetime: "2024/02/28",
+      arrival_datetime: "2024/02/28 10:06:06",
     },
   });
 
@@ -1202,10 +1202,10 @@ async function main() {
       departure_airport: "Hazrat Shahjalal International Airport",
       airlines: "Qatar Airways",
       aircraft: "",
-      departure_datetime: "2024/02/27",
+      departure_datetime: "2024/02/28 05:06:06",
       arrival_place: "Doha",
       arrival_airport: "Hamad International Airport",
-      arrival_datetime: "2024/02/28",
+      arrival_datetime: "2024/02/28 09:06:06",
     },
   });
 
@@ -1226,10 +1226,10 @@ async function main() {
       departure_airport: "Hamad International Airport",
       airlines: "Qatar Airways",
       aircraft: "",
-      departure_datetime: "2024/02/27",
+      departure_datetime: "2024/02/27 10:06:06",
       arrival_place: "New York",
       arrival_airport: "John F. Kennedy International Airport",
-      arrival_datetime: "2024/02/28",
+      arrival_datetime: "2024/02/28 12:06:06",
     },
   });
 
@@ -1263,10 +1263,10 @@ async function main() {
       departure_airport: "Hazrat Shahjalal International Airport",
       airlines: "Singapore Airlines",
       aircraft: "",
-      departure_datetime: "2024/02/28",
+      departure_datetime: "2024/02/28 13:06:06",
       arrival_place: "Singapore",
       arrival_airport: "Singapore Changi Airport",
-      arrival_datetime: "2024/02/28",
+      arrival_datetime: "2024/02/28 15:10:15",
     },
   });
 
@@ -1278,10 +1278,10 @@ async function main() {
       departure_airport: "Singapore Changi Airport",
       airlines: "Singapore Airlines",
       aircraft: "",
-      departure_datetime: "2024/02/28",
+      departure_datetime: "2024/02/28 15:30:06",
       arrival_place: "Tokyo",
       arrival_airport: "Narita International Airport",
-      arrival_datetime: "2024/02/28",
+      arrival_datetime: "2024/02/28 20:10:10",
     },
   });
 
@@ -1306,10 +1306,10 @@ async function main() {
       departure_airport: "Hazrat Shahjalal International Airport",
       airlines: "Kuwait Airways",
       aircraft: "",
-      departure_datetime: "2024/02/28",
+      departure_datetime: "2024/02/28 09:06:06",
       arrival_place: "Kuwait",
       arrival_airport: "Kuwait International Airport",
-      arrival_datetime: "2024/02/28",
+      arrival_datetime: "2024/02/28 10:06:06",
     },
   });
 
@@ -1321,10 +1321,10 @@ async function main() {
       departure_airport: "Kuwait International Airport",
       airlines: "Singapore Airlines",
       aircraft: "",
-      departure_datetime: "2024/02/28",
+      departure_datetime: "2024/02/28 09:06:06",
       arrival_place: "Jeddah",
       arrival_airport: "King Abdul Aziz International Airport",
-      arrival_datetime: "2024/02/28",
+      arrival_datetime: "2024/02/28 10:06:06",
     },
   });
 
