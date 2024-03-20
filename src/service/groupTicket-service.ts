@@ -78,7 +78,8 @@ const getGroupTicket = async (
   const count = await prismaClient.group_ticket.count({
     where: {
       OR: [
-        { country: { contains: country } },
+        { start_country: { contains: country } },
+        { end_country: { contains: country } },
         { start_place: { contains: from } },
         { end_place: { contains: to } },
         {
@@ -94,7 +95,8 @@ const getGroupTicket = async (
     const result = await prismaClient.group_ticket.findMany({
       where: {
         OR: [
-          { country: { contains: country } },
+          { start_country: { contains: country } },
+          { end_country: { contains: country } },
           { start_place: { contains: from } },
           { end_place: { contains: to } },
           {
@@ -107,7 +109,7 @@ const getGroupTicket = async (
       include: {
         ticket_path: true,
       },
-      skip: (page <= 1) ? 0 : (page - 1 * limit),
+      skip: page <= 1 ? 0 : (page - 1) * limit,
       take: limit,
     });
     return { result, count };
