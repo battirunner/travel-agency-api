@@ -8,7 +8,7 @@ import tourTypeService from "../service/tourType-service";
 const getTourType = asyncHandler(async (req: Request, res: Response) => {
   const tourType = req.query.tourType || "";
   const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 5;
+  const limit = Number(req.query.limit) || 10;
   const result = await tourTypeService.getTourType(
     tourType as string,
     page,
