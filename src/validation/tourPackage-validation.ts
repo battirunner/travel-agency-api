@@ -3,7 +3,8 @@ import Joi from "joi";
 const createTourPackageValidation = Joi.object({
   title: Joi.string().trim().max(100).required(),
   description: Joi.string().trim().required(),
-  duration: Joi.number().positive().required(),
+  duration: Joi.string().required(),
+  guests: Joi.number().positive().required().allow(null),
   // start_datetime: Joi.date().required(),
   // end_datetime: Joi.date().min(Joi.ref("start_datetime")).required(),
   start_datetime: Joi.string().required(),
@@ -23,7 +24,8 @@ const createTourPackageValidation = Joi.object({
 const updateTourPackageValidation = Joi.object({
   title: Joi.string().trim().max(100).optional().allow("",null),
   description: Joi.string().trim().optional().allow("",null),
-  duration: Joi.number().positive().optional().allow("",null),
+  duration: Joi.string().optional().allow("",null),
+  guests: Joi.number().optional().allow("",null),
   // start_datetime: Joi.date().optional().allow("",null),
   // end_datetime: Joi.date().min(Joi.ref("start_datetime")).optional().allow("",null),
   start_datetime: Joi.string().required(),
