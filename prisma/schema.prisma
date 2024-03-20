@@ -247,21 +247,23 @@ model insurance_category {
 }
 
 model group_ticket {
-  id          String        @id @default(uuid())
-  start_place String
-  end_place   String
-  price       String
-  show_price  Boolean
-  food        Boolean
-  baggage     String        @db.LongText
-  policy      String        @db.LongText
-  country     String
-  ticket_path ticket_path[]
+  id            String        @id @default(uuid())
+  start_place   String
+  end_place     String
+  price         String
+  show_price    Boolean
+  food          Boolean
+  baggage       String        @db.LongText
+  policy        String        @db.LongText
+  start_country String
+  end_country   String
+  refund        String
+  ticket_path   ticket_path[]
   // group_ticket_path group_ticket_on_path[]
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
-  @@fulltext([start_place, end_place, price, country])
+  @@fulltext([start_place, end_place, price, start_country, end_country])
 }
 
 model ticket_path {
@@ -273,8 +275,10 @@ model ticket_path {
   // group_ticket_path  group_ticket_on_path[]
   departure_place    String
   departure_airport  String
-  airlines           String
-  aircraft           String
+  airlines           String?       @default("")
+  aircraft           String?       @default("")
+  ticket_class       String?       @default("")
+  seat_number        String?       @default("")
   departure_datetime String
   arrival_place      String
   arrival_airport    String

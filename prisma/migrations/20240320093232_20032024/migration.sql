@@ -239,11 +239,13 @@ CREATE TABLE `group_ticket` (
     `food` BOOLEAN NOT NULL,
     `baggage` LONGTEXT NOT NULL,
     `policy` LONGTEXT NOT NULL,
-    `country` VARCHAR(191) NOT NULL,
+    `start_country` VARCHAR(191) NOT NULL,
+    `end_country` VARCHAR(191) NOT NULL,
+    `refund` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    FULLTEXT INDEX `group_ticket_start_place_end_place_price_country_idx`(`start_place`, `end_place`, `price`, `country`),
+    FULLTEXT INDEX `group_ticket_start_place_end_place_price_start_country_end_c_idx`(`start_place`, `end_place`, `price`, `start_country`, `end_country`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -255,8 +257,10 @@ CREATE TABLE `ticket_path` (
     `path_way` VARCHAR(191) NULL DEFAULT '',
     `departure_place` VARCHAR(191) NOT NULL,
     `departure_airport` VARCHAR(191) NOT NULL,
-    `airlines` VARCHAR(191) NOT NULL,
-    `aircraft` VARCHAR(191) NOT NULL,
+    `airlines` VARCHAR(191) NULL DEFAULT '',
+    `aircraft` VARCHAR(191) NULL DEFAULT '',
+    `ticket_class` VARCHAR(191) NULL DEFAULT '',
+    `seat_number` VARCHAR(191) NULL DEFAULT '',
     `departure_datetime` VARCHAR(191) NOT NULL,
     `arrival_place` VARCHAR(191) NOT NULL,
     `arrival_airport` VARCHAR(191) NOT NULL,
