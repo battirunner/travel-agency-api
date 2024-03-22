@@ -10,13 +10,15 @@ const getGroupTicket = asyncHandler(async (req: Request, res: Response) => {
   const from = req.query.from || "";
   const to = req.query.to || "";
   const start_date = req.query.start_date || "";
+  const end_date = req.query.end_date || "";
   const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 5;
+  const limit = Number(req.query.limit) || 10;
   const result = await groupTicketService.getGroupTicket(
     country as string,
     from as string,
     to as string,
     start_date as string,
+    end_date as string,
     page,
     limit
   );
@@ -42,10 +44,7 @@ const createGroupTicket = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const groupTicket = req.body.groupTicket;
     const ticketPath = req.body.ticketPath;
-    const result = await groupTicketService.createGroupTicket(
-      groupTicket,
-      ticketPath
-    );
+    const result = await groupTicketService.createGroupTicket(req.body);
     res.status(201).json({ data: result });
   }
 );

@@ -5,64 +5,31 @@ import {
   getGroupTicketValidation,
   updateGroupTicketValidation,
 } from "../validation/groupTicket-validation";
-import ticketPathService from "./ticketPath-service";
 // import groupTicketOnPathService from "./groupTicketOnPath-service";
 import { validate } from "../validation/validation";
 
 interface DataRegister {
-  start_place: string;
-  end_place: string;
+  ticket_path: string;
   price: string;
   show_price: boolean;
   food: boolean;
   baggage: string;
   policy: string;
+  refund: string;
+  available_seats: number;
+  request_wheel_chair: boolean;
 }
 
 // create GroupTicket service
-const createGroupTicket = async (
-  groupTicketData: DataRegister,
-  ticketPathData: []
-) => {
+const createGroupTicket = async (groupTicketData: DataRegister) => {
   const GroupTicket = validate(createGroupTicketValidation, groupTicketData);
-
-  //   const countGroupTicket = await prismaClient.group_ticket.count({
-  //     where: {
-  //       title: GroupTicket.title,
-  //     },
-  //   });
-
-  //   if (countGroupTicket === 1) {
-  //     throw new ResponseError(400, "GroupTicket already exists");
-  //   }
-  console.log(ticketPathData);
 
   const GroupTicketResult = await prismaClient.group_ticket.create({
     data: GroupTicket,
   });
 
-  let TicketPathResult;
-  let GroupTicketOnPathResult;
-
-  for (let index = 0; index < ticketPathData.length; index++) {
-    TicketPathResult = await ticketPathService.createTicketPath(
-      ticketPathData[index],
-      GroupTicketResult.id,
-      index + 1
-    );
-    // const GroupTicketOnPath = {
-    //   group_ticket_id: GroupTicketResult.id,
-    //   //@ts-ignore
-    //   ticket_path_id: TicketPathResult.id,
-    // };
-    // GroupTicketOnPathResult =
-    //   await groupTicketOnPathService.createGroupTicketOnPath(GroupTicketOnPath);
-  }
-
   return {
     GroupTicketResult,
-    // GroupTicketOnPathResult,
-    // TicketPathResult,
   };
 };
 
@@ -72,19 +39,16 @@ const getGroupTicket = async (
   from: string,
   to: string,
   start_date: string,
+  end_date: string,
   page: number,
   limit: number
 ) => {
   const count = await prismaClient.group_ticket.count({
     where: {
       OR: [
-        { start_country: { contains: country } },
-        { end_country: { contains: country } },
-        { start_place: { contains: from } },
-        { end_place: { contains: to } },
         {
           ticket_path: {
-            some: { departure_datetime: { contains: start_date } },
+            contains: country || from || to || start_date || end_date,
           },
         },
       ],
@@ -95,19 +59,12 @@ const getGroupTicket = async (
     const result = await prismaClient.group_ticket.findMany({
       where: {
         OR: [
-          { start_country: { contains: country } },
-          { end_country: { contains: country } },
-          { start_place: { contains: from } },
-          { end_place: { contains: to } },
           {
             ticket_path: {
-              some: { departure_datetime: { contains: start_date } },
+              contains: country || from || to || start_date || end_date,
             },
           },
         ],
-      },
-      include: {
-        ticket_path: true,
       },
       skip: page <= 1 ? 0 : (page - 1) * limit,
       take: limit,
@@ -116,38 +73,6 @@ const getGroupTicket = async (
   } else {
     throw new ResponseError(404, "No GroupTicket found!");
   }
-  // if (country !== "") {
-  //   const result = await prismaClient.group_ticket.findMany({
-  //     where: {
-  //       country: {
-  //         contains: country,
-  //       },
-  //     },
-  //     include: {
-  //       ticket_path: true,
-  //     },
-  //     skip: page <= 1 ? 0 : page * limit,
-  //     take: limit,
-  //   });
-  //   if (result) {
-  //     return result;
-  //   } else {
-  //     throw new ResponseError(404, "No GroupTicket found!");
-  //   }
-  // } else {
-  //   const result = await prismaClient.group_ticket.findMany({
-  //     include: {
-  //       ticket_path: true,
-  //     },
-  //     skip: page <= 1 ? 0 : page * limit,
-  //     take: limit,
-  //   });
-  //   if (result) {
-  //     return result;
-  //   } else {
-  //     throw new ResponseError(404, "No GroupTicket found!");
-  //   }
-  // }
 };
 
 // get GroupTicket by id
@@ -155,7 +80,6 @@ const getGroupTicketById = async (id: string) => {
   const GroupTicketId = validate(getGroupTicketValidation, id);
   const GroupTicket = await prismaClient.group_ticket.findUnique({
     where: { id: GroupTicketId },
-    include: { ticket_path: true },
   });
 
   if (GroupTicket) {

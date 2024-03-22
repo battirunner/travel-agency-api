@@ -232,79 +232,42 @@ CREATE TABLE `insurance_category` (
 -- CreateTable
 CREATE TABLE `group_ticket` (
     `id` VARCHAR(191) NOT NULL,
-    `start_place` VARCHAR(191) NOT NULL,
-    `end_place` VARCHAR(191) NOT NULL,
+    `ticket_path` LONGTEXT NOT NULL,
     `price` VARCHAR(191) NOT NULL,
     `show_price` BOOLEAN NOT NULL,
     `food` BOOLEAN NOT NULL,
     `baggage` LONGTEXT NOT NULL,
     `policy` LONGTEXT NOT NULL,
-    `start_country` VARCHAR(191) NOT NULL,
-    `end_country` VARCHAR(191) NOT NULL,
-    `refund` VARCHAR(191) NOT NULL,
+    `refund` BOOLEAN NOT NULL,
+    `available_seats` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    FULLTEXT INDEX `group_ticket_start_place_end_place_price_start_country_end_c_idx`(`start_place`, `end_place`, `price`, `start_country`, `end_country`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `ticket_path` (
-    `id` VARCHAR(191) NOT NULL,
-    `group_ticket_id` VARCHAR(191) NOT NULL,
-    `path_order` INTEGER NOT NULL,
-    `path_way` VARCHAR(191) NULL DEFAULT '',
-    `departure_place` VARCHAR(191) NOT NULL,
-    `departure_airport` VARCHAR(191) NOT NULL,
-    `airlines` VARCHAR(191) NULL DEFAULT '',
-    `aircraft` VARCHAR(191) NULL DEFAULT '',
-    `ticket_class` VARCHAR(191) NULL DEFAULT '',
-    `seat_number` VARCHAR(191) NULL DEFAULT '',
-    `departure_datetime` VARCHAR(191) NOT NULL,
-    `arrival_place` VARCHAR(191) NOT NULL,
-    `arrival_airport` VARCHAR(191) NOT NULL,
-    `arrival_datetime` VARCHAR(191) NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
-
-    UNIQUE INDEX `ticket_path_group_ticket_id_path_order_key`(`group_ticket_id`, `path_order`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `airports` (
     `id` VARCHAR(191) NOT NULL,
-    `name` VARCHAR(191) NOT NULL,
-    `iata_code` VARCHAR(191) NOT NULL,
-    `city` VARCHAR(191) NOT NULL,
-    `country` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL DEFAULT '',
+    `iata_code` VARCHAR(191) NOT NULL DEFAULT '',
+    `city` VARCHAR(191) NOT NULL DEFAULT '',
+    `country` VARCHAR(191) NOT NULL DEFAULT '',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `airports_name_key`(`name`),
-    UNIQUE INDEX `airports_iata_code_key`(`iata_code`),
-    INDEX `airports_iata_code_idx`(`iata_code`),
-    INDEX `airports_name_idx`(`name`),
-    INDEX `airports_city_idx`(`city`),
-    INDEX `airports_country_idx`(`country`),
-    FULLTEXT INDEX `airports_name_iata_code_city_country_idx`(`name`, `iata_code`, `city`, `country`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `airlines` (
     `id` VARCHAR(191) NOT NULL,
-    `name` VARCHAR(191) NOT NULL,
-    `iata_code` VARCHAR(191) NOT NULL,
-    `logo_url` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL DEFAULT '',
+    `iata_code` VARCHAR(191) NOT NULL DEFAULT '',
+    `logo_url` VARCHAR(191) NOT NULL DEFAULT '',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `airlines_name_key`(`name`),
-    INDEX `airlines_name_idx`(`name`),
-    INDEX `airlines_iata_code_idx`(`iata_code`),
-    FULLTEXT INDEX `airlines_name_iata_code_idx`(`name`, `iata_code`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -425,9 +388,6 @@ ALTER TABLE `visa` ADD CONSTRAINT `visa_visa_category_id_fkey` FOREIGN KEY (`vis
 
 -- AddForeignKey
 ALTER TABLE `insurance` ADD CONSTRAINT `insurance_insurance_category_id_fkey` FOREIGN KEY (`insurance_category_id`) REFERENCES `insurance_category`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `ticket_path` ADD CONSTRAINT `ticket_path_group_ticket_id_fkey` FOREIGN KEY (`group_ticket_id`) REFERENCES `group_ticket`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `booking` ADD CONSTRAINT `booking_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
