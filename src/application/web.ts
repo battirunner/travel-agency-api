@@ -22,7 +22,7 @@ import { visaCategoryRouter } from "../routes/visaCategory-api";
 // import { groupTicketOnPathRouter } from "../routes/groupTicketOnPath-api";
 import { airportsRouter } from "../routes/airports-api";
 import { countryRouter } from "../routes/country-api";
-import { ticketPathRouter } from "../routes/ticketPath-api";
+// import { ticketPathRouter } from "../routes/ticketPath-api";
 
 const app = express();
 
@@ -83,7 +83,7 @@ app.use(locationRouter);
 app.use(visaRouter);
 app.use(groupTicketRouter);
 // app.use(groupTicketOnPathRouter);
-app.use(ticketPathRouter);
+// app.use(ticketPathRouter);
 app.use(countryRouter);
 app.use(airportsRouter);
 

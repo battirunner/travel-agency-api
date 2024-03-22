@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import axios from "axios";
 import bcrypt from "bcrypt";
 const prisma = new PrismaClient();
 
@@ -636,8 +637,8 @@ async function main() {
       title: "The Allure of Thailand's Stunning Phuket",
       description: tourPackage1Description,
       duration: "4 Days 5 Nights",
-      start_datetime: "2024/05/02",
-      end_datetime: "2024/05/07",
+      start_datetime: "2024-05-02 09:00:00",
+      end_datetime: "2024-05-07 10:00:00",
       price: "10000",
       guests: 10,
       included: tourPackage1Included,
@@ -796,8 +797,8 @@ async function main() {
       title: "40 Days Shifting Hajj Package 2024",
       description: HajjPackage1Description,
       duration: "40 Days",
-      start_datetime: "2024/05/02",
-      end_datetime: "2024/05/07",
+      start_datetime: "2024-05-02 11:00:00",
+      end_datetime: "2024/05/07 12:00:00",
       price: "1000000",
       guests: 20,
       included: HajjPackage1Included,
@@ -910,8 +911,8 @@ async function main() {
       title: "Umrah Package Economy",
       description: umrahPackage1Description,
       duration: "14 Days",
-      start_datetime: "2024/05/02",
-      end_datetime: "2024/05/07",
+      start_datetime: "2024-05-02 10:00:00",
+      end_datetime: "2024/05/07 13:00:00",
       price: "10000",
       guests: 15,
       included: umrahPackage1Included,
@@ -926,232 +927,420 @@ async function main() {
     },
   });
 
-  const airlines1 = await prisma.airlines.upsert({
-    where: { name: "China Eastern Airlines" },
-    update: {},
-    create: {
-      name: "China Eastern Airlines",
-      iata_code: "MU",
-      logo_url: "",
-    },
-  });
-  const airlines2 = await prisma.airlines.upsert({
-    where: { name: "Singapore Airlines" },
-    update: {},
-    create: {
-      name: "Singapore Airlines",
-      iata_code: "SQ",
-      logo_url: "",
-    },
-  });
-  const airlines3 = await prisma.airlines.upsert({
-    where: { name: "Qatar Airways" },
-    update: {},
-    create: {
-      name: "Qatar Airways",
-      iata_code: "QR",
-      logo_url: "",
-    },
-  });
-  const airlines4 = await prisma.airlines.upsert({
-    where: { name: "Malaysia Airlines" },
-    update: {},
-    create: {
-      name: "Malaysia Airlines",
-      iata_code: "MH",
-      logo_url: "",
-    },
-  });
-  const airlines5 = await prisma.airlines.upsert({
-    where: { name: "Thai Airways International" },
-    update: {},
-    create: {
-      name: "Thai Airways International",
-      iata_code: "TG",
-      logo_url: "",
-    },
-  });
-  const airlines6 = await prisma.airlines.upsert({
-    where: { name: "Biman Bangladesh Airlines" },
-    update: {},
-    create: {
-      name: "Biman Bangladesh Airlines",
-      iata_code: "BG",
-      logo_url: "",
-    },
-  });
-  const airlines7 = await prisma.airlines.upsert({
-    where: { name: "Turkish Airlines" },
-    update: {},
-    create: {
-      name: "Turkish Airlines",
-      iata_code: "TK",
-      logo_url: "",
-    },
-  });
-  const airlines8 = await prisma.airlines.upsert({
-    where: { name: "Emirates" },
-    update: {},
-    create: {
-      name: "Emirates",
-      iata_code: "EK",
-      logo_url: "",
-    },
-  });
+  // const airlines1 = await prisma.airlines.upsert({
+  //   where: { name: "China Eastern Airlines" },
+  //   update: {},
+  //   create: {
+  //     name: "China Eastern Airlines",
+  //     iata_code: "MU",
+  //     logo_url: "",
+  //   },
+  // });
+  // const airlines2 = await prisma.airlines.upsert({
+  //   where: { name: "Singapore Airlines" },
+  //   update: {},
+  //   create: {
+  //     name: "Singapore Airlines",
+  //     iata_code: "SQ",
+  //     logo_url: "",
+  //   },
+  // });
+  // const airlines3 = await prisma.airlines.upsert({
+  //   where: { name: "Qatar Airways" },
+  //   update: {},
+  //   create: {
+  //     name: "Qatar Airways",
+  //     iata_code: "QR",
+  //     logo_url: "",
+  //   },
+  // });
+  // const airlines4 = await prisma.airlines.upsert({
+  //   where: { name: "Malaysia Airlines" },
+  //   update: {},
+  //   create: {
+  //     name: "Malaysia Airlines",
+  //     iata_code: "MH",
+  //     logo_url: "",
+  //   },
+  // });
+  // const airlines5 = await prisma.airlines.upsert({
+  //   where: { name: "Thai Airways International" },
+  //   update: {},
+  //   create: {
+  //     name: "Thai Airways International",
+  //     iata_code: "TG",
+  //     logo_url: "",
+  //   },
+  // });
+  // const airlines6 = await prisma.airlines.upsert({
+  //   where: { name: "Biman Bangladesh Airlines" },
+  //   update: {},
+  //   create: {
+  //     name: "Biman Bangladesh Airlines",
+  //     iata_code: "BG",
+  //     logo_url: "",
+  //   },
+  // });
+  // const airlines7 = await prisma.airlines.upsert({
+  //   where: { name: "Turkish Airlines" },
+  //   update: {},
+  //   create: {
+  //     name: "Turkish Airlines",
+  //     iata_code: "TK",
+  //     logo_url: "",
+  //   },
+  // });
+  // const airlines8 = await prisma.airlines.upsert({
+  //   where: { name: "Emirates" },
+  //   update: {},
+  //   create: {
+  //     name: "Emirates",
+  //     iata_code: "EK",
+  //     logo_url: "",
+  //   },
+  // });
 
-  const airport1 = await prisma.airports.upsert({
-    where: { name: "Hazrat Shahjalal International Airport" },
-    update: {},
-    create: {
-      name: "Hazrat Shahjalal International Airport",
-      city: "Dhaka",
-      country: "Bangladesh",
-      iata_code: "DAC",
-    },
-  });
+  // const airport1 = await prisma.airports.upsert({
+  //   where: { name: "Hazrat Shahjalal International Airport" },
+  //   update: {},
+  //   create: {
+  //     name: "Hazrat Shahjalal International Airport",
+  //     city: "Dhaka",
+  //     country: "Bangladesh",
+  //     iata_code: "DAC",
+  //   },
+  // });
 
-  const airport2 = await prisma.airports.upsert({
-    where: { name: "Narita International Airport" },
-    update: {},
-    create: {
-      name: "Narita International Airport",
-      city: "Tokyo",
-      country: "JAPAN",
-      iata_code: "NRT",
-    },
-  });
+  // const airport2 = await prisma.airports.upsert({
+  //   where: { name: "Narita International Airport" },
+  //   update: {},
+  //   create: {
+  //     name: "Narita International Airport",
+  //     city: "Tokyo",
+  //     country: "JAPAN",
+  //     iata_code: "NRT",
+  //   },
+  // });
 
-  const airport3 = await prisma.airports.upsert({
-    where: { name: "Kunming Changshui International Airport" },
-    update: {},
-    create: {
-      name: "Kunming Changshui International Airport",
-      city: "Kunming",
-      country: "China",
-      iata_code: "KMG",
-    },
-  });
+  // const airport3 = await prisma.airports.upsert({
+  //   where: { name: "Kunming Changshui International Airport" },
+  //   update: {},
 
-  const airport4 = await prisma.airports.upsert({
-    where: { name: "Shanghai Hongqiao International Airport" },
-    update: {},
-    create: {
-      name: "Shanghai Hongqiao International Airport",
-      city: "Shanghai",
-      country: "China",
-      iata_code: "SHA",
-    },
-  });
+  //   create: {
+  //     name: "Kunming Changshui International Airport",
+  //     city: "Kunming",
+  //     country: "China",
+  //     iata_code: "KMG",
+  //   },
+  // });
 
-  const airport5 = await prisma.airports.upsert({
-    where: { name: "Shanghai Pudong International Airport" },
-    update: {},
-    create: {
-      name: "Shanghai Pudong International Airport",
-      city: "Shanghai",
-      country: "China",
-      iata_code: "PVG",
-    },
-  });
+  // const airport4 = await prisma.airports.upsert({
+  //   where: { name: "Shanghai Hongqiao International Airport" },
+  //   update: {},
 
-  const airport6 = await prisma.airports.upsert({
-    where: { name: "Singapore Changi Airport" },
-    update: {},
-    create: {
-      name: "Singapore Changi Airport",
-      city: "Metropolitan Area",
-      country: "Singapore",
-      iata_code: "SIN",
-    },
-  });
+  //   create: {
+  //     name: "Shanghai Hongqiao International Airport",
+  //     city: "Shanghai",
+  //     country: "China",
+  //     iata_code: "SHA",
+  //   },
+  // });
 
-  const airport7 = await prisma.airports.upsert({
-    where: { name: "Xiaoshan Intl" },
-    update: {},
-    create: {
-      name: "Xiaoshan Intl",
-      city: "Hangzhou",
-      country: "China",
-      iata_code: "HGH",
-    },
-  });
+  // const airport5 = await prisma.airports.upsert({
+  //   where: { name: "Shanghai Pudong International Airport" },
+  //   update: {},
 
-  const airport8 = await prisma.airports.upsert({
-    where: { name: "Hamad International Airport" },
-    update: {},
-    create: {
-      name: "Hamad International Airport",
-      city: "Doha",
-      country: "Qatar",
-      iata_code: "DOH",
-    },
-  });
+  //   create: {
+  //     name: "Shanghai Pudong International Airport",
+  //     city: "Shanghai",
+  //     country: "China",
+  //     iata_code: "PVG",
+  //   },
+  // });
 
-  const airport9 = await prisma.airports.upsert({
-    where: { name: "Kuala Lumpur International Airport" },
-    update: {},
-    create: {
-      name: "Kuala Lumpur International Airport",
-      city: "Kuala Lumpur",
-      country: "Malaysia",
-      iata_code: "KUL",
-    },
-  });
+  // const airport6 = await prisma.airports.upsert({
+  //   where: { name: "Singapore Changi Airport" },
+  //   update: {},
 
-  const airport10 = await prisma.airports.upsert({
-    where: { name: "Suvarnabhumi Airport" },
-    update: {},
-    create: {
-      name: "Suvarnabhumi Airport",
-      city: "Bangkok",
-      country: "Thailand",
-      iata_code: "BKK",
-    },
-  });
+  //   create: {
+  //     name: "Singapore Changi Airport",
+  //     city: "Metropolitan Area",
+  //     country: "Singapore",
+  //     iata_code: "SIN",
+  //   },
+  // });
 
-  const airport11 = await prisma.airports.upsert({
-    where: { name: "Incheon International Airport" },
-    update: {},
-    create: {
-      name: "Incheon International Airport",
-      city: "Seoul",
-      country: "South Korea",
-      iata_code: "ICN",
-    },
-  });
+  // const airport7 = await prisma.airports.upsert({
+  //   where: { name: "Xiaoshan Intl" },
+  //   update: {},
+
+  //   create: {
+  //     name: "Xiaoshan Intl",
+  //     city: "Hangzhou",
+  //     country: "China",
+  //     iata_code: "HGH",
+  //   },
+  // });
+
+  // const airport8 = await prisma.airports.upsert({
+  //   where: { name: "Hamad International Airport" },
+  //   update: {},
+
+  //   create: {
+  //     name: "Hamad International Airport",
+  //     city: "Doha",
+  //     country: "Qatar",
+  //     iata_code: "DOH",
+  //   },
+  // });
+
+  // const airport9 = await prisma.airports.upsert({
+  //   where: { name: "Kuala Lumpur International Airport" },
+  //   update: {},
+
+  //   create: {
+  //     name: "Kuala Lumpur International Airport",
+  //     city: "Kuala Lumpur",
+  //     country: "Malaysia",
+  //     iata_code: "KUL",
+  //   },
+  // });
+
+  // const airport10 = await prisma.airports.upsert({
+  //   where: { name: "Suvarnabhumi Airport" },
+  //   update: {},
+
+  //   create: {
+  //     name: "Suvarnabhumi Airport",
+  //     city: "Bangkok",
+  //     country: "Thailand",
+  //     iata_code: "BKK",
+  //   },
+  // });
+
+  // const airport11 = await prisma.airports.upsert({
+  //   where: { name: "Incheon International Airport" },
+  //   update: {},
+
+  //   create: {
+  //     name: "Incheon International Airport",
+  //     city: "Seoul",
+  //     country: "South Korea",
+  //     iata_code: "ICN",
+  //   },
+  // });
+
+  // const airlines1 = await prisma.airlines.create({
+  //   data: {
+  //     name: "China Eastern Airlines",
+  //     iata_code: "MU",
+  //     logo_url: "",
+  //   },
+  // });
+  // const airlines2 = await prisma.airlines.create({
+
+  //   data: {
+  //     name: "Singapore Airlines",
+  //     iata_code: "SQ",
+  //     logo_url: "",
+  //   },
+  // });
+  // const airlines3 = await prisma.airlines.create({
+
+  //   data: {
+  //     name: "Qatar Airways",
+  //     iata_code: "QR",
+  //     logo_url: "",
+  //   },
+  // });
+  // const airlines4 = await prisma.airlines.create({
+  //  data: {
+  //     name: "Malaysia Airlines",
+  //     iata_code: "MH",
+  //     logo_url: "",
+  //   },
+  // });
+  // const airlines5 = await prisma.airlines.create({
+  //   data: {
+  //     name: "Thai Airways International",
+  //     iata_code: "TG",
+  //     logo_url: "",
+  //   },
+  // });
+  // const airlines6 = await prisma.airlines.create({
+  //   data: {
+  //     name: "Biman Bangladesh Airlines",
+  //     iata_code: "BG",
+  //     logo_url: "",
+  //   },
+  // });
+  // const airlines7 = await prisma.airlines.create({
+  //   data: {
+  //     name: "Turkish Airlines",
+  //     iata_code: "TK",
+  //     logo_url: "",
+  //   },
+  // });
+  // const airlines8 = await prisma.airlines.create({
+  //   data: {
+  //     name: "Emirates",
+  //     iata_code: "EK",
+  //     logo_url: "",
+  //   },
+  // });
+
+  // const airport1 = await prisma.airports.create({
+  //   data: {
+  //     name: "Hazrat Shahjalal International Airport",
+  //     city: "Dhaka",
+  //     country: "Bangladesh",
+  //     iata_code: "DAC",
+  //   },
+  // });
+
+  // const airport2 = await prisma.airports.create({
+  //   data: {
+  //     name: "Narita International Airport",
+  //     city: "Tokyo",
+  //     country: "JAPAN",
+  //     iata_code: "NRT",
+  //   },
+  // });
+
+  // const airport3 = await prisma.airports.create({
+  //   data: {
+  //     name: "Kunming Changshui International Airport",
+  //     city: "Kunming",
+  //     country: "China",
+  //     iata_code: "KMG",
+  //   },
+  // });
+
+  // const airport4 = await prisma.airports.create({
+  //  data: {
+  //     name: "Shanghai Hongqiao International Airport",
+  //     city: "Shanghai",
+  //     country: "China",
+  //     iata_code: "SHA",
+  //   },
+  // });
+
+  // const airport5 = await prisma.airports.create({
+  //   data: {
+  //     name: "Shanghai Pudong International Airport",
+  //     city: "Shanghai",
+  //     country: "China",
+  //     iata_code: "PVG",
+  //   },
+  // });
+
+  // const airport6 = await prisma.airports.create({
+
+  //   data: {
+  //     name: "Singapore Changi Airport",
+  //     city: "Metropolitan Area",
+  //     country: "Singapore",
+  //     iata_code: "SIN",
+  //   },
+  // });
+
+  // const airport7 = await prisma.airports.create({
+  //   data: {
+  //     name: "Xiaoshan Intl",
+  //     city: "Hangzhou",
+  //     country: "China",
+  //     iata_code: "HGH",
+  //   },
+  // });
+
+  // const airport8 = await prisma.airports.create({
+  // data: {
+  //     name: "Hamad International Airport",
+  //     city: "Doha",
+  //     country: "Qatar",
+  //     iata_code: "DOH",
+  //   },
+  // });
+
+  // const airport9 = await prisma.airports.create({
+  //   data: {
+  //     name: "Kuala Lumpur International Airport",
+  //     city: "Kuala Lumpur",
+  //     country: "Malaysia",
+  //     iata_code: "KUL",
+  //   },
+  // });
+
+  // const airport10 = await prisma.airports.create({
+  //   data: {
+  //     name: "Suvarnabhumi Airport",
+  //     city: "Bangkok",
+  //     country: "Thailand",
+  //     iata_code: "BKK",
+  //   },
+  // });
+
+  // const airport11 = await prisma.airports.create({
+  //   data: {
+  //     name: "Incheon International Airport",
+  //     city: "Seoul",
+  //     country: "South Korea",
+  //     iata_code: "ICN",
+  //   },
+  // });
 
   const groupTicket1 = await prisma.group_ticket.create({
     data: {
-      start_place: "Dhaka",
-      end_place: "Tokyo",
+      ticket_path: JSON.stringify([
+        {
+          departure_airport: "Hazrat Shahjalal International Airport",
+          airlines: "Singapore Airlines",
+          aircraft: "Boing 124",
+          ticket_class: "Economy",
+          seat_number: "258",
+          departure_datetime: "2024-02-28 05:06:06",
+          arrival_airport: "Singapore Changi Airport",
+          arrival_datetime: "2024-02-28 06:06:06",
+        },
+        {
+          departure_airport: "Singapore Changi Airport",
+          airlines: "Singapore Airlines",
+          aircraft: "",
+          ticket_class: "Economy",
+          seat_number: "258",
+          departure_datetime: "2024-02-28 07:06:06",
+          arrival_airport: "Narita International Airport",
+          arrival_datetime: "2024-02-28 10:06:06",
+        },
+      ]),
       price: "66509",
-      start_country: "Bangladesh",
-      end_country: "Japan",
       show_price: true,
       food: true,
-      refund: "Non Refundable",
+      refund: false,
+      available_seats: 20,
+      // request_wheel_chair: false,
       baggage: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus eius nostrum ea optio ipsam laudantium consequuntur incidunt rerum, accusamus dolorem delectus mollitia molestiae sed quod quisquam eligendi temporibus dolores, quibusdam deserunt necessitatibus animi doloremque modi. Velit fuga expedita incidunt eligendi eveniet non itaque repellendus saepe porro temporibus consectetur ea ipsa culpa repudiandae distinctio quae ad, nostrum omnis impedit commodi. Temporibus veritatis aut ipsum. Exercitationem, tenetur explicabo reprehenderit blanditiis neque nemo sed fugit quae modi minima ratione quasi inventore dolorum veritatis voluptas sit? Nulla, pariatur blanditiis voluptas dolorem in quam facere voluptate asperiores voluptatibus vel, quia minima cumque, ipsum quisquam beatae?`,
       policy: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus eius nostrum ea optio ipsam laudantium consequuntur incidunt rerum, accusamus dolorem delectus mollitia molestiae sed quod quisquam eligendi temporibus dolores, quibusdam deserunt necessitatibus animi doloremque modi. Velit fuga expedita incidunt eligendi eveniet non itaque repellendus saepe porro temporibus consectetur ea ipsa culpa repudiandae distinctio quae ad, nostrum omnis impedit commodi. Temporibus veritatis aut ipsum. Exercitationem, tenetur explicabo reprehenderit blanditiis neque nemo sed fugit quae modi minima ratione quasi inventore dolorum veritatis voluptas sit? Nulla, pariatur blanditiis voluptas dolorem in quam facere voluptate asperiores voluptatibus vel, quia minima cumque, ipsum quisquam beatae?`,
     },
   });
 
-  const ticketPath1_1 = await prisma.ticket_path.create({
-    data: {
-      group_ticket_id: groupTicket1.id,
-      path_order: 1,
-      path_way:"",
-      departure_place: "Dhaka",
-      departure_airport: "Hazrat Shahjalal International Airport",
-      airlines: "Singapore Airlines",
-      aircraft: "Boing 124",
-      ticket_class:"Economy",
-      seat_number:"258",
-      departure_datetime: "2024/02/28 05:06:06",
-      arrival_place: "Singapore",
-      arrival_airport: "Singapore Changi Airport",
-      arrival_datetime: "2024/02/28 06:06:06",
-    },
-  });
+  // const ticketPath1_1 = await prisma.ticket_path.create({
+  //   data: {
+  //     group_ticket_id: groupTicket1.id,
+  //     path_order: 1,
+  //     path_way: "",
+  //     departure_place: "Dhaka",
+  //     departure_airport: "Hazrat Shahjalal International Airport",
+  //     airlines: "Singapore Airlines",
+  //     aircraft: "Boing 124",
+  //     ticket_class: "Economy",
+  //     seat_number: "258",
+  //     departure_datetime: "2024/02/28 05:06:06",
+  //     arrival_place: "Singapore",
+  //     arrival_airport: "Singapore Changi Airport",
+  //     arrival_datetime: "2024/02/28 06:06:06",
+  //   },
+  // });
 
   // const groupTicketOnPath1_1 = await prisma.group_ticket_on_path.create({
   //   data: {
@@ -1162,23 +1351,23 @@ async function main() {
   //   },
   // });
 
-  const ticketPath1_2 = await prisma.ticket_path.create({
-    data: {
-      group_ticket_id: groupTicket1.id,
-      path_order: 2,
-      path_way:"",
-      departure_place: "Singapore",
-      departure_airport: "Singapore Changi Airport",
-      airlines: "Singapore Airlines",
-      aircraft: "",
-      ticket_class:"Economy",
-      seat_number:"258",
-      departure_datetime: "2024/02/28 07:06:06",
-      arrival_place: "Tokyo",
-      arrival_airport: "Narita International Airport",
-      arrival_datetime: "2024/02/28 10:06:06",
-    },
-  });
+  // const ticketPath1_2 = await prisma.ticket_path.create({
+  //   data: {
+  //     group_ticket_id: groupTicket1.id,
+  //     path_order: 2,
+  //     path_way: "",
+  //     departure_place: "Singapore",
+  //     departure_airport: "Singapore Changi Airport",
+  //     airlines: "Singapore Airlines",
+  //     aircraft: "",
+  //     ticket_class: "Economy",
+  //     seat_number: "258",
+  //     departure_datetime: "2024/02/28 07:06:06",
+  //     arrival_place: "Tokyo",
+  //     arrival_airport: "Narita International Airport",
+  //     arrival_datetime: "2024/02/28 10:06:06",
+  //   },
+  // });
 
   // const groupTicketOnPath1_2 = await prisma.group_ticket_on_path.create({
   //   data: {
@@ -1191,36 +1380,56 @@ async function main() {
 
   const groupTicket2 = await prisma.group_ticket.create({
     data: {
-      start_place: "Dhaka",
-      end_place: "New York",
-      start_country: "Bangladesh",
-      end_country: "United States of America",
+      ticket_path: JSON.stringify([
+        {
+          departure_airport: "Hazrat Shahjalal International Airport",
+          airlines: "Qatar Airways",
+          aircraft: "",
+          ticket_class: "Business",
+          seat_number: "124",
+          departure_datetime: "2024-02-28 05:06:06",
+          arrival_airport: "Hamad International Airport",
+          arrival_datetime: "2024-02-28 09:06:06",
+        },
+        {
+          departure_airport: "Hamad International Airport",
+          airlines: "Qatar Airways",
+          aircraft: "",
+          ticket_class: "Business",
+          seat_number: "124",
+          departure_datetime: "2024/02/27 10:06:06",
+          arrival_airport: "John F. Kennedy International Airport",
+          arrival_datetime: "2024/02/28 12:06:06",
+        },
+      ]),
       price: "66509",
       show_price: false,
       food: false,
-      refund: "Non Refundable",
+      refund: true,
+      available_seats: 20,
+      // request_wheel_chair: true,
       baggage: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus eius nostrum ea optio ipsam laudantium consequuntur incidunt rerum, accusamus dolorem delectus mollitia molestiae sed quod quisquam eligendi temporibus dolores, quibusdam deserunt necessitatibus animi doloremque modi. Velit fuga expedita incidunt eligendi eveniet non itaque repellendus saepe porro temporibus consectetur ea ipsa culpa repudiandae distinctio quae ad, nostrum omnis impedit commodi. Temporibus veritatis aut ipsum. Exercitationem, tenetur explicabo reprehenderit blanditiis neque nemo sed fugit quae modi minima ratione quasi inventore dolorum veritatis voluptas sit? Nulla, pariatur blanditiis voluptas dolorem in quam facere voluptate asperiores voluptatibus vel, quia minima cumque, ipsum quisquam beatae?`,
       policy: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus eius nostrum ea optio ipsam laudantium consequuntur incidunt rerum, accusamus dolorem delectus mollitia molestiae sed quod quisquam eligendi temporibus dolores, quibusdam deserunt necessitatibus animi doloremque modi. Velit fuga expedita incidunt eligendi eveniet non itaque repellendus saepe porro temporibus consectetur ea ipsa culpa repudiandae distinctio quae ad, nostrum omnis impedit commodi. Temporibus veritatis aut ipsum. Exercitationem, tenetur explicabo reprehenderit blanditiis neque nemo sed fugit quae modi minima ratione quasi inventore dolorum veritatis voluptas sit? Nulla, pariatur blanditiis voluptas dolorem in quam facere voluptate asperiores voluptatibus vel, quia minima cumque, ipsum quisquam beatae?`,
     },
   });
 
-  const ticketPath2_1 = await prisma.ticket_path.create({
-    data: {
-      group_ticket_id: groupTicket2.id,
-      path_order: 1,
-      path_way:"",
-      departure_place: "Dhaka",
-      departure_airport: "Hazrat Shahjalal International Airport",
-      airlines: "Qatar Airways",
-      aircraft: "",
-      ticket_class:"Business",
-      seat_number:"124",
-      departure_datetime: "2024/02/28 05:06:06",
-      arrival_place: "Doha",
-      arrival_airport: "Hamad International Airport",
-      arrival_datetime: "2024/02/28 09:06:06",
-    },
-  });
+  // const ticketPath2_1 = await prisma.ticket_path.create({
+  //   data: {
+  //     group_ticket_id: groupTicket2.id,
+  //     path_order: 1,
+  //     path_way: "",
+  //     departure_place: "Dhaka",
+  //     departure_airport: "Hazrat Shahjalal International Airport",
+  //     airlines: "Qatar Airways",
+  //     aircraft: "",
+  //     ticket_class: "Business",
+  //     seat_number: "124",
+  //     departure_datetime: "2024/02/28 05:06:06",
+  //     arrival_place: "Doha",
+  //     arrival_airport: "Hamad International Airport",
+  //     arrival_datetime: "2024/02/28 09:06:06",
+  //   },
+  // });
 
   // const groupTicketOnPath2_1 = await prisma.group_ticket_on_path.create({
   //   data: {
@@ -1231,23 +1440,23 @@ async function main() {
   //   },
   // });
 
-  const ticketPath2_2 = await prisma.ticket_path.create({
-    data: {
-      group_ticket_id: groupTicket2.id,
-      path_order: 2,
-      path_way:"",
-      departure_place: "DOHA",
-      departure_airport: "Hamad International Airport",
-      airlines: "Qatar Airways",
-      aircraft: "",
-      ticket_class:"Business",
-      seat_number:"124",
-      departure_datetime: "2024/02/27 10:06:06",
-      arrival_place: "New York",
-      arrival_airport: "John F. Kennedy International Airport",
-      arrival_datetime: "2024/02/28 12:06:06",
-    },
-  });
+  // const ticketPath2_2 = await prisma.ticket_path.create({
+  //   data: {
+  //     group_ticket_id: groupTicket2.id,
+  //     path_order: 2,
+  //     path_way: "",
+  //     departure_place: "DOHA",
+  //     departure_airport: "Hamad International Airport",
+  //     airlines: "Qatar Airways",
+  //     aircraft: "",
+  //     ticket_class: "Business",
+  //     seat_number: "124",
+  //     departure_datetime: "2024/02/27 10:06:06",
+  //     arrival_place: "New York",
+  //     arrival_airport: "John F. Kennedy International Airport",
+  //     arrival_datetime: "2024/02/28 12:06:06",
+  //   },
+  // });
 
   // const groupTicketOnPath2_2 = await prisma.group_ticket_on_path.create({
   //   data: {
@@ -1260,105 +1469,145 @@ async function main() {
 
   const groupTicket3 = await prisma.group_ticket.create({
     data: {
-      start_place: "Dhaka",
-      end_place: "Tokyo",
+      ticket_path: JSON.stringify([
+        {
+          departure_airport: "Hazrat Shahjalal International Airport",
+          airlines: "Singapore Airlines",
+          aircraft: "",
+          ticket_class: "Business",
+          seat_number: "420",
+          departure_datetime: "2024/02/28 13:06:06",
+          arrival_airport: "Singapore Changi Airport",
+          arrival_datetime: "2024/02/28 15:10:15",
+        },
+        {
+          departure_airport: "Singapore Changi Airport",
+          airlines: "Singapore Airlines",
+          aircraft: "",
+          ticket_class: "Business",
+          seat_number: "420",
+          departure_datetime: "2024-02-28 15:30:06",
+          arrival_airport: "Narita International Airport",
+          arrival_datetime: "2024-02-28 20:10:10",
+        },
+      ]),
       price: "66509",
-      start_country: "Bangladesh",
-      end_country: "Japan",
       show_price: true,
       food: true,
-      refund: "Non Refundable",
+      refund: false,
+      available_seats: 20,
+      // request_wheel_chair: false,
       baggage: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus eius nostrum ea optio ipsam laudantium consequuntur incidunt rerum, accusamus dolorem delectus mollitia molestiae sed quod quisquam eligendi temporibus dolores, quibusdam deserunt necessitatibus animi doloremque modi. Velit fuga expedita incidunt eligendi eveniet non itaque repellendus saepe porro temporibus consectetur ea ipsa culpa repudiandae distinctio quae ad, nostrum omnis impedit commodi. Temporibus veritatis aut ipsum. Exercitationem, tenetur explicabo reprehenderit blanditiis neque nemo sed fugit quae modi minima ratione quasi inventore dolorum veritatis voluptas sit? Nulla, pariatur blanditiis voluptas dolorem in quam facere voluptate asperiores voluptatibus vel, quia minima cumque, ipsum quisquam beatae?`,
       policy: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus eius nostrum ea optio ipsam laudantium consequuntur incidunt rerum, accusamus dolorem delectus mollitia molestiae sed quod quisquam eligendi temporibus dolores, quibusdam deserunt necessitatibus animi doloremque modi. Velit fuga expedita incidunt eligendi eveniet non itaque repellendus saepe porro temporibus consectetur ea ipsa culpa repudiandae distinctio quae ad, nostrum omnis impedit commodi. Temporibus veritatis aut ipsum. Exercitationem, tenetur explicabo reprehenderit blanditiis neque nemo sed fugit quae modi minima ratione quasi inventore dolorum veritatis voluptas sit? Nulla, pariatur blanditiis voluptas dolorem in quam facere voluptate asperiores voluptatibus vel, quia minima cumque, ipsum quisquam beatae?`,
     },
   });
 
-  const ticketPath3_1 = await prisma.ticket_path.create({
-    data: {
-      group_ticket_id: groupTicket3.id,
-      path_order: 1,
-      path_way:"",
-      departure_place: "Dhaka",
-      departure_airport: "Hazrat Shahjalal International Airport",
-      airlines: "Singapore Airlines",
-      aircraft: "",
-      ticket_class:"Business",
-      seat_number:"420",
-      departure_datetime: "2024/02/28 13:06:06",
-      arrival_place: "Singapore",
-      arrival_airport: "Singapore Changi Airport",
-      arrival_datetime: "2024/02/28 15:10:15",
-    },
-  });
+  // const ticketPath3_1 = await prisma.ticket_path.create({
+  //   data: {
+  //     group_ticket_id: groupTicket3.id,
+  //     path_order: 1,
+  //     path_way: "",
+  //     departure_place: "Dhaka",
+  //     departure_airport: "Hazrat Shahjalal International Airport",
+  //     airlines: "Singapore Airlines",
+  //     aircraft: "",
+  //     ticket_class: "Business",
+  //     seat_number: "420",
+  //     departure_datetime: "2024/02/28 13:06:06",
+  //     arrival_place: "Singapore",
+  //     arrival_airport: "Singapore Changi Airport",
+  //     arrival_datetime: "2024/02/28 15:10:15",
+  //   },
+  // });
 
-  const ticketPath3_2 = await prisma.ticket_path.create({
-    data: {
-      group_ticket_id: groupTicket3.id,
-      path_order: 2,
-      path_way:"",
-      departure_place: "Singapore",
-      departure_airport: "Singapore Changi Airport",
-      airlines: "Singapore Airlines",
-      aircraft: "",
-      ticket_class:"Business",
-      seat_number:"420",
-      departure_datetime: "2024/02/28 15:30:06",
-      arrival_place: "Tokyo",
-      arrival_airport: "Narita International Airport",
-      arrival_datetime: "2024/02/28 20:10:10",
-    },
-  });
+  // const ticketPath3_2 = await prisma.ticket_path.create({
+  //   data: {
+  //     group_ticket_id: groupTicket3.id,
+  //     path_order: 2,
+  //     path_way: "",
+  //     departure_place: "Singapore",
+  //     departure_airport: "Singapore Changi Airport",
+  //     airlines: "Singapore Airlines",
+  //     aircraft: "",
+  //     ticket_class: "Business",
+  //     seat_number: "420",
+  //     departure_datetime: "2024/02/28 15:30:06",
+  //     arrival_place: "Tokyo",
+  //     arrival_airport: "Narita International Airport",
+  //     arrival_datetime: "2024/02/28 20:10:10",
+  //   },
+  // });
 
   const groupTicket4 = await prisma.group_ticket.create({
     data: {
-      start_place: "Dhaka",
-      end_place: "Jeddah",
+      ticket_path: JSON.stringify([
+        {
+          departure_airport: "Hazrat Shahjalal International Airport",
+          airlines: "Kuwait Airways",
+          aircraft: "",
+          ticket_class: "Economy",
+          seat_number: "124",
+          departure_datetime: "2024-02-28 09:06:06",
+          arrival_airport: "Kuwait International Airport",
+          arrival_datetime: "2024-02-28 10:06:06",
+        },
+        {
+          departure_airport: "Kuwait International Airport",
+          airlines: "Singapore Airlines",
+          aircraft: "",
+          ticket_class: "Economy",
+          seat_number: "124",
+          departure_datetime: "2024-02-28 09:06:06",
+          arrival_airport: "King Abdul Aziz International Airport",
+          arrival_datetime: "2024-02-28 10:06:06",
+        },
+      ]),
       price: "66509",
-      start_country: "Bangladesh",
-      end_country: "Saudi Arabia",
       show_price: true,
       food: true,
-      refund: "Full Refundable",
+      refund: false,
+      available_seats: 20,
+      // request_wheel_chair: false,
       baggage: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus eius nostrum ea optio ipsam laudantium consequuntur incidunt rerum, accusamus dolorem delectus mollitia molestiae sed quod quisquam eligendi temporibus dolores, quibusdam deserunt necessitatibus animi doloremque modi. Velit fuga expedita incidunt eligendi eveniet non itaque repellendus saepe porro temporibus consectetur ea ipsa culpa repudiandae distinctio quae ad, nostrum omnis impedit commodi. Temporibus veritatis aut ipsum. Exercitationem, tenetur explicabo reprehenderit blanditiis neque nemo sed fugit quae modi minima ratione quasi inventore dolorum veritatis voluptas sit? Nulla, pariatur blanditiis voluptas dolorem in quam facere voluptate asperiores voluptatibus vel, quia minima cumque, ipsum quisquam beatae?`,
       policy: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus eius nostrum ea optio ipsam laudantium consequuntur incidunt rerum, accusamus dolorem delectus mollitia molestiae sed quod quisquam eligendi temporibus dolores, quibusdam deserunt necessitatibus animi doloremque modi. Velit fuga expedita incidunt eligendi eveniet non itaque repellendus saepe porro temporibus consectetur ea ipsa culpa repudiandae distinctio quae ad, nostrum omnis impedit commodi. Temporibus veritatis aut ipsum. Exercitationem, tenetur explicabo reprehenderit blanditiis neque nemo sed fugit quae modi minima ratione quasi inventore dolorum veritatis voluptas sit? Nulla, pariatur blanditiis voluptas dolorem in quam facere voluptate asperiores voluptatibus vel, quia minima cumque, ipsum quisquam beatae?`,
     },
   });
 
-  const ticketPath4_1 = await prisma.ticket_path.create({
-    data: {
-      group_ticket_id: groupTicket4.id,
-      path_order: 1,
-      path_way:"",
-      departure_place: "Dhaka",
-      departure_airport: "Hazrat Shahjalal International Airport",
-      airlines: "Kuwait Airways",
-      aircraft: "",
-      ticket_class:"Economy",
-      seat_number:"124",
-      departure_datetime: "2024/02/28 09:06:06",
-      arrival_place: "Kuwait",
-      arrival_airport: "Kuwait International Airport",
-      arrival_datetime: "2024/02/28 10:06:06",
-    },
-  });
+  // const ticketPath4_1 = await prisma.ticket_path.create({
+  //   data: {
+  //     group_ticket_id: groupTicket4.id,
+  //     path_order: 1,
+  //     path_way: "",
+  //     departure_place: "Dhaka",
+  //     departure_airport: "Hazrat Shahjalal International Airport",
+  //     airlines: "Kuwait Airways",
+  //     aircraft: "",
+  //     ticket_class: "Economy",
+  //     seat_number: "124",
+  //     departure_datetime: "2024/02/28 09:06:06",
+  //     arrival_place: "Kuwait",
+  //     arrival_airport: "Kuwait International Airport",
+  //     arrival_datetime: "2024/02/28 10:06:06",
+  //   },
+  // });
 
-  const ticketPath4_2 = await prisma.ticket_path.create({
-    data: {
-      group_ticket_id: groupTicket4.id,
-      path_order: 2,
-      path_way:"",
-      departure_place: "Kuwait",
-      departure_airport: "Kuwait International Airport",
-      airlines: "Singapore Airlines",
-      aircraft: "",
-      ticket_class:"Economy",
-      seat_number:"124",
-      departure_datetime: "2024/02/28 09:06:06",
-      arrival_place: "Jeddah",
-      arrival_airport: "King Abdul Aziz International Airport",
-      arrival_datetime: "2024/02/28 10:06:06",
-    },
-  });
+  // const ticketPath4_2 = await prisma.ticket_path.create({
+  //   data: {
+  //     group_ticket_id: groupTicket4.id,
+  //     path_order: 2,
+  //     path_way: "",
+  //     departure_place: "Kuwait",
+  //     departure_airport: "Kuwait International Airport",
+  //     airlines: "Singapore Airlines",
+  //     aircraft: "",
+  //     ticket_class: "Economy",
+  //     seat_number: "124",
+  //     departure_datetime: "2024/02/28 09:06:06",
+  //     arrival_place: "Jeddah",
+  //     arrival_airport: "King Abdul Aziz International Airport",
+  //     arrival_datetime: "2024/02/28 10:06:06",
+  //   },
+  // });
 
   const booking1 = await prisma.booking.create({
     data: {
@@ -1798,6 +2047,72 @@ async function main() {
     ],
     // skipDuplicates: true,
   });
+
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(
+        "https://fahimmohip.pythonanywhere.com/iata-airports-list"
+      );
+
+      var data: any = [];
+
+      Object.keys(res.data).forEach(async function (key, index) {
+        const res3 = await prisma.country.findFirst({
+          where: { iso_code: { contains: res.data[key].country as string } },
+        });
+        // //@ts-ignore
+        // console.log("country: ", res3.name);
+        data.push({
+          iata_code: res.data[key].iata,
+          name: res.data[key].name,
+          city: res.data[key].city,
+          //@ts-ignore
+          country: res.data[key].country,
+        });
+        // console.log("data: ", data);
+        //@ts-ignore
+
+        if (res3) {
+          const res2 = await prisma.airports.create({
+            // where: { name: res.data[key].name },
+            // update: {
+            //   iata_code: res.data[key].iata ? res.data[key].iata : "",
+            //   name: res.data[key].name,
+            //   city: res.data[key].city ? res.data[key].city : "",
+            //   //@ts-ignore
+            //   country: res3.name ? res3.name : "",
+            // },
+            data: {
+              iata_code: res.data[key].iata ? res.data[key].iata : "",
+              name: res.data[key].name,
+              city: res.data[key].city ? res.data[key].city : "",
+              //@ts-ignore
+              country: res3.name ? res3.name : "",
+            },
+          });
+        }
+      });
+
+      // var result = data.reduce((unique: any, o:any) => {
+      //   if (
+      //     !unique.some((obj:any) => obj.name === o.name )
+      //   ) {
+      //     unique.push(o);
+      //   }
+      //   return unique;
+      // }, []);
+
+      // const res2 = await prisma.airports.createMany({
+      //   data: result,
+      //   skipDuplicates: true,
+      // });
+      return data;
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
+  const airportLists: any = fetchData();
 }
 main()
   .then(async () => {

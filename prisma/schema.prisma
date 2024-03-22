@@ -246,48 +246,65 @@ model insurance_category {
   @@fulltext([title, details])
 }
 
+// model group_ticket {
+//   id            String        @id @default(uuid())
+//   start_place   String
+//   end_place     String
+//   price         String
+//   show_price    Boolean
+//   food          Boolean
+//   baggage       String        @db.LongText
+//   policy        String        @db.LongText
+//   start_country String
+//   end_country   String
+//   refund        String
+//   ticket_path   ticket_path[]
+//   // group_ticket_path group_ticket_on_path[]
+//   createdAt     DateTime      @default(now())
+//   updatedAt     DateTime      @updatedAt
+
+//   @@fulltext([start_place, end_place, price, start_country, end_country])
+// }
+
 model group_ticket {
-  id            String        @id @default(uuid())
-  start_place   String
-  end_place     String
-  price         String
-  show_price    Boolean
-  food          Boolean
-  baggage       String        @db.LongText
-  policy        String        @db.LongText
-  start_country String
-  end_country   String
-  refund        String
-  ticket_path   ticket_path[]
+  id                  String   @id @default(uuid())
+  // string of array of transits [{from, to,date, airlines, airfcraft}]
+  ticket_path         String   @db.LongText
+  price               String
+  show_price          Boolean
+  food                Boolean
+  baggage             String   @db.LongText
+  policy              String   @db.LongText
+  refund              Boolean
+  available_seats     Int
+  // request_wheel_chair Boolean
   // group_ticket_path group_ticket_on_path[]
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-
-  @@fulltext([start_place, end_place, price, start_country, end_country])
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }
 
-model ticket_path {
-  id                 String        @id @default(uuid())
-  group_ticket       group_ticket? @relation(fields: [group_ticket_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  group_ticket_id    String
-  path_order         Int
-  path_way           String?       @default("")
-  // group_ticket_path  group_ticket_on_path[]
-  departure_place    String
-  departure_airport  String
-  airlines           String?       @default("")
-  aircraft           String?       @default("")
-  ticket_class       String?       @default("")
-  seat_number        String?       @default("")
-  departure_datetime String
-  arrival_place      String
-  arrival_airport    String
-  arrival_datetime   String
-  createdAt          DateTime      @default(now())
-  updatedAt          DateTime      @updatedAt
+// model ticket_path {
+//   id                 String        @id @default(uuid())
+//   group_ticket       group_ticket? @relation(fields: [group_ticket_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   group_ticket_id    String
+//   path_order         Int
+//   path_way           String?       @default("")
+//   // group_ticket_path  group_ticket_on_path[]
+//   departure_place    String
+//   departure_airport  String
+//   airlines           String?       @default("")
+//   aircraft           String?       @default("")
+//   ticket_class       String?       @default("")
+//   seat_number        String?       @default("")
+//   departure_datetime String
+//   arrival_place      String
+//   arrival_airport    String
+//   arrival_datetime   String
+//   createdAt          DateTime      @default(now())
+//   updatedAt          DateTime      @updatedAt
 
-  @@unique([group_ticket_id, path_order])
-}
+//   @@unique([group_ticket_id, path_order])
+// }
 
 // model group_ticket_on_path {
 //   id              String        @id @default(uuid())
@@ -303,32 +320,32 @@ model ticket_path {
 
 model airports {
   id        String   @id @default(uuid())
-  name      String   @unique
-  iata_code String   @unique
-  city      String
-  country   String
+  name      String   @default("")
+  iata_code String   @default("")
+  city      String   @default("")
+  country   String   @default("")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // @@index([name, iata_code, city, country])
-  @@index([iata_code])
-  @@index([name])
-  @@index([city])
-  @@index([country])
-  @@fulltext([name, iata_code, city, country])
+  // @@index([iata_code])
+  // @@index([name])
+  // @@index([city])
+  // @@index([country])
+  // @@fulltext([name, iata_code, city, country])
 }
 
 model airlines {
   id        String   @id @default(uuid())
-  name      String   @unique
-  iata_code String
-  logo_url  String
+  name      String   @default("")
+  iata_code String   @default("")
+  logo_url  String   @default("")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([name])
-  @@index([iata_code])
-  @@fulltext([name, iata_code])
+  // @@index([name])
+  // @@index([iata_code])
+  // @@fulltext([name, iata_code])
 }
 
 model country {
